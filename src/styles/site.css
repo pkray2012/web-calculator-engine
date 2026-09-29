@@ -190,6 +190,7 @@ main:focus { outline: none; }
 .mode-mulch-rect, .mode-mulch-round { display: grid; gap: 18px; }
 .calc-form--mulch:has(#mulch-shape-rect:checked) .mode-mulch-round,
 .calc-form--mulch:has(#mulch-shape-round:checked) .mode-mulch-rect { display: none; }
+.calc-form--ot:has(#ot-rule-california:checked) .mode-ot-federal { display: none; }
 .mode-cy-volume, .mode-cy-coverage, .mode-cy-rect, .mode-cy-round, .mode-cy-triangle { display: grid; gap: 18px; }
 .calc-form--cy:has(#cy-mode-volume:checked) .mode-cy-coverage,
 .calc-form--cy:has(#cy-mode-coverage:checked) .mode-cy-volume,

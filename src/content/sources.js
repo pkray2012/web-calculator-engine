@@ -243,6 +243,12 @@ export const SOURCES = Object.freeze({
     url: 'https://www.irs.gov/taxtopics/tc404',
     supports: 'Dividends are taxable; qualified dividends are taxed at capital gain rates and ordinary dividends as ordinary income.'
   },
+  caOvertime: {
+    title: 'Overtime (frequently asked questions)',
+    publisher: 'California Department of Industrial Relations, Labor Commissioner',
+    url: 'https://www.dir.ca.gov/dlse/FAQ_Overtime.htm',
+    supports: 'California overtime: 1.5 × for hours over 8 up to 12 in a workday, over 40 in a workweek and the first 8 hours of the seventh consecutive day; 2 × over 12 in a workday and over 8 on the seventh consecutive day.'
+  },
   helocFees: {
     title: 'What fees can my lender charge if I take out a HELOC?',
     publisher: CFPB,
