@@ -243,6 +243,12 @@ export const SOURCES = Object.freeze({
     url: 'https://www.irs.gov/taxtopics/tc404',
     supports: 'Dividends are taxable; qualified dividends are taxed at capital gain rates and ordinary dividends as ordinary income.'
   },
+  irs401kLimits2026: {
+    title: '401(k) limit increases to $24,500 for 2026, IRA limit increases to $7,500',
+    publisher: 'Internal Revenue Service',
+    url: 'https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500',
+    supports: '2026 limits: $24,500 elective deferrals; $8,000 catch-up for age 50 and over; $11,250 catch-up for ages 60 to 63; $72,000 total annual additions under section 415(c).'
+  },
   caOvertime: {
     title: 'Overtime (frequently asked questions)',
     publisher: 'California Department of Industrial Relations, Labor Commissioner',

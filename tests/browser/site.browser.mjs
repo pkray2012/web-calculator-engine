@@ -21,6 +21,7 @@ import { runPayoffCalculator, PAYOFF_DEFAULTS } from '../../src/adapters/loan-pa
 import { runConcreteCalculator, CONCRETE_DEFAULTS } from '../../src/adapters/concrete.js';
 import { runGravelCalculator, GRAVEL_DEFAULTS } from '../../src/adapters/gravel.js';
 import { runDividendCalculator, DIVIDEND_DEFAULTS } from '../../src/adapters/dividend.js';
+import { run401kCalculator, RETIREMENT_401K_DEFAULTS } from '../../src/adapters/retirement-401k.js';
 import { runMulchCalculator, MULCH_DEFAULTS } from '../../src/adapters/mulch.js';
 import { runFlooringCalculator, FLOORING_DEFAULTS } from '../../src/adapters/flooring.js';
 import { runDrywallCalculator, DRYWALL_DEFAULTS } from '../../src/adapters/drywall.js';
@@ -85,6 +86,7 @@ const MORTGAGE = '/calculators/mortgage-calculator/';
 const BTU = '/calculators/btu-calculator/';
 const DIV = '/calculators/dividend-calculator/';
 const OT = '/calculators/overtime-calculator/';
+const RK = '/calculators/401k-calculator/';
 const VIEWPORTS = [
   { name: 'mobile-320', width: 320, height: 640 },
   { name: 'mobile-390', width: 390, height: 844 },
@@ -127,15 +129,15 @@ async function primaryPayment(page) {
 
 for (const viewport of VIEWPORTS) {
   test(`no horizontal overflow and results visible at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, '/about/']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, RK, '/about/']) {
       const { page, errors, close } = await openPage(path, viewport);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.equal(overflow, 0, `${path} overflows by ${overflow}px at ${viewport.width}px`);
-      if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT].includes(path)) {
-        if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT].includes(path)) await page.locator('details.disclosure summary').click();
+      if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, RK].includes(path)) {
+        if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, RK].includes(path)) await page.locator('details.disclosure summary').click();
         const openOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
         assert.equal(openOverflow, 0, 'monthly schedule overflows the page');
-        const firstInput = { [CALC]: '#principal', [AUTO]: '#vehicle-price', [PERSONAL]: '#loan-amount', [CARD]: '#card-balance', [REFI]: '#current-balance', [POINTS]: '#points-loan-amount', [PAYOFF]: '#payoff-balance', [MORTGAGE]: '#home-price', [SLR]: '#slr-balance', [HEL]: '#home-value', [AUTO_REFI]: '#auto-payoff', [AFFORD]: '#afford-income', [SAVINGS]: '#savings-goal', [LEASE]: '#lease-msrp', [DTI]: '#dti-income', [TRANSFER]: '#transfer-balance', [HELOC]: '#heloc-balance', [RVB]: '#rvb-price', [CONCRETE]: '#concrete-length', [GRAVEL]: '#gravel-length', [MULCH]: '#mulch-length', [FLOORING]: '#floor-room1-length', [DRYWALL]: '#drywall-length', [ROOFING]: '#roof-length', [FENCE]: '#fence-length', [CD]: '#cd-deposit', [COMPOUND]: '#ci-initial', [TIMECARD]: '#tc-mon-start', [BOARDFOOT]: '#bf-1-qty', [HOURLY]: '#hs-amount', [DECK]: '#deck-width', [FUEL]: '#fuel-distance', [TAX]: '#tax-price', [MARGIN]: '#margin-cost', [PCT]: '#pct-of-percent', [TIP]: '#tip-bill', [SQFT]: '#sqft-length', [ASPHALT]: '#asphalt-length', [CY]: '#cy-length', [BTU]: '#btu-length', [DIV]: '#div-initial', [OT]: '#ot-rate' }[path];
+        const firstInput = { [CALC]: '#principal', [AUTO]: '#vehicle-price', [PERSONAL]: '#loan-amount', [CARD]: '#card-balance', [REFI]: '#current-balance', [POINTS]: '#points-loan-amount', [PAYOFF]: '#payoff-balance', [MORTGAGE]: '#home-price', [SLR]: '#slr-balance', [HEL]: '#home-value', [AUTO_REFI]: '#auto-payoff', [AFFORD]: '#afford-income', [SAVINGS]: '#savings-goal', [LEASE]: '#lease-msrp', [DTI]: '#dti-income', [TRANSFER]: '#transfer-balance', [HELOC]: '#heloc-balance', [RVB]: '#rvb-price', [CONCRETE]: '#concrete-length', [GRAVEL]: '#gravel-length', [MULCH]: '#mulch-length', [FLOORING]: '#floor-room1-length', [DRYWALL]: '#drywall-length', [ROOFING]: '#roof-length', [FENCE]: '#fence-length', [CD]: '#cd-deposit', [COMPOUND]: '#ci-initial', [TIMECARD]: '#tc-mon-start', [BOARDFOOT]: '#bf-1-qty', [HOURLY]: '#hs-amount', [DECK]: '#deck-width', [FUEL]: '#fuel-distance', [TAX]: '#tax-price', [MARGIN]: '#margin-cost', [PCT]: '#pct-of-percent', [TIP]: '#tip-bill', [SQFT]: '#sqft-length', [ASPHALT]: '#asphalt-length', [CY]: '#cy-length', [BTU]: '#btu-length', [DIV]: '#div-initial', [OT]: '#ot-rate', [RK]: '#rk-age' }[path];
         const tapTarget = await page.locator(firstInput).boundingBox();
         const header = await page.locator('.site-header').boundingBox();
         assert.ok(header.height <= 130, `header is ${header.height}px tall at ${viewport.width}px`);
@@ -1516,6 +1518,34 @@ test('dividend: a zero yield is reported on its field', async () => {
   await close();
 });
 
+function retirement401kView(values) {
+  return run401kCalculator({ ...RETIREMENT_401K_DEFAULTS, ...values }).view;
+}
+
+test('401(k): example is pre-rendered; a high salary reaches the IRS limit and the result updates', async () => {
+  const { page, errors, close } = await openPage(RK);
+  assert.equal(await primaryPayment(page), formatCurrencyWhole(retirement401kView({}).balance));
+  await page.fill('#rk-salary', '300000');
+  await page.fill('#rk-contribution', '10');
+  await page.locator('button[type="submit"]').click();
+  const expected = formatCurrencyWhole(retirement401kView({ salary: '300000', contributionPercent: '10' }).balance);
+  await page.waitForFunction((value) => document.querySelector('.stat--primary .stat__value').textContent.trim() === value, expected);
+  assert.match(await page.locator('#calc-results').textContent(), /IRS limit reached\s*October/);
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#rk-salary'), '300000');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('401(k): a retirement age at or below the current age is reported on its field', async () => {
+  const { page, close } = await openPage(RK);
+  await page.fill('#rk-retire-age', '30');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#rk-retire-age-error').textContent(), /greater than your current age/);
+  await close();
+});
+
 test('overtime: example is pre-rendered; California rules and a seventh day update the pay', async () => {
   const { page, errors, close } = await openPage(OT);
   assert.equal(await primaryPayment(page), '$1,045.00');
@@ -1545,7 +1575,7 @@ test('overtime: more than 24 hours in a day is reported on its field', async () 
 test('home page lists every live calculator by category', async () => {
   const { page, close } = await openPage('/');
   const links = await page.locator('#calculators .card__link').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
-  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT].sort());
+  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, RK].sort());
   assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans', 'Debt and credit', 'Savings', 'Home improvement', 'Work and pay', 'Driving costs', 'Everyday money', 'Small business']);
   await close();
 });
@@ -1581,7 +1611,7 @@ async function axeViolations(path, viewport, prepare = async () => {}) {
 
 for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
   test(`axe finds no WCAG 2.1 A/AA violations on any page at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, '/about/', '/404.html']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, RK, '/about/', '/404.html']) {
       assert.deepEqual(await axeViolations(path, viewport), [], path);
     }
   });
@@ -1637,7 +1667,9 @@ test('axe finds no violations in error and alternate states', async () => {
     [DIV, async (page) => { await page.uncheck('#div-reinvest'); await page.fill('#div-target', '12000'); await page.locator('button[type="submit"]').click(); }],
     [DIV, async (page) => { await page.fill('#div-yield', '0'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
     [OT, async (page) => { await page.check('#ot-rule-california'); await page.fill('#ot-sat', '4'); await page.fill('#ot-sun', '10'); await page.locator('button[type="submit"]').click(); }],
-    [OT, async (page) => { await page.fill('#ot-mon', '30'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }]
+    [OT, async (page) => { await page.fill('#ot-mon', '30'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [RK, async (page) => { await page.fill('#rk-salary', '300000'); await page.fill('#rk-contribution', '10'); await page.locator('button[type="submit"]').click(); }],
+    [RK, async (page) => { await page.fill('#rk-retire-age', '30'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }]
   ];
   for (const [path, prepare] of states) {
     assert.deepEqual(await axeViolations(path, VIEWPORTS[2], prepare), [], path);
@@ -1696,7 +1728,7 @@ test('refinance and loan payment link to each other', async () => {
 
 test('pages load without layout shift, and the preloaded modules are the ones the page runs', async () => {
   for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT]) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, OT, RK]) {
       const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
       const page = await context.newPage();
       await page.addInitScript(() => {
