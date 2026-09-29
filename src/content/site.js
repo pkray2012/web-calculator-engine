@@ -389,7 +389,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Compound Interest Calculator — With Monthly Contributions',
     description: 'Calculate compound interest on a deposit and monthly contributions with daily, monthly or annual compounding, and see simple vs. compound interest and the rule of 72.',
     summary: 'Future value with monthly contributions and any compounding, year-by-year growth, simple vs. compound interest, inflation and doubling time.',
-    related: ['cd-calculator', 'savings-goal-calculator', 'loan-payoff-calculator']
+    related: ['cd-calculator', 'savings-goal-calculator', 'loan-payoff-calculator', 'dividend-calculator']
   },
   {
     slug: 'time-card-calculator',
@@ -520,6 +520,19 @@ export const CALCULATORS = Object.freeze([
     description: 'Estimate the tons and cubic yards of asphalt for a driveway, path or parking area from its size and thickness, with waste and cost per ton.',
     summary: 'Tons and cubic yards of asphalt from length, width and thickness, with waste and cost.',
     related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'home-equity-loan-calculator']
+  },
+  {
+    slug: 'dividend-calculator',
+    path: '/calculators/dividend-calculator/',
+    name: 'Dividend Calculator',
+    navName: 'Dividends',
+    category: 'savings',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'Dividend Calculator — Dividend Income, Yield & DRIP Growth',
+    description: 'Project dividend income and portfolio value with or without reinvestment (DRIP), monthly contributions, dividend growth, price growth and tax on dividends.',
+    summary: 'Dividend income and value over time, reinvested or taken as cash, with contributions, dividend and price growth, and tax.',
+    related: ['compound-interest-calculator', 'savings-goal-calculator', 'cd-calculator']
   }
 ]);
 
