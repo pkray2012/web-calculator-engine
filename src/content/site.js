@@ -246,7 +246,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Savings Goal Calculator — How Much to Save Each Month',
     description: 'Find how much to save each month to reach a goal or emergency fund by a date, or how long a set monthly deposit takes, with interest at your APY.',
     summary: 'Monthly amount to reach a goal or emergency fund by a date, or time to reach it with a set deposit, with APY growth by year.',
-    related: ['cd-calculator', 'credit-card-payoff-calculator', 'loan-payoff-calculator', 'home-affordability-calculator']
+    related: ['cd-calculator', 'credit-card-payoff-calculator', 'loan-payoff-calculator', 'home-affordability-calculator', '401k-calculator']
   },
   {
     slug: 'hourly-to-salary-calculator',
@@ -389,7 +389,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Compound Interest Calculator — With Monthly Contributions',
     description: 'Compound interest on a deposit plus monthly contributions, with daily, monthly or annual compounding, simple vs. compound interest and the rule of 72.',
     summary: 'Future value with monthly contributions and any compounding, year-by-year growth, simple vs. compound interest, inflation and doubling time.',
-    related: ['cd-calculator', 'savings-goal-calculator', 'loan-payoff-calculator', 'dividend-calculator']
+    related: ['cd-calculator', 'savings-goal-calculator', 'loan-payoff-calculator', 'dividend-calculator', '401k-calculator']
   },
   {
     slug: 'time-card-calculator',
@@ -558,7 +558,20 @@ export const CALCULATORS = Object.freeze([
     title: 'Dividend Calculator — Dividend Income, Yield & DRIP Growth',
     description: 'Project dividend income and portfolio value with or without reinvestment (DRIP), monthly contributions, dividend growth, price growth and tax on dividends.',
     summary: 'Dividend income and value over time, reinvested or taken as cash, with contributions, dividend and price growth, and tax.',
-    related: ['compound-interest-calculator', 'savings-goal-calculator', 'cd-calculator']
+    related: ['compound-interest-calculator', 'savings-goal-calculator', 'cd-calculator', '401k-calculator']
+  },
+  {
+    slug: '401k-calculator',
+    path: '/calculators/401k-calculator/',
+    name: '401(k) Calculator',
+    navName: '401(k)',
+    category: 'savings',
+    status: 'live',
+    updated: '2026-09-30',
+    title: '401(k) Calculator — Retirement Balance & Employer Match',
+    description: 'Project your 401(k) balance at retirement from your salary, contribution and employer match, with the 2026 IRS limits and age 50+ catch-up.',
+    summary: '401(k) balance at retirement from your pay, contribution rate and employer match, within the 2026 IRS limits.',
+    related: ['compound-interest-calculator', 'savings-goal-calculator', 'dividend-calculator', 'hourly-to-salary-calculator']
   },
   {
     slug: 'overtime-calculator',
