@@ -25,7 +25,7 @@ const read = (path) => readFile(join(dist, path), 'utf8');
 
 test('builds only real destinations with clean URLs', async () => {
   const { pages, indexable } = await auditSite(dist);
-  const calculators = ['auto-loan-calculator', 'auto-loan-refinance-calculator', 'balance-transfer-calculator', 'car-lease-calculator', 'credit-card-payoff-calculator', 'debt-to-income-calculator', 'heloc-payment-calculator', 'home-affordability-calculator', 'home-equity-loan-calculator', 'loan-payment-calculator', 'loan-payoff-calculator', 'mortgage-calculator', 'mortgage-points-calculator', 'mortgage-refinance-calculator', 'personal-loan-calculator', 'rent-vs-buy-calculator', 'savings-goal-calculator', 'student-loan-refinance-calculator']
+  const calculators = ['asphalt-calculator', 'auto-loan-calculator', 'auto-loan-refinance-calculator', 'balance-transfer-calculator', 'board-foot-calculator', 'car-lease-calculator', 'cd-calculator', 'compound-interest-calculator', 'concrete-calculator', 'credit-card-payoff-calculator', 'debt-to-income-calculator', 'deck-calculator', 'drywall-calculator', 'fence-calculator', 'flooring-calculator', 'fuel-cost-calculator', 'gravel-calculator', 'heloc-payment-calculator', 'home-affordability-calculator', 'home-equity-loan-calculator', 'hourly-to-salary-calculator', 'loan-payment-calculator', 'loan-payoff-calculator', 'margin-calculator', 'mortgage-calculator', 'mortgage-points-calculator', 'mortgage-refinance-calculator', 'mulch-calculator', 'percentage-calculator', 'personal-loan-calculator', 'rent-vs-buy-calculator', 'roofing-calculator', 'sales-tax-calculator', 'savings-goal-calculator', 'square-footage-calculator', 'student-loan-refinance-calculator', 'time-card-calculator', 'tip-calculator']
     .map((slug) => `/calculators/${slug}/`);
   assert.deepEqual(pages, ['/', '/404.html', '/about/', ...calculators]);
   assert.deepEqual(indexable, ['/', '/about/', ...calculators]);
@@ -63,7 +63,7 @@ test('robots.txt allows crawling and points at the sitemap', async () => {
   assert.equal(await read('robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   const sitemap = await read('sitemap.xml');
   assert.match(sitemap, /<loc>https:\/\/calculators\.test\/calculators\/loan-payment-calculator\/<\/loc>/);
-  assert.equal((sitemap.match(/<url>/g) ?? []).length, 20);
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 40);
 });
 
 test('every relative import in shipped browser modules resolves', async () => {
@@ -263,8 +263,9 @@ test('every external link on a calculator page is an official source listed unde
   const { liveCalculators } = await import('../../src/content/site.js');
   const { SOURCES } = await import('../../src/content/sources.js');
   const known = new Set(Object.values(SOURCES).map((source) => source.url));
-  // Official US government sources only: the CFPB and the Department of Education's Federal Student Aid.
-  for (const url of known) assert.match(url, /^https:\/\/(www\.consumerfinance\.gov|studentaid\.gov)\//);
+  // Official US government sources only: the CFPB, the Department of Education's Federal Student Aid, NIST, the Department of Labor,
+  // FuelEconomy.gov (DOE and EPA), the IRS and the SBA.
+  for (const url of known) assert.match(url, /^https:\/\/(www\.consumerfinance\.gov|studentaid\.gov|www\.nist\.gov|www\.dol\.gov|www\.fueleconomy\.gov|www\.irs\.gov|www\.sba\.gov)\//);
   for (const calc of liveCalculators()) {
     const doc = await read(`${calc.path.slice(1)}index.html`);
     const main = doc.slice(doc.indexOf('<main'), doc.indexOf('</main>'));
@@ -285,7 +286,7 @@ test('the deployment smoke test passes against a host that serves the build corr
   try {
     const ok = await smokeTest(base, { origin: ORIGIN });
     assert.deepEqual(ok.problems, []);
-    assert.equal(ok.checked, 20);
+    assert.equal(ok.checked, 40);
     // A build made for a different domain is caught.
     const wrong = await smokeTest(base, { origin: 'https://other.test' });
     assert.match(wrong.problems.join('\n'), /robots\.txt does not name https:\/\/other\.test\/sitemap\.xml/);

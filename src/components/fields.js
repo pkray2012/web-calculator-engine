@@ -40,6 +40,15 @@ export function monthField({ id, name, label, value, hint = null, optional = tru
   return fieldShell({ id, label, hint, optional, error, control });
 }
 
+/** A native time input (value "HH:MM", 24-hour) with a short visible label. */
+export function timeField({ id, name, label, value, error = null }) {
+  return html`<div class="time-cell${error ? ' field--invalid' : ''}" data-field="${id}">
+  <label for="${id}">${label}</label>
+  <div class="input"><input id="${id}" name="${name}" type="time" step="60" value="${value}" aria-describedby="${id}-error"${error ? html` aria-invalid="true"` : ''}></div>
+  <p class="field__error" id="${id}-error"${error ? '' : ' hidden'}>${error ?? ''}</p>
+</div>`;
+}
+
 /** A number input paired with a unit <select>, grouped in a fieldset. */
 export function amountWithUnitField({ id, name, unitName, legend, value, unit, units, hint = null, error = null }) {
   return html`<fieldset class="field field--group${error ? ' field--invalid' : ''}" data-field="${id}">

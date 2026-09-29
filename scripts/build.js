@@ -32,10 +32,30 @@ import { homeEquityLoanPage } from '../src/pages/home-equity-loan-calculator.js'
 import { studentLoanRefinancePage } from '../src/pages/student-loan-refinance-calculator.js';
 import { mortgagePaymentPage } from '../src/pages/mortgage-calculator.js';
 import { homeAffordabilityPage } from '../src/pages/home-affordability-calculator.js';
+import { flooringPage } from '../src/pages/flooring-calculator.js';
+import { drywallPage } from '../src/pages/drywall-calculator.js';
+import { roofingPage } from '../src/pages/roofing-calculator.js';
+import { fencePage } from '../src/pages/fence-calculator.js';
+import { cdPage } from '../src/pages/cd-calculator.js';
+import { compoundInterestPage } from '../src/pages/compound-interest-calculator.js';
+import { timeCardPage } from '../src/pages/time-card-calculator.js';
+import { boardFootPage } from '../src/pages/board-foot-calculator.js';
 import { savingsGoalPage } from '../src/pages/savings-goal-calculator.js';
 import { carLeasePage } from '../src/pages/car-lease-calculator.js';
 import { debtToIncomePage } from '../src/pages/debt-to-income-calculator.js';
+import { hourlyToSalaryPage } from '../src/pages/hourly-to-salary-calculator.js';
+import { deckPage } from '../src/pages/deck-calculator.js';
+import { fuelCostPage } from '../src/pages/fuel-cost-calculator.js';
+import { salesTaxPage } from '../src/pages/sales-tax-calculator.js';
+import { marginPage } from '../src/pages/margin-calculator.js';
+import { percentagePage } from '../src/pages/percentage-calculator.js';
+import { tipPage } from '../src/pages/tip-calculator.js';
+import { squareFootagePage } from '../src/pages/square-footage-calculator.js';
+import { asphaltPage } from '../src/pages/asphalt-calculator.js';
 import { rentVsBuyPage } from '../src/pages/rent-vs-buy-calculator.js';
+import { concretePage } from '../src/pages/concrete-calculator.js';
+import { gravelPage } from '../src/pages/gravel-calculator.js';
+import { mulchPage } from '../src/pages/mulch-calculator.js';
 import { loanPayoffPage } from '../src/pages/loan-payoff-calculator.js';
 import { homePage, aboutPage, notFoundPage } from '../src/pages/static-pages.js';
 
@@ -109,10 +129,30 @@ export function buildPages(origin) {
     { ...homePage(origin), updated: latest },
     { ...mortgagePaymentPage(), updated: calculators.find((calc) => calc.slug === 'mortgage-calculator').updated },
     { ...homeAffordabilityPage(), updated: calculators.find((calc) => calc.slug === 'home-affordability-calculator').updated },
+    { ...flooringPage(), updated: calculators.find((calc) => calc.slug === 'flooring-calculator').updated },
+    { ...drywallPage(), updated: calculators.find((calc) => calc.slug === 'drywall-calculator').updated },
+    { ...roofingPage(), updated: calculators.find((calc) => calc.slug === 'roofing-calculator').updated },
+    { ...fencePage(), updated: calculators.find((calc) => calc.slug === 'fence-calculator').updated },
+    { ...cdPage(), updated: calculators.find((calc) => calc.slug === 'cd-calculator').updated },
+    { ...compoundInterestPage(), updated: calculators.find((calc) => calc.slug === 'compound-interest-calculator').updated },
+    { ...timeCardPage(), updated: calculators.find((calc) => calc.slug === 'time-card-calculator').updated },
+    { ...boardFootPage(), updated: calculators.find((calc) => calc.slug === 'board-foot-calculator').updated },
     { ...savingsGoalPage(), updated: calculators.find((calc) => calc.slug === 'savings-goal-calculator').updated },
     { ...carLeasePage(), updated: calculators.find((calc) => calc.slug === 'car-lease-calculator').updated },
     { ...debtToIncomePage(), updated: calculators.find((calc) => calc.slug === 'debt-to-income-calculator').updated },
+    { ...hourlyToSalaryPage(), updated: calculators.find((calc) => calc.slug === 'hourly-to-salary-calculator').updated },
+    { ...deckPage(), updated: calculators.find((calc) => calc.slug === 'deck-calculator').updated },
+    { ...fuelCostPage(), updated: calculators.find((calc) => calc.slug === 'fuel-cost-calculator').updated },
+    { ...salesTaxPage(), updated: calculators.find((calc) => calc.slug === 'sales-tax-calculator').updated },
+    { ...marginPage(), updated: calculators.find((calc) => calc.slug === 'margin-calculator').updated },
+    { ...percentagePage(), updated: calculators.find((calc) => calc.slug === 'percentage-calculator').updated },
+    { ...tipPage(), updated: calculators.find((calc) => calc.slug === 'tip-calculator').updated },
+    { ...squareFootagePage(), updated: calculators.find((calc) => calc.slug === 'square-footage-calculator').updated },
+    { ...asphaltPage(), updated: calculators.find((calc) => calc.slug === 'asphalt-calculator').updated },
     { ...rentVsBuyPage(), updated: calculators.find((calc) => calc.slug === 'rent-vs-buy-calculator').updated },
+    { ...concretePage(), updated: calculators.find((calc) => calc.slug === 'concrete-calculator').updated },
+    { ...gravelPage(), updated: calculators.find((calc) => calc.slug === 'gravel-calculator').updated },
+    { ...mulchPage(), updated: calculators.find((calc) => calc.slug === 'mulch-calculator').updated },
     { ...loanPaymentPage(), updated: calculators.find((calc) => calc.slug === 'loan-payment-calculator').updated },
     { ...autoLoanPage(), updated: calculators.find((calc) => calc.slug === 'auto-loan-calculator').updated },
     { ...personalLoanPage(), updated: calculators.find((calc) => calc.slug === 'personal-loan-calculator').updated },
