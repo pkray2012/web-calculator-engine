@@ -155,13 +155,56 @@ main:focus { outline: none; }
 .mode-price, .mode-budget { display: grid; gap: 18px; }
 .calc-form--auto:has(#auto-mode-price:checked) .mode-budget,
 .calc-form--auto:has(#auto-mode-budget:checked) .mode-price { display: none; }
+.mode-trip, .mode-mpg { display: grid; gap: 18px; }
+.calc-form--fuel:has(#fuel-mode-trip:checked) .mode-mpg,
+.calc-form--fuel:has(#fuel-mode-mpg:checked) .mode-trip { display: none; }
+.mode-add, .mode-remove, .mode-rate, .mode-taxrate { display: grid; gap: 18px; }
+.calc-form--tax:has(#tax-mode-add:checked) :is(.mode-remove, .mode-rate),
+.calc-form--tax:has(#tax-mode-remove:checked) :is(.mode-add, .mode-rate),
+.calc-form--tax:has(#tax-mode-rate:checked) :is(.mode-add, .mode-remove, .mode-taxrate) { display: none; }
+.mode-cp, .mode-margin, .mode-markup { display: grid; gap: 18px; }
+.calc-form--margin:has(#margin-mode-cp:checked) :is(.mode-margin, .mode-markup),
+.calc-form--margin:has(#margin-mode-margin:checked) :is(.mode-cp, .mode-markup),
+.calc-form--margin:has(#margin-mode-markup:checked) :is(.mode-cp, .mode-margin) { display: none; }
+.mode-of, .mode-is, .mode-change, .mode-off { display: grid; gap: 18px; }
+.calc-form--pct:has(#pct-mode-of:checked) :is(.mode-is, .mode-change, .mode-off),
+.calc-form--pct:has(#pct-mode-is:checked) :is(.mode-of, .mode-change, .mode-off),
+.calc-form--pct:has(#pct-mode-change:checked) :is(.mode-of, .mode-is, .mode-off),
+.calc-form--pct:has(#pct-mode-off:checked) :is(.mode-of, .mode-is, .mode-change) { display: none; }
+.mode-rect, .mode-circle, .mode-tri, .mode-trap { display: grid; gap: 18px; }
+.calc-form--sqft:has(#sqft-shape-rect:checked) :is(.mode-circle, .mode-tri, .mode-trap),
+.calc-form--sqft:has(#sqft-shape-circle:checked) :is(.mode-rect, .mode-tri, .mode-trap),
+.calc-form--sqft:has(#sqft-shape-tri:checked) :is(.mode-rect, .mode-circle, .mode-trap),
+.calc-form--sqft:has(#sqft-shape-trap:checked) :is(.mode-rect, .mode-circle, .mode-tri) { display: none; }
 .mode-amount, .mode-emergency, .mode-date, .mode-deposit { display: grid; gap: 18px; }
 .calc-form--savings:has(#savings-type-amount:checked) .mode-emergency,
 .calc-form--savings:has(#savings-type-emergency:checked) .mode-amount,
 .calc-form--savings:has(#savings-plan-date:checked) .mode-deposit,
 .calc-form--savings:has(#savings-plan-deposit:checked) .mode-date { display: none; }
+.mode-rect, .mode-round { display: grid; gap: 18px; }
+.calc-form--concrete:has(#concrete-shape-rect:checked) .mode-round,
+.calc-form--concrete:has(#concrete-shape-round:checked) .mode-rect { display: none; }
+.mode-gravel-rect, .mode-gravel-round { display: grid; gap: 18px; }
+.calc-form--gravel:has(#gravel-shape-rect:checked) .mode-gravel-round,
+.calc-form--gravel:has(#gravel-shape-round:checked) .mode-gravel-rect { display: none; }
+.mode-mulch-rect, .mode-mulch-round { display: grid; gap: 18px; }
+.calc-form--mulch:has(#mulch-shape-rect:checked) .mode-mulch-round,
+.calc-form--mulch:has(#mulch-shape-round:checked) .mode-mulch-rect { display: none; }
 .form-group-title { font-size: 1rem; margin: 4px 0 -6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .field__row .input { flex: 1 1 auto; }
+.time-row { border: 0; margin: 0; padding: 0; min-width: 0; }
+.time-row legend { font-weight: 700; padding: 0; margin-bottom: 4px; }
+.time-row__cells { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.time-cell { min-width: 0; }
+.time-cell label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 2px; }
+.time-cell .input input { padding: 10px 6px; font-size: 1rem; }
+.time-row { border: 0; margin: 0; padding: 0; min-width: 0; }
+.time-row legend { font-weight: 700; padding: 0; margin-bottom: 4px; }
+.time-row__cells { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.time-row__cells--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.time-cell { min-width: 0; }
+.time-cell label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 2px; }
+.time-cell .input input { padding: 10px 6px; font-size: 1rem; }
 
 .input {
   display: flex; align-items: center; background: #fff;

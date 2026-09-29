@@ -5,6 +5,8 @@
  */
 
 const CFPB = 'Consumer Financial Protection Bureau';
+const NIST = 'National Institute of Standards and Technology';
+const DOL = 'U.S. Department of Labor, Wage and Hour Division';
 
 export const SOURCES = Object.freeze({
   aprVsRate: {
@@ -127,6 +129,12 @@ export const SOURCES = Object.freeze({
     url: 'https://www.consumerfinance.gov/rules-policy/regulations/1030/2/',
     supports: 'Annual percentage yield is the total interest paid on an account over a 365-day period, reflecting the interest rate and the frequency of compounding.'
   },
+  cdBasics: {
+    title: 'What is a certificate of deposit (CD)?',
+    publisher: CFPB,
+    url: 'https://www.consumerfinance.gov/ask-cfpb/what-is-a-certificate-of-deposit-cd-en-917/',
+    supports: 'A CD is a savings account where you generally agree to leave the money for a set term; withdrawing early usually means paying a penalty; compare the term, rate and penalty when shopping.'
+  },
   leaseVsBuy: {
     title: 'What should I know about leasing versus buying a car?',
     publisher: CFPB,
@@ -144,6 +152,48 @@ export const SOURCES = Object.freeze({
     publisher: CFPB,
     url: 'https://www.consumerfinance.gov/owning-a-home/what-are-all-costs-buying-home/',
     supports: 'Buying involves up-front costs such as the down payment and closing costs, and ongoing costs such as taxes, insurance and maintenance.'
+  },
+  nistUnits: {
+    title: 'NIST Handbook 44, Appendix C: General Tables of Units of Measurement',
+    publisher: NIST,
+    url: 'https://www.nist.gov/document/2026-nist-handbook-44-appendix-c',
+    supports: 'US customary units: 1 square foot = 144 square inches, 1 cubic yard = 27 cubic feet, 1 short ton = 2,000 pounds.'
+  },
+  flsaOvertime: {
+    title: 'Overtime Pay',
+    publisher: DOL,
+    url: 'https://www.dol.gov/agencies/whd/overtime',
+    supports: 'Under the Fair Labor Standards Act, covered non-exempt employees must receive overtime pay of at least one and one-half times the regular rate for hours worked over 40 in a workweek.'
+  },
+  fuelEconomyVaries: {
+    title: 'Your Mileage Will Vary',
+    publisher: 'FuelEconomy.gov, U.S. Department of Energy and U.S. Environmental Protection Agency',
+    url: 'https://www.fueleconomy.gov/feg/why_differ.shtml',
+    supports: 'EPA fuel economy ratings are useful for comparing vehicles but may not predict your MPG; driving habits, conditions, maintenance, weather, accessories, load and fuel all affect it.'
+  },
+  irsSalesTaxDeduction: {
+    title: 'Topic no. 503, Deductible taxes',
+    publisher: 'Internal Revenue Service',
+    url: 'https://www.irs.gov/taxtopics/tc503',
+    supports: 'A general sales tax is imposed at one rate on retail sales of a broad range of items; taxpayers who itemize can elect to deduct state and local general sales taxes instead of state and local income taxes, using actual receipts or the optional tables.'
+  },
+  sbaBreakEven: {
+    title: 'Break-even point',
+    publisher: 'U.S. Small Business Administration',
+    url: 'https://www.sba.gov/business-guide/plan-your-business/calculate-your-startup-costs/break-even-point',
+    supports: 'Break-even point in units = fixed costs ÷ (sales price per unit − variable cost per unit); contribution margin = (sales price per unit − variable cost per unit) ÷ sales price per unit.'
+  },
+  nistPercent: {
+    title: 'NIST Guide to the SI, Chapter 7: Rules and Style Conventions for Expressing Values of Quantities',
+    publisher: 'National Institute of Standards and Technology',
+    url: 'https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-7-rules-and-style-conventions-expressing-values',
+    supports: 'The symbol % represents simply the number 0.01, so a statement like "differ by 0.05 %" is ambiguous and should be written to show what the percentage is of.'
+  },
+  dolTippedEmployees: {
+    title: 'Fact Sheet #15: Tipped Employees Under the Fair Labor Standards Act (FLSA)',
+    publisher: DOL,
+    url: 'https://www.dol.gov/agencies/whd/fact-sheets/15-tipped-employees-flsa',
+    supports: 'An employer must pay a tipped employee a cash wage of at least $2.13 an hour and may count tips toward the $7.25 federal minimum wage, making up any shortfall.'
   },
   pmiBasics: {
     title: 'What is private mortgage insurance?',

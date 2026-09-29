@@ -18,10 +18,19 @@ import { runPersonalCalculator, PERSONAL_DEFAULTS } from '../../src/adapters/per
 import { runCardCalculator, CARD_DEFAULTS } from '../../src/adapters/credit-card-payoff.js';
 import { runPointsCalculator, POINTS_DEFAULTS } from '../../src/adapters/mortgage-points.js';
 import { runPayoffCalculator, PAYOFF_DEFAULTS } from '../../src/adapters/loan-payoff.js';
+import { runConcreteCalculator, CONCRETE_DEFAULTS } from '../../src/adapters/concrete.js';
+import { runGravelCalculator, GRAVEL_DEFAULTS } from '../../src/adapters/gravel.js';
+import { runMulchCalculator, MULCH_DEFAULTS } from '../../src/adapters/mulch.js';
+import { runFlooringCalculator, FLOORING_DEFAULTS } from '../../src/adapters/flooring.js';
+import { runDrywallCalculator, DRYWALL_DEFAULTS } from '../../src/adapters/drywall.js';
 import { runRentVsBuyCalculator, RVB_DEFAULTS } from '../../src/adapters/rent-vs-buy.js';
 import { runHelocCalculator, HELOC_DEFAULTS } from '../../src/adapters/heloc.js';
 import { runTransferCalculator, TRANSFER_DEFAULTS } from '../../src/adapters/balance-transfer.js';
 import { runDtiCalculator, DTI_DEFAULTS } from '../../src/adapters/debt-to-income.js';
+import { runRoofingCalculator, ROOFING_DEFAULTS } from '../../src/adapters/roofing.js';
+import { runFenceCalculator, FENCE_DEFAULTS } from '../../src/adapters/fence.js';
+import { runCdCalculator, CD_DEFAULTS } from '../../src/adapters/certificate-of-deposit.js';
+import { runCompoundCalculator, COMPOUND_DEFAULTS } from '../../src/adapters/compound-interest.js';
 import { runLeaseCalculator, LEASE_DEFAULTS } from '../../src/adapters/car-lease.js';
 import { runSavingsCalculator, SAVINGS_DEFAULTS } from '../../src/adapters/savings-goal.js';
 import { runAffordabilityCalculator, AFFORDABILITY_DEFAULTS } from '../../src/adapters/mortgage-affordability.js';
@@ -40,11 +49,31 @@ const CARD = '/calculators/credit-card-payoff-calculator/';
 const REFI = '/calculators/mortgage-refinance-calculator/';
 const POINTS = '/calculators/mortgage-points-calculator/';
 const PAYOFF = '/calculators/loan-payoff-calculator/';
+const CONCRETE = '/calculators/concrete-calculator/';
+const GRAVEL = '/calculators/gravel-calculator/';
+const MULCH = '/calculators/mulch-calculator/';
+const FLOORING = '/calculators/flooring-calculator/';
+const DRYWALL = '/calculators/drywall-calculator/';
 const RVB = '/calculators/rent-vs-buy-calculator/';
 const HELOC = '/calculators/heloc-payment-calculator/';
 const TRANSFER = '/calculators/balance-transfer-calculator/';
 const DTI = '/calculators/debt-to-income-calculator/';
+const HOURLY = '/calculators/hourly-to-salary-calculator/';
+const DECK = '/calculators/deck-calculator/';
+const FUEL = '/calculators/fuel-cost-calculator/';
+const TAX = '/calculators/sales-tax-calculator/';
+const MARGIN = '/calculators/margin-calculator/';
+const PCT = '/calculators/percentage-calculator/';
+const TIP = '/calculators/tip-calculator/';
+const SQFT = '/calculators/square-footage-calculator/';
+const ASPHALT = '/calculators/asphalt-calculator/';
 const LEASE = '/calculators/car-lease-calculator/';
+const ROOFING = '/calculators/roofing-calculator/';
+const FENCE = '/calculators/fence-calculator/';
+const CD = '/calculators/cd-calculator/';
+const COMPOUND = '/calculators/compound-interest-calculator/';
+const TIMECARD = '/calculators/time-card-calculator/';
+const BOARDFOOT = '/calculators/board-foot-calculator/';
 const SAVINGS = '/calculators/savings-goal-calculator/';
 const AFFORD = '/calculators/home-affordability-calculator/';
 const AUTO_REFI = '/calculators/auto-loan-refinance-calculator/';
@@ -93,15 +122,15 @@ async function primaryPayment(page) {
 
 for (const viewport of VIEWPORTS) {
   test(`no horizontal overflow and results visible at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, '/about/']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, '/about/']) {
       const { page, errors, close } = await openPage(path, viewport);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.equal(overflow, 0, `${path} overflows by ${overflow}px at ${viewport.width}px`);
-      if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB].includes(path)) {
-        if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB].includes(path)) await page.locator('details.disclosure summary').click();
+      if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT].includes(path)) {
+        if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT].includes(path)) await page.locator('details.disclosure summary').click();
         const openOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
         assert.equal(openOverflow, 0, 'monthly schedule overflows the page');
-        const firstInput = { [CALC]: '#principal', [AUTO]: '#vehicle-price', [PERSONAL]: '#loan-amount', [CARD]: '#card-balance', [REFI]: '#current-balance', [POINTS]: '#points-loan-amount', [PAYOFF]: '#payoff-balance', [MORTGAGE]: '#home-price', [SLR]: '#slr-balance', [HEL]: '#home-value', [AUTO_REFI]: '#auto-payoff', [AFFORD]: '#afford-income', [SAVINGS]: '#savings-goal', [LEASE]: '#lease-msrp', [DTI]: '#dti-income', [TRANSFER]: '#transfer-balance', [HELOC]: '#heloc-balance', [RVB]: '#rvb-price' }[path];
+        const firstInput = { [CALC]: '#principal', [AUTO]: '#vehicle-price', [PERSONAL]: '#loan-amount', [CARD]: '#card-balance', [REFI]: '#current-balance', [POINTS]: '#points-loan-amount', [PAYOFF]: '#payoff-balance', [MORTGAGE]: '#home-price', [SLR]: '#slr-balance', [HEL]: '#home-value', [AUTO_REFI]: '#auto-payoff', [AFFORD]: '#afford-income', [SAVINGS]: '#savings-goal', [LEASE]: '#lease-msrp', [DTI]: '#dti-income', [TRANSFER]: '#transfer-balance', [HELOC]: '#heloc-balance', [RVB]: '#rvb-price', [CONCRETE]: '#concrete-length', [GRAVEL]: '#gravel-length', [MULCH]: '#mulch-length', [FLOORING]: '#floor-room1-length', [DRYWALL]: '#drywall-length', [ROOFING]: '#roof-length', [FENCE]: '#fence-length', [CD]: '#cd-deposit', [COMPOUND]: '#ci-initial', [TIMECARD]: '#tc-mon-start', [BOARDFOOT]: '#bf-1-qty', [HOURLY]: '#hs-amount', [DECK]: '#deck-width', [FUEL]: '#fuel-distance', [TAX]: '#tax-price', [MARGIN]: '#margin-cost', [PCT]: '#pct-of-percent', [TIP]: '#tip-bill', [SQFT]: '#sqft-length', [ASPHALT]: '#asphalt-length' }[path];
         const tapTarget = await page.locator(firstInput).boundingBox();
         const header = await page.locator('.site-header').boundingBox();
         assert.ok(header.height <= 130, `header is ${header.height}px tall at ${viewport.width}px`);
@@ -835,11 +864,566 @@ test('rent vs buy: a missing rent is reported on its field', async () => {
   await close();
 });
 
+function concreteView(values) {
+  return runConcreteCalculator({ ...CONCRETE_DEFAULTS, ...values }).view;
+}
+
+test('concrete: example is pre-rendered and switching to post holes swaps the size fields', async () => {
+  const { page, errors, close } = await openPage(CONCRETE);
+  assert.equal(await primaryPayment(page), '1.36 cu yd');
+  assert.equal(await page.isVisible('#concrete-diameter'), false);
+  await page.check('#concrete-shape-round');
+  assert.equal(await page.isVisible('#concrete-length'), false);
+  await page.fill('#concrete-quantity', '6');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), `${concreteView({ shape: 'round', quantity: '6' }).cubicYards.toFixed(2)} cu yd`);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#concrete-shape-round'), true);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('concrete: a zero length is reported on its field', async () => {
+  const { page, close } = await openPage(CONCRETE);
+  await page.fill('#concrete-length', '0');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#concrete-length-error').textContent(), /greater than 0/);
+  await close();
+});
+
+function gravelView(values) {
+  return runGravelCalculator({ ...GRAVEL_DEFAULTS, ...values }).view;
+}
+
+test('gravel: example is pre-rendered and a round area and heavier stone update the tons', async () => {
+  const { page, errors, close } = await openPage(GRAVEL);
+  assert.equal(await primaryPayment(page), '2.85 tons');
+  await page.check('#gravel-shape-round');
+  assert.equal(await page.isVisible('#gravel-length'), false);
+  await page.fill('#gravel-density', '1.7');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), `${gravelView({ shape: 'round', tonsPerYard: '1.7' }).tons.toFixed(2)} tons`);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#gravel-shape-round'), true);
+  assert.equal(await page.inputValue('#gravel-density'), '1.7');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('gravel: an implausible density is reported on its field', async () => {
+  const { page, close } = await openPage(GRAVEL);
+  await page.fill('#gravel-density', '9');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#gravel-density-error').textContent(), /3 or less/);
+  await close();
+});
+
+function mulchView(values) {
+  return runMulchCalculator({ ...MULCH_DEFAULTS, ...values }).view;
+}
+
+test('mulch: example is pre-rendered and a round bed and deeper layer update the yards', async () => {
+  const { page, errors, close } = await openPage(MULCH);
+  assert.equal(await primaryPayment(page), '0.89 cu yd');
+  await page.check('#mulch-shape-round');
+  assert.equal(await page.isVisible('#mulch-length'), false);
+  await page.fill('#mulch-depth', '4');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), `${mulchView({ shape: 'round', depthInches: '4' }).cubicYards.toFixed(2)} cu yd`);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#mulch-shape-round'), true);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('mulch: a zero depth is reported on its field', async () => {
+  const { page, close } = await openPage(MULCH);
+  await page.fill('#mulch-depth', '0');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#mulch-depth-error').textContent(), /greater than 0/);
+  await close();
+});
+
+function flooringView(values) {
+  return runFlooringCalculator({ ...FLOORING_DEFAULTS, ...values }).view;
+}
+
+test('flooring: example is pre-rendered and adding a room updates the boxes', async () => {
+  const { page, errors, close } = await openPage(FLOORING);
+  assert.equal(await primaryPayment(page), '14');
+  await page.fill('#floor-room3-length', '8');
+  await page.fill('#floor-room3-width', '10');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), String(flooringView({ room3Length: '8', room3Width: '10' }).boxes));
+  assert.equal(await page.locator('#floor-rooms tbody tr').count(), 4);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#floor-room3-width'), '10');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('flooring: a half-filled room is reported on the missing field', async () => {
+  const { page, close } = await openPage(FLOORING);
+  await page.fill('#floor-room3-length', '9');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#floor-room3-width-error').textContent(), /required/);
+  await close();
+});
+
+function drywallView(values) {
+  return runDrywallCalculator({ ...DRYWALL_DEFAULTS, ...values }).view;
+}
+
+test('drywall: example is pre-rendered; ceiling and sheet size update the count', async () => {
+  const { page, errors, close } = await openPage(DRYWALL);
+  assert.equal(await primaryPayment(page), '19');
+  await page.uncheck('#drywall-ceiling');
+  await page.check('#drywall-sheet-4x12');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), String(drywallView({ includeCeiling: '', sheet: '4x12' }).sheets));
+  assert.equal(await primaryPayment(page), '9');
+  assert.match(await page.locator('#drywall-area').textContent(), /Not included/);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#drywall-sheet-4x12'), true);
+  assert.equal(await page.isChecked('#drywall-ceiling'), false);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('drywall: openings larger than the walls are reported on the doors field', async () => {
+  const { page, close } = await openPage(DRYWALL);
+  await page.fill('#drywall-windows', '40');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#drywall-doors-error').textContent(), /more than the wall area/);
+  await close();
+});
+
+function roofingView(values) {
+  return runRoofingCalculator({ ...ROOFING_DEFAULTS, ...values }).view;
+}
+
+test('roofing: example is pre-rendered; pitch and bundles per square update the count', async () => {
+  const { page, errors, close } = await openPage(ROOFING);
+  assert.equal(await primaryPayment(page), '45');
+  await page.fill('#roof-pitch', '12');
+  await page.fill('#roof-bundles', '4');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), String(roofingView({ pitchRise: '12', bundlesPerSquare: '4' }).bundles));
+  assert.equal(await primaryPayment(page), '75');
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#roof-pitch'), '12');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('roofing: a pitch over 24/12 is reported on its field', async () => {
+  const { page, close } = await openPage(ROOFING);
+  await page.fill('#roof-pitch', '30');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#roof-pitch-error').textContent(), /24 or less/);
+  await close();
+});
+
+function fenceView(values) {
+  return runFenceCalculator({ ...FENCE_DEFAULTS, ...values }).view;
+}
+
+test('fence: example is pre-rendered; spacing and prices update the list', async () => {
+  const { page, errors, close } = await openPage(FENCE);
+  assert.equal(await primaryPayment(page), '330');
+  await page.fill('#fence-spacing', '6');
+  await page.fill('#fence-price-post', '20');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  const expected = fenceView({ postSpacingFeet: '6', pricePerPost: '20' });
+  assert.equal(expected.posts, 26);
+  assert.match(await page.locator('#fence-materials').textContent(), /\$520\.00/);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#fence-spacing'), '6');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('fence: a fractional rail count is reported on its field', async () => {
+  const { page, close } = await openPage(FENCE);
+  await page.fill('#fence-rails', '1.5');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#fence-rails-error').textContent(), /whole number/);
+  await close();
+});
+
+function cdView(values) {
+  return runCdCalculator({ ...CD_DEFAULTS, ...values }).view;
+}
+
+test('cd: example is pre-rendered; rate type, term and early withdrawal update the results', async () => {
+  const { page, errors, close } = await openPage(CD);
+  assert.equal(await primaryPayment(page), '$10,605.96');
+  await page.check('#cd-rate-apr');
+  await page.selectOption('#cd-term-unit', 'years');
+  await page.fill('#cd-term', '2');
+  await page.fill('#cd-withdraw', '6');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  const expected = cdView({ rateType: 'apr', termValue: '2', termUnit: 'years', withdrawMonth: '6' });
+  assert.equal(await primaryPayment(page), `$${expected.maturityValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+  await page.locator('#cd-early').waitFor();
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#cd-rate-apr'), true);
+  assert.equal(await page.inputValue('#cd-withdraw'), '6');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('cd: cashing in after the term ends is reported on its field', async () => {
+  const { page, close } = await openPage(CD);
+  await page.fill('#cd-withdraw', '18');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#cd-withdraw-error').textContent(), /before the CD matures/);
+  await close();
+});
+
+function compoundView(values) {
+  return runCompoundCalculator({ ...COMPOUND_DEFAULTS, ...values }).view;
+}
+
+test('compound interest: example is pre-rendered; compounding, timing and inflation update the result', async () => {
+  const { page, errors, close } = await openPage(COMPOUND);
+  assert.equal(await primaryPayment(page), '$144,572.72');
+  await page.check('#ci-comp-daily');
+  await page.check('#ci-timing-start');
+  await page.fill('#ci-inflation', '3');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  const expected = compoundView({ compounding: 'daily', contributionTiming: 'start', inflationPercent: '3' });
+  assert.equal(await primaryPayment(page), `$${expected.futureValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+  assert.equal(await page.locator('#ci-schedule tbody tr').count(), 20);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#ci-comp-daily'), true);
+  assert.equal(await page.inputValue('#ci-inflation'), '3');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('compound interest: no deposit and no contribution is reported on the deposit field', async () => {
+  const { page, close } = await openPage(COMPOUND);
+  await page.fill('#ci-initial', '');
+  await page.fill('#ci-monthly', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#ci-initial-error').textContent(), /deposit, a monthly contribution/);
+  await close();
+});
+
+test('time card: example is pre-rendered; adding an overnight Saturday shift updates totals', async () => {
+  const { page, errors, close } = await openPage(TIMECARD);
+  assert.equal(await primaryPayment(page), '45:00');
+  await page.fill('#tc-sat-start', '22:00');
+  await page.fill('#tc-sat-end', '06:30');
+  await page.fill('#tc-sat-break', '30');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), '53:00');
+  assert.match(await page.locator('#tc-days').textContent(), /10:00 PM – 6:30 AM \(next day\)/);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#tc-sat-end'), '06:30');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('time card: a start time without an end time is reported on the end field', async () => {
+  const { page, close } = await openPage(TIMECARD);
+  await page.fill('#tc-sat-start', '09:00');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#tc-sat-end-error').textContent(), /Saturday end is required/);
+  await close();
+});
+
+test('board foot: example is pre-rendered; a third stack and price update the result', async () => {
+  const { page, errors, close } = await openPage(BOARDFOOT);
+  assert.equal(await primaryPayment(page), '84.33 bd ft');
+  await page.fill('#bf-3-qty', '2');
+  await page.fill('#bf-3-thick', '8/4');
+  await page.fill('#bf-3-width', '10');
+  await page.fill('#bf-3-len', '12');
+  await page.fill('#bf-price', '6.50');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  // 73.33 + 2 × 20 = 113.33 bd ft; × 1.15 = 130.33.
+  assert.equal(await primaryPayment(page), '130.33 bd ft');
+  assert.match(await page.locator('#calc-results').textContent(), /\$847\.17/);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#bf-3-thick'), '8/4');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('board foot: a half-filled stack is reported on the missing field', async () => {
+  const { page, close } = await openPage(BOARDFOOT);
+  await page.fill('#bf-3-qty', '2');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#bf-3-thick-error').textContent(), /required/);
+  await close();
+});
+
+test('hourly to salary: example is pre-rendered; a monthly salary converts to an hourly rate', async () => {
+  const { page, errors, close } = await openPage(HOURLY);
+  assert.equal(await primaryPayment(page), '$52,000');
+  await page.fill('#hs-amount', '5000');
+  await page.selectOption('#hs-period', 'month');
+  await page.waitForFunction(() => document.querySelector('#calc-results').dataset.state === 'current');
+  assert.equal(await primaryPayment(page), '$28.85');
+  await page.fill('#hs-days-off', '25');
+  await page.waitForFunction(() => document.querySelector('#calc-results').textContent.includes('Per hour actually worked'));
+  assert.match(await page.locator('#calc-results').textContent(), /\$31\.91/);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#hs-period'), 'month');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('hourly to salary: a missing pay amount is reported on its field', async () => {
+  const { page, close } = await openPage(HOURLY);
+  await page.fill('#hs-amount', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#hs-amount-error').textContent(), /Pay is required/);
+  await close();
+});
+
+test('deck: example is pre-rendered; a wider deck and prices update the materials', async () => {
+  const { page, errors, close } = await openPage(DECK);
+  assert.equal(await primaryPayment(page), '29');
+  await page.fill('#deck-width', '20');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '58');
+  await page.fill('#deck-price-board', '30');
+  await page.waitForFunction(() => document.querySelector('#deck-materials').textContent.includes('Total'));
+  assert.match(await page.locator('#deck-materials').textContent(), /\$1,740\.00/);
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#deck-width'), '20');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('deck: a missing width is reported on its field', async () => {
+  const { page, close } = await openPage(DECK);
+  await page.fill('#deck-width', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#deck-width-error').textContent(), /Deck width is required/);
+  await close();
+});
+
+test('fuel cost: example is pre-rendered; a round trip and the MPG mode update results', async () => {
+  const { page, errors, close } = await openPage(FUEL);
+  assert.equal(await primaryPayment(page), '$31.25');
+  assert.equal(await page.locator('#fuel-miles-driven').isVisible(), false);
+  await page.check('#fuel-round-trip');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '$62.50');
+  await page.check('#fuel-mode-mpg');
+  assert.equal(await page.locator('#fuel-distance').isVisible(), false);
+  await page.fill('#fuel-miles-driven', '300');
+  await page.fill('#fuel-gallons', '10');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '30.0 MPG');
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#fuel-mode-mpg'), true);
+  assert.equal(await page.inputValue('#fuel-gallons'), '10');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('fuel cost: a missing gas price is reported on its field', async () => {
+  const { page, close } = await openPage(FUEL);
+  await page.fill('#fuel-price', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#fuel-price-error').textContent(), /Gas price is required/);
+  await close();
+});
+
+test('sales tax: example is pre-rendered; removing tax and finding the rate update results', async () => {
+  const { page, errors, close } = await openPage(TAX);
+  assert.equal(await primaryPayment(page), '$268.13');
+  assert.equal(await page.locator('#tax-total').isVisible(), false);
+  await page.check('#tax-mode-remove');
+  assert.equal(await page.locator('#tax-rate').isVisible(), true);
+  await page.fill('#tax-total', '107');
+  await page.fill('#tax-rate', '7');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '$100.00');
+  await page.check('#tax-mode-rate');
+  assert.equal(await page.locator('#tax-rate').isVisible(), false);
+  await page.fill('#tax-rate-price', '80');
+  await page.fill('#tax-rate-total', '86');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '7.5%');
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#tax-mode-rate'), true);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('sales tax: a missing price is reported on its field', async () => {
+  const { page, close } = await openPage(TAX);
+  await page.fill('#tax-price', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#tax-price-error').textContent(), /Price before tax is required/);
+  await close();
+});
+
+test('profit margin: example is pre-rendered; pricing for a target margin updates results', async () => {
+  const { page, errors, close } = await openPage(MARGIN);
+  assert.equal(await primaryPayment(page), '40%');
+  assert.equal(await page.locator('#margin-target').isVisible(), false);
+  await page.check('#margin-mode-margin');
+  assert.equal(await page.locator('#margin-price').isVisible(), false);
+  await page.fill('#margin-cost', '60');
+  await page.fill('#margin-target', '25');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '$80.00');
+  await page.fill('#margin-fixed', '2000');
+  await page.waitForFunction(() => document.querySelector('#calc-results').textContent.includes('100 units'));
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#margin-mode-margin'), true);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('profit margin: a missing cost is reported on its field', async () => {
+  const { page, close } = await openPage(MARGIN);
+  await page.fill('#margin-cost', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#margin-cost-error').textContent(), /Cost is required/);
+  await close();
+});
+
+test('percentage: example is pre-rendered; percent change and percent off update results', async () => {
+  const { page, errors, close } = await openPage(PCT);
+  assert.equal(await primaryPayment(page), '12');
+  assert.equal(await page.locator('#pct-change-from').isVisible(), false);
+  await page.check('#pct-mode-change');
+  assert.equal(await page.locator('#pct-of-value').isVisible(), false);
+  await page.fill('#pct-change-from', '80');
+  await page.fill('#pct-change-to', '60');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '-25%');
+  await page.check('#pct-mode-off');
+  await page.fill('#pct-off-price', '200');
+  await page.fill('#pct-off-percent', '30');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '$140.00');
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#pct-mode-off'), true);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('percentage: a zero whole is reported on its field', async () => {
+  const { page, close } = await openPage(PCT);
+  await page.check('#pct-mode-is');
+  await page.fill('#pct-is-whole', '0');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#pct-is-whole-error').textContent(), /Whole cannot be 0/);
+  await close();
+});
+
+test('tip: example is pre-rendered; more people and rounding up update the shares', async () => {
+  const { page, errors, close } = await openPage(TIP);
+  assert.equal(await primaryPayment(page), '$34.56');
+  await page.fill('#tip-people', '4');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '$25.92');
+  await page.check('#tip-round');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '$26.00');
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#tip-round'), true);
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('tip: a missing bill is reported on its field', async () => {
+  const { page, close } = await openPage(TIP);
+  await page.fill('#tip-bill', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#tip-bill-error').textContent(), /Bill is required/);
+  await close();
+});
+
+test('square footage: example is pre-rendered; a circle in meters updates results', async () => {
+  const { page, errors, close } = await openPage(SQFT);
+  assert.equal(await primaryPayment(page), '168 sq ft');
+  assert.equal(await page.locator('#sqft-diameter').isVisible(), false);
+  await page.check('#sqft-shape-circle');
+  assert.equal(await page.locator('#sqft-length').isVisible(), false);
+  await page.selectOption('#sqft-unit', 'm');
+  await page.fill('#sqft-diameter', '2');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '33.82 sq ft');
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#sqft-shape-circle'), true);
+  assert.equal(await page.inputValue('#sqft-unit'), 'm');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('square footage: a missing width is reported on its field', async () => {
+  const { page, close } = await openPage(SQFT);
+  await page.fill('#sqft-width', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#sqft-width-error').textContent(), /Width is required/);
+  await close();
+});
+
+test('asphalt: example is pre-rendered; a thicker slab and a price update results', async () => {
+  const { page, errors, close } = await openPage(ASPHALT);
+  assert.equal(await primaryPayment(page), '9.14 tons');
+  await page.fill('#asphalt-thickness', '6');
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '18.27 tons');
+  await page.fill('#asphalt-price', '100');
+  await page.waitForFunction(() => document.querySelector('#calc-results').textContent.includes('$1,827.00'));
+  await page.locator('button[type="submit"]').click();
+  await page.goto(page.url());
+  assert.equal(await page.inputValue('#asphalt-thickness'), '6');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('asphalt: a missing length is reported on its field', async () => {
+  const { page, close } = await openPage(ASPHALT);
+  await page.fill('#asphalt-length', '');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#asphalt-length-error').textContent(), /Length is required/);
+  await close();
+});
+
 test('home page lists every live calculator by category', async () => {
   const { page, close } = await openPage('/');
   const links = await page.locator('#calculators .card__link').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
-  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB].sort());
-  assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans', 'Debt and credit', 'Savings']);
+  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT].sort());
+  assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans', 'Debt and credit', 'Savings', 'Home improvement', 'Work and pay', 'Driving costs', 'Everyday money', 'Small business']);
   await close();
 });
 
@@ -874,7 +1458,7 @@ async function axeViolations(path, viewport, prepare = async () => {}) {
 
 for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
   test(`axe finds no WCAG 2.1 A/AA violations on any page at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, '/about/', '/404.html']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, '/about/', '/404.html']) {
       assert.deepEqual(await axeViolations(path, viewport), [], path);
     }
   });
@@ -900,7 +1484,29 @@ test('axe finds no violations in error and alternate states', async () => {
     [DTI, async (page) => { await page.fill('#dti-income', '9000'); await page.check('#dti-income-month'); await page.locator('button[type="submit"]').click(); }],
     [TRANSFER, async (page) => { await page.fill('#transfer-payment', '100'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
     [HELOC, async (page) => { await page.check('#draw-payment-pi'); await page.locator('button[type="submit"]').click(); }],
-    [RVB, async (page) => { await page.fill('#rvb-years', '20'); await page.fill('#rvb-rent', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }]
+    [RVB, async (page) => { await page.fill('#rvb-years', '20'); await page.fill('#rvb-rent', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [CONCRETE, async (page) => { await page.check('#concrete-shape-round'); await page.fill('#concrete-bag-price', '6.50'); await page.fill('#concrete-ready-mix-price', '180'); await page.locator('button[type="submit"]').click(); }],
+    [GRAVEL, async (page) => { await page.check('#gravel-shape-round'); await page.fill('#gravel-price-ton', '45'); await page.locator('button[type="submit"]').click(); }],
+    [MULCH, async (page) => { await page.check('#mulch-shape-round'); await page.fill('#mulch-bag-price', '4.50'); await page.fill('#mulch-bulk-price', '40'); await page.locator('button[type="submit"]').click(); }],
+    [FLOORING, async (page) => { await page.fill('#floor-room3-length', '9'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [DRYWALL, async (page) => { await page.fill('#drywall-windows', '40'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [ROOFING, async (page) => { await page.fill('#roof-pitch', '30'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [FENCE, async (page) => { await page.fill('#fence-rails', '1.5'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [CD, async (page) => { await page.fill('#cd-withdraw', '2'); await page.check('#cd-rate-apr'); await page.locator('button[type="submit"]').click(); await page.locator('#cd-early').waitFor(); }],
+    [COMPOUND, async (page) => { await page.fill('#ci-initial', ''); await page.fill('#ci-monthly', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [TIMECARD, async (page) => { await page.fill('#tc-sat-start', '09:00'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [BOARDFOOT, async (page) => { await page.fill('#bf-3-qty', '2'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [HOURLY, async (page) => { await page.fill('#hs-amount', ''); await page.fill('#hs-days-off', '12'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [DECK, async (page) => { await page.fill('#deck-width', ''); await page.fill('#deck-price-joist', '15'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [FUEL, async (page) => { await page.fill('#fuel-compare-mpg', '20'); await page.fill('#fuel-people', '3'); await page.locator('button[type="submit"]').click(); }],
+    [FUEL, async (page) => { await page.check('#fuel-mode-mpg'); await page.fill('#fuel-gallons', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [TAX, async (page) => { await page.check('#tax-mode-rate'); await page.fill('#tax-rate-total', '1'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [MARGIN, async (page) => { await page.fill('#margin-price', '20'); await page.fill('#margin-fixed', '500'); await page.locator('button[type="submit"]').click(); }],
+    [MARGIN, async (page) => { await page.check('#margin-mode-markup'); await page.fill('#margin-markup', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [PCT, async (page) => { await page.check('#pct-mode-change'); await page.fill('#pct-change-from', '0'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [TIP, async (page) => { await page.fill('#tip-tax', '200'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [SQFT, async (page) => { await page.check('#sqft-shape-trap'); await page.fill('#sqft-side-b', ''); await page.fill('#sqft-price', '3'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [ASPHALT, async (page) => { await page.fill('#asphalt-thickness', '40'); await page.fill('#asphalt-price', '90'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }]
   ];
   for (const [path, prepare] of states) {
     assert.deepEqual(await axeViolations(path, VIEWPORTS[2], prepare), [], path);
@@ -959,7 +1565,7 @@ test('refinance and loan payment link to each other', async () => {
 
 test('pages load without layout shift, and the preloaded modules are the ones the page runs', async () => {
   for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB]) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT]) {
       const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
       const page = await context.newPage();
       await page.addInitScript(() => {

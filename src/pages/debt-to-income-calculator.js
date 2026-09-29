@@ -77,7 +77,8 @@ ${calculatorShell({
 
   <section class="content-section" aria-labelledby="dti-method-heading">
     <h2 id="dti-method-heading">Methodology and testing</h2>
-    <p>Ratios are payments ÷ gross monthly income × 100; yearly income is divided by 12. Automated tests reproduce the CFPB's worked example and check
+    <p>Ratios are payments ÷ gross monthly income × 100; yearly income is divided by 12. If you are paid by the hour, the
+    <a href="/calculators/hourly-to-salary-calculator/">Hourly to Salary Calculator</a> converts your wage to monthly income. Automated tests reproduce the CFPB's worked example and check
     that the payment reduction shown brings the ratio exactly to your target. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 

@@ -62,7 +62,8 @@ ${calculatorShell({
     <h2 id="savings-how-heading">How the calculation works</h2>
     <ol>
       <li>APY is the yearly return including compounding (<a href="${SOURCES.apyDefinition.url}">Truth in Savings definition</a>). The monthly rate is
-      r = (1 + APY)<sup>1/12</sup> − 1, so a balance left alone for a year grows by exactly the APY.</li>
+      r = (1 + APY)<sup>1/12</sup> − 1, so a balance left alone for a year grows by exactly the APY. Our
+      <a href="/calculators/compound-interest-calculator/">compound interest calculator</a> shows how that growth builds over many years.</li>
       <li>Monthly amount to reach goal G in n months from savings S: <code>(G − S × (1 + r)<sup>n</sup>) × r ÷ ((1 + r)<sup>n</sup> − 1)</code>,
       or (G − S) ÷ n with no interest.</li>
       <li>Time with a set deposit: the balance is grown month by month, with the deposit added at the end of each month, until it reaches the goal.</li>
@@ -72,7 +73,8 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="savings-assumptions-heading">
     <h2 id="savings-assumptions-heading">What this calculator does not include</h2>
     <ul>
-      <li>Changes in your account's rate. Savings rates are variable; the result assumes today's APY for the whole period.</li>
+      <li>Changes in your account's rate. Savings rates are variable; the result assumes today's APY for the whole period. To lock in a rate for a set
+      term, see what a CD earns with our <a href="/calculators/cd-calculator/">CD calculator</a>.</li>
       <li>Taxes on interest, fees, withdrawals and inflation.</li>
       <li>Investment returns. For money in the market, returns are not guaranteed and can be negative.</li>
     </ul>
