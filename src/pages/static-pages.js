@@ -13,9 +13,9 @@ export function homePage(origin) {
 
   const body = html`<div class="container">
 <header class="page-header">
-  <h1>Financial calculators that show their work</h1>
-  <p class="lede">Clear answers for everyday money decisions. Each calculator shows the result, the full schedule behind it,
-  and the assumptions it makes, with no sign-up. Calculations run in your browser.</p>
+  <h1>Calculators that show their work</h1>
+  <p class="lede">Clear answers for money decisions, home projects and everyday math. Each calculator shows the result, how it
+  was worked out and the assumptions it makes, with no sign-up. Calculations run in your browser.</p>
 </header>
 
 <section class="content-section" aria-labelledby="calculators-heading" id="calculators">
@@ -35,7 +35,7 @@ export function homePage(origin) {
 <section class="content-section" aria-labelledby="principles-heading">
   <h2 id="principles-heading">What you can expect from every calculator</h2>
   <ul>
-    <li><strong>The whole picture:</strong> total cost and a full payment schedule, not just a single number.</li>
+    <li><strong>The whole picture:</strong> totals, breakdowns and schedules where they matter, not just a single number.</li>
     <li><strong>Stated assumptions:</strong> what is and is not included is written next to the results.</li>
     <li><strong>Tested math:</strong> formulas are checked by automated tests against known results.</li>
     <li><strong>Private by design:</strong> your numbers stay in your browser.</li>
@@ -46,7 +46,7 @@ export function homePage(origin) {
 
   return {
     path: '/',
-    title: `Loan, Auto, Credit Card & Refinance Calculators | ${SITE.name}`,
+    title: `Money, Home Project & Everyday Calculators | ${SITE.name}`,
     description: SITE.description,
     body,
     structuredData: [{

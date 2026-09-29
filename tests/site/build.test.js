@@ -39,7 +39,7 @@ test('built site passes the technical SEO audit', async () => {
 test('calculator page has canonical, metadata, one h1 and breadcrumb data', async () => {
   const doc = await read('calculators/loan-payment-calculator/index.html');
   assert.match(doc, /<link rel="canonical" href="https:\/\/calculators\.test\/calculators\/loan-payment-calculator\/">/);
-  assert.match(doc, /<title>Loan Payment Calculator — Monthly Payment, Interest &amp; Schedule<\/title>/);
+  assert.match(doc, /<title>Loan Payment Calculator — Monthly Payment &amp; Amortization<\/title>/);
   assert.match(doc, /<meta name="description" content="Calculate the monthly payment/);
   assert.equal((doc.match(/<h1[\s>]/g) ?? []).length, 1);
   const [, json] = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(doc);
