@@ -190,6 +190,9 @@ main:focus { outline: none; }
 .mode-mulch-rect, .mode-mulch-round { display: grid; gap: 18px; }
 .calc-form--mulch:has(#mulch-shape-rect:checked) .mode-mulch-round,
 .calc-form--mulch:has(#mulch-shape-round:checked) .mode-mulch-rect { display: none; }
+.mode-btu-dims, .mode-btu-area { display: grid; gap: 18px; }
+.calc-form--btu:has(#btu-measure-dims:checked) .mode-btu-area,
+.calc-form--btu:has(#btu-measure-area:checked) .mode-btu-dims { display: none; }
 .form-group-title { font-size: 1rem; margin: 4px 0 -6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .field__row .input { flex: 1 1 auto; }
 .time-row { border: 0; margin: 0; padding: 0; min-width: 0; }

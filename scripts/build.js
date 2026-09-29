@@ -52,6 +52,7 @@ import { percentagePage } from '../src/pages/percentage-calculator.js';
 import { tipPage } from '../src/pages/tip-calculator.js';
 import { squareFootagePage } from '../src/pages/square-footage-calculator.js';
 import { asphaltPage } from '../src/pages/asphalt-calculator.js';
+import { btuPage } from '../src/pages/btu-calculator.js';
 import { rentVsBuyPage } from '../src/pages/rent-vs-buy-calculator.js';
 import { concretePage } from '../src/pages/concrete-calculator.js';
 import { gravelPage } from '../src/pages/gravel-calculator.js';
@@ -149,6 +150,7 @@ export function buildPages(origin) {
     { ...tipPage(), updated: calculators.find((calc) => calc.slug === 'tip-calculator').updated },
     { ...squareFootagePage(), updated: calculators.find((calc) => calc.slug === 'square-footage-calculator').updated },
     { ...asphaltPage(), updated: calculators.find((calc) => calc.slug === 'asphalt-calculator').updated },
+    { ...btuPage(), updated: calculators.find((calc) => calc.slug === 'btu-calculator').updated },
     { ...rentVsBuyPage(), updated: calculators.find((calc) => calc.slug === 'rent-vs-buy-calculator').updated },
     { ...concretePage(), updated: calculators.find((calc) => calc.slug === 'concrete-calculator').updated },
     { ...gravelPage(), updated: calculators.find((calc) => calc.slug === 'gravel-calculator').updated },
