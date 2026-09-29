@@ -259,7 +259,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Hourly to Salary Calculator — Hourly, Weekly & Monthly Pay',
     description: 'Convert an hourly wage to an annual salary or a salary to an hourly rate, with weekly, biweekly and monthly pay, overtime, and paid or unpaid time off.',
     summary: 'Hourly wage to salary and back, with pay per day, week, paycheck and month, overtime, and paid or unpaid time off.',
-    related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator']
+    related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator', 'overtime-calculator']
   },
   {
     slug: 'debt-to-income-calculator',
@@ -402,7 +402,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Time Card Calculator — Hours Worked, Breaks and Overtime',
     description: 'Add up hours worked from start and end times with lunch breaks for each day, in hours:minutes and decimal hours, with weekly overtime and gross pay.',
     summary: 'Hours worked per day and week from start and end times less breaks, decimal hours, overtime past 40 hours and gross pay.',
-    related: ['hourly-to-salary-calculator', 'debt-to-income-calculator', 'savings-goal-calculator']
+    related: ['hourly-to-salary-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'overtime-calculator']
   },
   {
     slug: 'board-foot-calculator',
@@ -559,6 +559,19 @@ export const CALCULATORS = Object.freeze([
     description: 'Project dividend income and portfolio value with or without reinvestment (DRIP), monthly contributions, dividend growth, price growth and tax on dividends.',
     summary: 'Dividend income and value over time, reinvested or taken as cash, with contributions, dividend and price growth, and tax.',
     related: ['compound-interest-calculator', 'savings-goal-calculator', 'cd-calculator']
+  },
+  {
+    slug: 'overtime-calculator',
+    path: '/calculators/overtime-calculator/',
+    name: 'Overtime Calculator',
+    navName: 'Overtime pay',
+    category: 'work',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'Overtime Calculator — Overtime Pay, Double Time & California',
+    description: 'Weekly overtime pay from your hourly rate and daily hours, under the federal 40-hour rule or California daily overtime, double time and seventh-day rules.',
+    summary: 'A week of gross pay with overtime, under the federal 40-hour rule or California daily overtime and double time.',
+    related: ['time-card-calculator', 'hourly-to-salary-calculator', 'tip-calculator']
   }
 ]);
 
