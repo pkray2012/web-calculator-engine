@@ -81,6 +81,7 @@ const AUTO_REFI = '/calculators/auto-loan-refinance-calculator/';
 const HEL = '/calculators/home-equity-loan-calculator/';
 const SLR = '/calculators/student-loan-refinance-calculator/';
 const MORTGAGE = '/calculators/mortgage-calculator/';
+const BTU = '/calculators/btu-calculator/';
 const VIEWPORTS = [
   { name: 'mobile-320', width: 320, height: 640 },
   { name: 'mobile-390', width: 390, height: 844 },
@@ -123,15 +124,15 @@ async function primaryPayment(page) {
 
 for (const viewport of VIEWPORTS) {
   test(`no horizontal overflow and results visible at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, '/about/']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, '/about/']) {
       const { page, errors, close } = await openPage(path, viewport);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.equal(overflow, 0, `${path} overflows by ${overflow}px at ${viewport.width}px`);
-      if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY].includes(path)) {
-        if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY].includes(path)) await page.locator('details.disclosure summary').click();
+      if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU].includes(path)) {
+        if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU].includes(path)) await page.locator('details.disclosure summary').click();
         const openOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
         assert.equal(openOverflow, 0, 'monthly schedule overflows the page');
-        const firstInput = { [CALC]: '#principal', [AUTO]: '#vehicle-price', [PERSONAL]: '#loan-amount', [CARD]: '#card-balance', [REFI]: '#current-balance', [POINTS]: '#points-loan-amount', [PAYOFF]: '#payoff-balance', [MORTGAGE]: '#home-price', [SLR]: '#slr-balance', [HEL]: '#home-value', [AUTO_REFI]: '#auto-payoff', [AFFORD]: '#afford-income', [SAVINGS]: '#savings-goal', [LEASE]: '#lease-msrp', [DTI]: '#dti-income', [TRANSFER]: '#transfer-balance', [HELOC]: '#heloc-balance', [RVB]: '#rvb-price', [CONCRETE]: '#concrete-length', [GRAVEL]: '#gravel-length', [MULCH]: '#mulch-length', [FLOORING]: '#floor-room1-length', [DRYWALL]: '#drywall-length', [ROOFING]: '#roof-length', [FENCE]: '#fence-length', [CD]: '#cd-deposit', [COMPOUND]: '#ci-initial', [TIMECARD]: '#tc-mon-start', [BOARDFOOT]: '#bf-1-qty', [HOURLY]: '#hs-amount', [DECK]: '#deck-width', [FUEL]: '#fuel-distance', [TAX]: '#tax-price', [MARGIN]: '#margin-cost', [PCT]: '#pct-of-percent', [TIP]: '#tip-bill', [SQFT]: '#sqft-length', [ASPHALT]: '#asphalt-length', [CY]: '#cy-length' }[path];
+        const firstInput = { [CALC]: '#principal', [AUTO]: '#vehicle-price', [PERSONAL]: '#loan-amount', [CARD]: '#card-balance', [REFI]: '#current-balance', [POINTS]: '#points-loan-amount', [PAYOFF]: '#payoff-balance', [MORTGAGE]: '#home-price', [SLR]: '#slr-balance', [HEL]: '#home-value', [AUTO_REFI]: '#auto-payoff', [AFFORD]: '#afford-income', [SAVINGS]: '#savings-goal', [LEASE]: '#lease-msrp', [DTI]: '#dti-income', [TRANSFER]: '#transfer-balance', [HELOC]: '#heloc-balance', [RVB]: '#rvb-price', [CONCRETE]: '#concrete-length', [GRAVEL]: '#gravel-length', [MULCH]: '#mulch-length', [FLOORING]: '#floor-room1-length', [DRYWALL]: '#drywall-length', [ROOFING]: '#roof-length', [FENCE]: '#fence-length', [CD]: '#cd-deposit', [COMPOUND]: '#ci-initial', [TIMECARD]: '#tc-mon-start', [BOARDFOOT]: '#bf-1-qty', [HOURLY]: '#hs-amount', [DECK]: '#deck-width', [FUEL]: '#fuel-distance', [TAX]: '#tax-price', [MARGIN]: '#margin-cost', [PCT]: '#pct-of-percent', [TIP]: '#tip-bill', [SQFT]: '#sqft-length', [ASPHALT]: '#asphalt-length', [CY]: '#cy-length', [BTU]: '#btu-length' }[path];
         const tapTarget = await page.locator(firstInput).boundingBox();
         const header = await page.locator('.site-header').boundingBox();
         assert.ok(header.height <= 130, `header is ${header.height}px tall at ${viewport.width}px`);
@@ -1454,10 +1455,38 @@ test('cubic yard: a fractional count is reported on its field', async () => {
   await close();
 });
 
+test('btu: example is pre-rendered; area entry, shade and a kitchen update the size', async () => {
+  const { page, errors, close } = await openPage(BTU);
+  assert.equal(await primaryPayment(page), '10,000 BTU per hour');
+  assert.equal(await page.isVisible('#btu-area'), false);
+  await page.check('#btu-measure-area');
+  assert.equal(await page.isVisible('#btu-length'), false);
+  await page.fill('#btu-area', '200');
+  await page.check('#btu-sun-shaded');
+  await page.fill('#btu-people', '2');
+  await page.check('#btu-kitchen');
+  await page.locator('button[type="submit"]').click();
+  await page.waitForFunction(() => document.querySelector('.stat--primary .stat__value').textContent.trim() === '9,400 BTU per hour');
+  await page.goto(page.url());
+  assert.equal(await page.isChecked('#btu-kitchen'), true);
+  assert.equal(await page.inputValue('#btu-area'), '200');
+  assert.deepEqual(errors, []);
+  await close();
+});
+
+test('btu: a room larger than the chart is reported on its field', async () => {
+  const { page, close } = await openPage(BTU);
+  await page.fill('#btu-width', '80');
+  await page.locator('button[type="submit"]').click();
+  await page.locator('.error-summary').waitFor();
+  assert.match(await page.locator('#btu-width-error').textContent(), /100 to 1,000 sq ft/);
+  await close();
+});
+
 test('home page lists every live calculator by category', async () => {
   const { page, close } = await openPage('/');
   const links = await page.locator('#calculators .card__link').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
-  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY].sort());
+  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU].sort());
   assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans', 'Debt and credit', 'Savings', 'Home improvement', 'Work and pay', 'Driving costs', 'Everyday money', 'Small business']);
   await close();
 });
@@ -1493,7 +1522,7 @@ async function axeViolations(path, viewport, prepare = async () => {}) {
 
 for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
   test(`axe finds no WCAG 2.1 A/AA violations on any page at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, '/about/', '/404.html']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, '/about/', '/404.html']) {
       assert.deepEqual(await axeViolations(path, viewport), [], path);
     }
   });
@@ -1543,7 +1572,9 @@ test('axe finds no violations in error and alternate states', async () => {
     [SQFT, async (page) => { await page.check('#sqft-shape-trap'); await page.fill('#sqft-side-b', ''); await page.fill('#sqft-price', '3'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
     [ASPHALT, async (page) => { await page.fill('#asphalt-thickness', '40'); await page.fill('#asphalt-price', '90'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
     [CY, async (page) => { await page.check('#cy-mode-coverage'); await page.fill('#cy-density', '1.2'); await page.locator('button[type="submit"]').click(); }],
-    [CY, async (page) => { await page.check('#cy-shape-triangle'); await page.fill('#cy-height', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }]
+    [CY, async (page) => { await page.check('#cy-shape-triangle'); await page.fill('#cy-height', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
+    [BTU, async (page) => { await page.check('#btu-measure-area'); await page.check('#btu-kitchen'); await page.locator('button[type="submit"]').click(); }],
+    [BTU, async (page) => { await page.fill('#btu-width', '80'); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }]
   ];
   for (const [path, prepare] of states) {
     assert.deepEqual(await axeViolations(path, VIEWPORTS[2], prepare), [], path);
@@ -1602,7 +1633,7 @@ test('refinance and loan payment link to each other', async () => {
 
 test('pages load without layout shift, and the preloaded modules are the ones the page runs', async () => {
   for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY]) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU]) {
       const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
       const page = await context.newPage();
       await page.addInitScript(() => {

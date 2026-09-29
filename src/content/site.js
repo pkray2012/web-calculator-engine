@@ -506,7 +506,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Square Footage Calculator — Sq Ft, Sq Yd, m² and Acres',
     description: 'Calculate square footage for rectangles, circles, triangles and trapezoids from feet, inches, yards or meters, with square yards, square meters, acres and cost.',
     summary: 'Square feet of a rectangle, circle, triangle or trapezoid in any unit, with square yards, square meters, acres and cost.',
-    related: ['flooring-calculator', 'drywall-calculator', 'concrete-calculator', 'home-affordability-calculator']
+    related: ['flooring-calculator', 'drywall-calculator', 'concrete-calculator', 'home-affordability-calculator', 'btu-calculator']
   },
   {
     slug: 'asphalt-calculator',
@@ -533,6 +533,19 @@ export const CALCULATORS = Object.freeze([
     description: 'Calculate cubic yards for any area and depth, or how much a yard covers, with cubic feet, bags, truckloads and cost for soil, fill, sand, gravel and mulch.',
     summary: 'Cubic yards for rectangles, circles and triangles, or the area a delivery covers, in cubic feet, cubic meters, bags and truckloads.',
     related: ['gravel-calculator', 'mulch-calculator', 'concrete-calculator', 'square-footage-calculator']
+  },
+  {
+    slug: 'btu-calculator',
+    path: '/calculators/btu-calculator/',
+    name: 'BTU Calculator',
+    navName: 'BTU (AC size)',
+    category: 'homeImprovement',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'BTU Calculator — What Size Air Conditioner Do I Need?',
+    description: 'Find the right size room or window air conditioner in BTU per hour from your room area, sun, shade, people and kitchen use, using the ENERGY STAR sizing chart.',
+    summary: 'Room air conditioner size in BTU per hour from the ENERGY STAR chart, adjusted for sun, shade, people and kitchens.',
+    related: ['square-footage-calculator', 'home-equity-loan-calculator', 'roofing-calculator']
   }
 ]);
 
