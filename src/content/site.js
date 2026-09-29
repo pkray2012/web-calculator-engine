@@ -285,7 +285,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Concrete Calculator — Yards & Bags for Slabs and Post Holes',
     description: 'Calculate concrete for a slab, patio, footing or post holes in cubic yards and 40, 60 or 80 lb bags, with waste, and compare bags with ready-mix.',
     summary: 'Cubic yards and bags of concrete for slabs, footings and post holes, with a waste allowance and a bags-vs-ready-mix cost check.',
-    related: ['gravel-calculator', 'asphalt-calculator', 'mulch-calculator', 'deck-calculator']
+    related: ['gravel-calculator', 'asphalt-calculator', 'mulch-calculator', 'deck-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'gravel-calculator',
@@ -298,7 +298,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Gravel Calculator — How Many Tons and Cubic Yards You Need',
     description: 'Calculate gravel for a driveway, path, patio base or bed in cubic yards and tons, with a compaction allowance and cost by the ton or by the yard.',
     summary: 'Cubic yards and tons of gravel for rectangular or round areas, with density, compaction allowance and cost.',
-    related: ['concrete-calculator', 'asphalt-calculator', 'mulch-calculator', 'home-equity-loan-calculator']
+    related: ['concrete-calculator', 'asphalt-calculator', 'mulch-calculator', 'home-equity-loan-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'mulch-calculator',
@@ -311,7 +311,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Mulch Calculator — Cubic Yards and Bags of Mulch Needed',
     description: 'Calculate mulch for garden beds and tree rings in cubic yards and 2 or 3 cubic foot bags, with coverage by depth, and compare bags with bulk delivery.',
     summary: 'Cubic yards and bags of mulch for rectangular and round beds, coverage by depth, and bags vs. bulk cost.',
-    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator']
+    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'flooring-calculator',
@@ -519,7 +519,20 @@ export const CALCULATORS = Object.freeze([
     title: 'Asphalt Calculator — Tons of Asphalt for a Driveway or Lot',
     description: 'Estimate the tons and cubic yards of asphalt for a driveway, path or parking area from its size and thickness, with waste and cost per ton.',
     summary: 'Tons and cubic yards of asphalt from length, width and thickness, with waste and cost.',
-    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'home-equity-loan-calculator']
+    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'home-equity-loan-calculator', 'cubic-yard-calculator']
+  },
+  {
+    slug: 'cubic-yard-calculator',
+    path: '/calculators/cubic-yard-calculator/',
+    name: 'Cubic Yard Calculator',
+    navName: 'Cubic yards',
+    category: 'homeImprovement',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'Cubic Yard Calculator — Yards of Soil, Fill, Sand & Mulch',
+    description: 'Calculate cubic yards for any area and depth, or how much a yard covers, with cubic feet, bags, truckloads and cost for soil, fill, sand, gravel and mulch.',
+    summary: 'Cubic yards for rectangles, circles and triangles, or the area a delivery covers, in cubic feet, cubic meters, bags and truckloads.',
+    related: ['gravel-calculator', 'mulch-calculator', 'concrete-calculator', 'square-footage-calculator']
   }
 ]);
 
