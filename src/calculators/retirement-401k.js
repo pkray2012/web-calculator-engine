@@ -15,7 +15,9 @@
  *   the next `match2UpTo`% of pay. The match stops when deferrals stop; there
  *   is no year-end true-up.
  * - Employee deferrals excluding catch-up plus employer contributions are
- *   capped at the section 415(c) annual additions limit.
+ *   capped at the section 415(c) annual additions limit. Deferrals that would
+ *   exceed it count as catch-up where the employee is 50 or over, and stop
+ *   otherwise.
  * - The balance grows at `annualReturn`, compounded monthly; contributions are
  *   added at the end of each month.
  * - Limits stay at their 2026 amounts; in practice the IRS raises them with
@@ -100,25 +102,34 @@ export function project401k({
     if (year > 1) pay *= 1 + salaryGrowth / 100;
     const age = currentAge + year - 1;
     const limit = deferralLimit(age);
+    const catchUp = catchUpLimit(age);
     const monthlyPay = pay / 12;
-    let employee = 0;
+    // Deferrals counted toward the base limit and section 415(c), and catch-up deferrals, which count toward neither.
+    let baseDeferred = 0;
+    let catchUpDeferred = 0;
     let employer = 0;
     let limitMonth = null;
     for (let month = 1; month <= 12; month += 1) {
       balance *= 1 + monthlyReturn;
-      const deferral = Math.min(monthlyPay * contributionPercent / 100, limit - employee);
+      const wanted = monthlyPay * contributionPercent / 100;
+      const room415 = Math.max(0, LIMITS_2026.annualAdditions - baseDeferred - employer);
+      const toBase = Math.min(wanted, LIMITS_2026.electiveDeferral - baseDeferred, room415);
+      // Anything over the base limit or the 415(c) room can be a catch-up contribution.
+      const toCatchUp = Math.min(wanted - toBase, catchUp - catchUpDeferred);
+      const deferral = toBase + toCatchUp;
+      baseDeferred += toBase;
+      catchUpDeferred += toCatchUp;
+      if (limitMonth === null && wanted > 0 && (deferral < wanted - 1e-9 || baseDeferred + catchUpDeferred >= limit - 1e-9)) limitMonth = month;
       const deferralPercent = monthlyPay > 0 ? deferral / monthlyPay * 100 : 0;
-      employee += deferral;
-      if (limitMonth === null && deferral > 0 && employee >= limit - 1e-9) limitMonth = month;
-      // Section 415(c): deferrals up to the base limit plus employer money.
-      const additions = Math.min(employee, LIMITS_2026.electiveDeferral) + employer;
-      const employerMonth = Math.min(monthlyPay * matchPercentOfPay(deferralPercent, match), Math.max(0, LIMITS_2026.annualAdditions - additions));
+      const room = Math.max(0, LIMITS_2026.annualAdditions - baseDeferred - employer);
+      const employerMonth = Math.min(monthlyPay * matchPercentOfPay(deferralPercent, match), room);
       employer += employerMonth;
       balance += deferral + employerMonth;
     }
+    const employee = baseDeferred + catchUpDeferred;
     totals.employee += employee;
     totals.employer += employer;
-    schedule.push({ year, age, salary: pay, employee, employer, balance, limit, limitMonth });
+    schedule.push({ year, age, salary: pay, employee, catchUp: catchUpDeferred, employer, balance, limit, limitMonth });
   }
 
   const contributed = currentBalance + totals.employee + totals.employer;

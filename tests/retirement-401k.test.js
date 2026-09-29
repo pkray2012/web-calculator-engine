@@ -80,6 +80,19 @@ test('employer money is capped so deferrals (excluding catch-up) plus employer t
   close(result.firstYearEmployer, 72_000 - 24_500);
 });
 
+test('a large early match cannot push later deferrals past the $72,000 total; over 50 the excess becomes catch-up', () => {
+  // $50,000 a month, 2% deferred ($1,000) and matched 1,000% ($10,000): $11,000 a month uses the $72,000 room in month 7.
+  const input = { salary: 600_000, contributionPercent: 2, match1Rate: 1000, match1UpTo: 2 };
+  const young = project401k({ ...input, currentAge: 40, retirementAge: 41 });
+  close(young.firstYearEmployee, 7000);
+  close(young.firstYearEmployer, 65_000);
+  assert.equal(young.schedule[0].limitMonth, 8);
+  const older = project401k({ ...input, currentAge: 55, retirementAge: 56 });
+  close(older.firstYearEmployee, 12_000);
+  close(older.schedule[0].catchUp, 5000);
+  close(older.firstYearEmployer, 65_000);
+});
+
 test('today\'s-dollars value discounts the balance by inflation over the years to retirement', () => {
   const result = project401k({ currentAge: 30, retirementAge: 40, salary: 50_000, contributionPercent: 10, annualReturn: 5, inflation: 3 });
   close(result.realBalance, result.balance / 1.03 ** 10);
