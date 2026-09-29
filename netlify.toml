@@ -1,0 +1,11 @@
+# Netlify build settings.
+# SITE_URL, the canonical custom domain, is set as an environment variable in
+# the Netlify UI once the domain is chosen. Until then production builds fail
+# on purpose, so nothing is published on a *.netlify.app address. Deploy
+# previews still build and are served with X-Robots-Tag: noindex.
+[build]
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

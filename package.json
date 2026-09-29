@@ -1,0 +1,29 @@
+{
+  "name": "web-calculator-engine",
+  "private": false,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "lint": "eslint .",
+    "typecheck": "tsc -p jsconfig.json",
+    "build": "node scripts/build.js",
+    "build:dev": "node scripts/build.js --dev",
+    "audit:site": "node scripts/site-audit.js",
+    "serve": "node scripts/serve.js",
+    "test:browser": "npm run build:dev && node --test tests/browser/site.browser.mjs",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build:dev && npm run audit:site",
+    "smoke": "node scripts/smoke.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.4",
+    "axe-core": "4.13.0",
+    "eslint": "10.1.0",
+    "globals": "17.12.0",
+    "playwright": "1.56.1",
+    "typescript": "6.0.2"
+  }
+}
