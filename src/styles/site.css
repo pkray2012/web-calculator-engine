@@ -190,6 +190,15 @@ main:focus { outline: none; }
 .mode-mulch-rect, .mode-mulch-round { display: grid; gap: 18px; }
 .calc-form--mulch:has(#mulch-shape-rect:checked) .mode-mulch-round,
 .calc-form--mulch:has(#mulch-shape-round:checked) .mode-mulch-rect { display: none; }
+.mode-cy-volume, .mode-cy-coverage, .mode-cy-rect, .mode-cy-round, .mode-cy-triangle { display: grid; gap: 18px; }
+.calc-form--cy:has(#cy-mode-volume:checked) .mode-cy-coverage,
+.calc-form--cy:has(#cy-mode-coverage:checked) .mode-cy-volume,
+.calc-form--cy:has(#cy-shape-rect:checked) :is(.mode-cy-round, .mode-cy-triangle),
+.calc-form--cy:has(#cy-shape-round:checked) :is(.mode-cy-rect, .mode-cy-triangle),
+.calc-form--cy:has(#cy-shape-triangle:checked) :is(.mode-cy-rect, .mode-cy-round) { display: none; }
+.mode-btu-dims, .mode-btu-area { display: grid; gap: 18px; }
+.calc-form--btu:has(#btu-measure-dims:checked) .mode-btu-area,
+.calc-form--btu:has(#btu-measure-area:checked) .mode-btu-dims { display: none; }
 .form-group-title { font-size: 1rem; margin: 4px 0 -6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .field__row .input { flex: 1 1 auto; }
 .time-row { border: 0; margin: 0; padding: 0; min-width: 0; }

@@ -219,6 +219,30 @@ export const SOURCES = Object.freeze({
     url: 'https://www.consumerfinance.gov/ask-cfpb/what-is-a-home-equity-line-of-credit-heloc-en-107/',
     supports: 'HELOCs are open-end credit secured by home equity; they usually have a draw period, a repayment period and a variable interest rate.'
   },
+  energyStarRoomAc: {
+    title: 'How to choose the right sized window AC',
+    publisher: 'ENERGY STAR (U.S. Environmental Protection Agency and Department of Energy)',
+    url: 'https://www.energystar.gov/products/ask-the-experts/how-choose-right-sized-window-ac',
+    supports: 'Room air conditioner capacity by area to be cooled (100 to 1,000 square feet), and the adjustments: 10% less for a heavily shaded room, 10% more for a very sunny room, 600 BTU per person beyond two, and 4,000 BTU for a kitchen.'
+  },
+  investorDividendYield: {
+    title: 'Glossary: dividend yield',
+    publisher: 'Investor.gov, U.S. Securities and Exchange Commission',
+    url: 'https://www.investor.gov/introduction-investing/investing-basics/glossary/dividend-yield',
+    supports: 'Dividend yield is the annual dividend per share divided by the share price.'
+  },
+  investorDrip: {
+    title: 'Glossary: dividend reinvestment plans (DRIPs)',
+    publisher: 'Investor.gov, U.S. Securities and Exchange Commission',
+    url: 'https://www.investor.gov/introduction-investing/investing-basics/glossary/dividend-reinvestment-plans-drips',
+    supports: 'A dividend reinvestment plan uses cash dividends to buy additional shares.'
+  },
+  irsDividends: {
+    title: 'Topic no. 404, Dividends',
+    publisher: 'Internal Revenue Service',
+    url: 'https://www.irs.gov/taxtopics/tc404',
+    supports: 'Dividends are taxable; qualified dividends are taxed at capital gain rates and ordinary dividends as ordinary income.'
+  },
   helocFees: {
     title: 'What fees can my lender charge if I take out a HELOC?',
     publisher: CFPB,

@@ -10,7 +10,7 @@ export const SITE = Object.freeze({
   // Working name; set the site name for your deployment here.
   name: 'US Calculators',
   locale: 'en-US',
-  description: 'Free US financial calculators with transparent formulas, stated assumptions and full payment schedules. Calculations run in your browser.'
+  description: 'Free US calculators for loans, mortgages, savings, pay, home projects and everyday math, with transparent formulas and stated assumptions.'
 });
 
 export const CATEGORIES = Object.freeze({
@@ -35,7 +35,7 @@ export const CALCULATORS = Object.freeze([
     category: 'loans',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Mortgage Calculator — Monthly Payment with Taxes, Insurance & PMI',
+    title: 'Mortgage Calculator — Payment with Taxes, Insurance & PMI',
     description: 'Estimate your full monthly mortgage payment with property tax, insurance, PMI and HOA dues, when PMI can be removed, and the total cost of the loan.',
     summary: 'Full monthly payment with taxes, insurance, PMI and HOA, the dates PMI can be dropped or ends, and lifetime cost.',
     related: ['home-affordability-calculator', 'mortgage-refinance-calculator', 'mortgage-points-calculator', 'loan-payoff-calculator']
@@ -61,7 +61,7 @@ export const CALCULATORS = Object.freeze([
     category: 'loans',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Rent vs. Buy Calculator — Is It Better to Rent or Buy a Home?',
+    title: 'Rent vs. Buy Calculator — Should You Rent or Buy a Home?',
     description: 'Compare renting with buying over the years you plan to stay: net worth on each path, the break-even year and every cost of owning, with your own assumptions.',
     summary: 'Net worth from renting vs. buying year by year, the break-even year, and the full costs of owning, with explicit assumptions.',
     related: ['home-affordability-calculator', 'mortgage-calculator', 'mortgage-points-calculator']
@@ -74,7 +74,7 @@ export const CALCULATORS = Object.freeze([
     category: 'loans',
     status: 'live',
     updated: '2026-09-27',
-    title: 'Loan Payment Calculator — Monthly Payment, Interest & Schedule',
+    title: 'Loan Payment Calculator — Monthly Payment & Amortization',
     description: 'Calculate the monthly payment, total interest and amortization schedule for a fixed-rate loan, compare terms, and see how extra payments shorten payoff.',
     summary: 'Monthly payment, total interest, term comparison, extra-payment savings and a full amortization schedule.',
     related: ['auto-loan-calculator', 'personal-loan-calculator', 'mortgage-refinance-calculator', 'heloc-payment-calculator', 'loan-payoff-calculator']
@@ -100,7 +100,7 @@ export const CALCULATORS = Object.freeze([
     category: 'loans',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Car Lease Calculator — Lease Payment, Money Factor & Lease vs. Buy',
+    title: 'Car Lease Calculator — Payment, Money Factor & Lease vs. Buy',
     description: 'Estimate a car lease payment from price, residual and money factor, what is due at signing and the total lease cost, and compare leasing with buying.',
     summary: 'Lease payment built from depreciation and rent charge, due at signing, total lease cost, and a lease-vs-buy comparison over the term.',
     related: ['auto-loan-calculator', 'auto-loan-refinance-calculator', 'loan-payment-calculator']
@@ -139,7 +139,7 @@ export const CALCULATORS = Object.freeze([
     category: 'loans',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Student Loan Refinance Calculator — Savings & What You Give Up',
+    title: 'Student Loan Refinance Calculator — Savings & Trade-Offs',
     description: 'Compare keeping your student loans with a refinance offer: new payment, total savings after fees, the cost of a longer term, and what federal borrowers give up.',
     summary: 'New payment, total savings after fees, the new rate over common terms, and a clear warning on federal benefits lost.',
     related: ['loan-payment-calculator', 'personal-loan-calculator']
@@ -165,7 +165,7 @@ export const CALCULATORS = Object.freeze([
     category: 'loans',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Home Equity Loan Calculator — Payment & How Much You Can Borrow',
+    title: 'Home Equity Loan Calculator — Payment & Borrowing Limit',
     description: 'Estimate a home equity loan payment, how much you might borrow at 80%, 85% or 90% CLTV, the cash you receive after closing costs and total interest.',
     summary: 'Monthly payment, borrowing limit at common CLTV caps, cash received after closing costs, term comparison and amortization.',
     related: ['heloc-payment-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']
@@ -231,7 +231,7 @@ export const CALCULATORS = Object.freeze([
     status: 'live',
     updated: '2026-09-28',
     title: 'Loan Payoff Calculator — Extra Payments & Payoff Date',
-    description: 'See how much sooner extra monthly, yearly or one-time payments pay off your mortgage or loan, the interest saved, and the extra needed to be debt-free by a date.',
+    description: 'See how much sooner extra monthly, yearly or one-time payments pay off a mortgage or loan, the interest saved, and the extra needed to be debt-free by a date.',
     summary: 'Payoff date and interest saved with monthly, yearly or lump-sum extras, and the extra needed to be debt-free by a set time.',
     related: ['loan-payment-calculator', 'mortgage-refinance-calculator', 'auto-loan-calculator']
   },
@@ -256,7 +256,7 @@ export const CALCULATORS = Object.freeze([
     category: 'work',
     status: 'live',
     updated: '2026-09-29',
-    title: 'Hourly to Salary Calculator — Salary to Hourly, Weekly and Monthly Pay',
+    title: 'Hourly to Salary Calculator — Hourly, Weekly & Monthly Pay',
     description: 'Convert an hourly wage to an annual salary or a salary to an hourly rate, with weekly, biweekly and monthly pay, overtime, and paid or unpaid time off.',
     summary: 'Hourly wage to salary and back, with pay per day, week, paycheck and month, overtime, and paid or unpaid time off.',
     related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator']
@@ -282,10 +282,10 @@ export const CALCULATORS = Object.freeze([
     category: 'homeImprovement',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Concrete Calculator — Cubic Yards and Bags for Slabs and Post Holes',
+    title: 'Concrete Calculator — Yards & Bags for Slabs and Post Holes',
     description: 'Calculate concrete for a slab, patio, footing or post holes in cubic yards and 40, 60 or 80 lb bags, with waste, and compare bags with ready-mix.',
     summary: 'Cubic yards and bags of concrete for slabs, footings and post holes, with a waste allowance and a bags-vs-ready-mix cost check.',
-    related: ['gravel-calculator', 'asphalt-calculator', 'mulch-calculator', 'deck-calculator']
+    related: ['gravel-calculator', 'asphalt-calculator', 'mulch-calculator', 'deck-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'gravel-calculator',
@@ -298,7 +298,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Gravel Calculator — How Many Tons and Cubic Yards You Need',
     description: 'Calculate gravel for a driveway, path, patio base or bed in cubic yards and tons, with a compaction allowance and cost by the ton or by the yard.',
     summary: 'Cubic yards and tons of gravel for rectangular or round areas, with density, compaction allowance and cost.',
-    related: ['concrete-calculator', 'asphalt-calculator', 'mulch-calculator', 'home-equity-loan-calculator']
+    related: ['concrete-calculator', 'asphalt-calculator', 'mulch-calculator', 'home-equity-loan-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'mulch-calculator',
@@ -308,10 +308,10 @@ export const CALCULATORS = Object.freeze([
     category: 'homeImprovement',
     status: 'live',
     updated: '2026-09-28',
-    title: 'Mulch Calculator — Cubic Yards and Bags for Beds and Tree Rings',
+    title: 'Mulch Calculator — Cubic Yards and Bags of Mulch Needed',
     description: 'Calculate mulch for garden beds and tree rings in cubic yards and 2 or 3 cubic foot bags, with coverage by depth, and compare bags with bulk delivery.',
     summary: 'Cubic yards and bags of mulch for rectangular and round beds, coverage by depth, and bags vs. bulk cost.',
-    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator']
+    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'flooring-calculator',
@@ -373,7 +373,7 @@ export const CALCULATORS = Object.freeze([
     category: 'savings',
     status: 'live',
     updated: '2026-09-29',
-    title: 'CD Calculator — Certificate of Deposit Interest and Maturity Value',
+    title: 'CD Calculator — CD Interest Earned and Maturity Value',
     description: 'Calculate what a CD is worth at maturity from its APY or interest rate, compare compounding, see interest after tax, and check the cost of early withdrawal.',
     summary: 'Maturity value and interest from APY or rate, compounding comparison, after-tax interest and the early-withdrawal penalty.',
     related: ['compound-interest-calculator', 'savings-goal-calculator', 'credit-card-payoff-calculator']
@@ -387,9 +387,9 @@ export const CALCULATORS = Object.freeze([
     status: 'live',
     updated: '2026-09-29',
     title: 'Compound Interest Calculator — With Monthly Contributions',
-    description: 'Calculate compound interest on a deposit and monthly contributions with daily, monthly or annual compounding, and see simple vs. compound interest and the rule of 72.',
+    description: 'Compound interest on a deposit plus monthly contributions, with daily, monthly or annual compounding, simple vs. compound interest and the rule of 72.',
     summary: 'Future value with monthly contributions and any compounding, year-by-year growth, simple vs. compound interest, inflation and doubling time.',
-    related: ['cd-calculator', 'savings-goal-calculator', 'loan-payoff-calculator']
+    related: ['cd-calculator', 'savings-goal-calculator', 'loan-payoff-calculator', 'dividend-calculator']
   },
   {
     slug: 'time-card-calculator',
@@ -477,7 +477,7 @@ export const CALCULATORS = Object.freeze([
     category: 'everyday',
     status: 'live',
     updated: '2026-09-29',
-    title: 'Percentage Calculator — Percent Of, Percent Change and Percent Off',
+    title: 'Percentage Calculator — Percent Of, Change and Percent Off',
     description: 'Find a percentage of a number, what percent one number is of another, the percent increase or decrease, or a sale price after percent off.',
     summary: 'Percent of a number, what percent X is of Y, percent increase or decrease, and percent off a price.',
     related: ['sales-tax-calculator', 'tip-calculator', 'margin-calculator', 'savings-goal-calculator']
@@ -503,10 +503,10 @@ export const CALCULATORS = Object.freeze([
     category: 'homeImprovement',
     status: 'live',
     updated: '2026-09-29',
-    title: 'Square Footage Calculator — Area in Sq Ft, Sq Yd, m² and Acres',
+    title: 'Square Footage Calculator — Sq Ft, Sq Yd, m² and Acres',
     description: 'Calculate square footage for rectangles, circles, triangles and trapezoids from feet, inches, yards or meters, with square yards, square meters, acres and cost.',
     summary: 'Square feet of a rectangle, circle, triangle or trapezoid in any unit, with square yards, square meters, acres and cost.',
-    related: ['flooring-calculator', 'drywall-calculator', 'concrete-calculator', 'home-affordability-calculator']
+    related: ['flooring-calculator', 'drywall-calculator', 'concrete-calculator', 'home-affordability-calculator', 'btu-calculator']
   },
   {
     slug: 'asphalt-calculator',
@@ -519,7 +519,46 @@ export const CALCULATORS = Object.freeze([
     title: 'Asphalt Calculator — Tons of Asphalt for a Driveway or Lot',
     description: 'Estimate the tons and cubic yards of asphalt for a driveway, path or parking area from its size and thickness, with waste and cost per ton.',
     summary: 'Tons and cubic yards of asphalt from length, width and thickness, with waste and cost.',
-    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'home-equity-loan-calculator']
+    related: ['gravel-calculator', 'concrete-calculator', 'square-footage-calculator', 'home-equity-loan-calculator', 'cubic-yard-calculator']
+  },
+  {
+    slug: 'cubic-yard-calculator',
+    path: '/calculators/cubic-yard-calculator/',
+    name: 'Cubic Yard Calculator',
+    navName: 'Cubic yards',
+    category: 'homeImprovement',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'Cubic Yard Calculator — Yards of Soil, Fill, Sand & Mulch',
+    description: 'Calculate cubic yards for any area and depth, or how much a yard covers, with cubic feet, bags, truckloads and cost for soil, fill, sand, gravel and mulch.',
+    summary: 'Cubic yards for rectangles, circles and triangles, or the area a delivery covers, in cubic feet, cubic meters, bags and truckloads.',
+    related: ['gravel-calculator', 'mulch-calculator', 'concrete-calculator', 'square-footage-calculator']
+  },
+  {
+    slug: 'btu-calculator',
+    path: '/calculators/btu-calculator/',
+    name: 'BTU Calculator',
+    navName: 'BTU (AC size)',
+    category: 'homeImprovement',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'BTU Calculator — What Size Air Conditioner Do I Need?',
+    description: 'Find the right size room or window air conditioner in BTU per hour from your room area, sun, shade, people and kitchen use, using the ENERGY STAR sizing chart.',
+    summary: 'Room air conditioner size in BTU per hour from the ENERGY STAR chart, adjusted for sun, shade, people and kitchens.',
+    related: ['square-footage-calculator', 'home-equity-loan-calculator', 'roofing-calculator']
+  },
+  {
+    slug: 'dividend-calculator',
+    path: '/calculators/dividend-calculator/',
+    name: 'Dividend Calculator',
+    navName: 'Dividends',
+    category: 'savings',
+    status: 'live',
+    updated: '2026-09-30',
+    title: 'Dividend Calculator — Dividend Income, Yield & DRIP Growth',
+    description: 'Project dividend income and portfolio value with or without reinvestment (DRIP), monthly contributions, dividend growth, price growth and tax on dividends.',
+    summary: 'Dividend income and value over time, reinvested or taken as cash, with contributions, dividend and price growth, and tax.',
+    related: ['compound-interest-calculator', 'savings-goal-calculator', 'cd-calculator']
   }
 ]);
 
