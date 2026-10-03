@@ -3,58 +3,99 @@
  */
 
 import { html } from '../lib/html.js';
-import { SITE, CATEGORIES, liveCalculators } from '../content/site.js';
+import { SITE, CATEGORIES, POPULAR, liveCalculators, findCalculator } from '../content/site.js';
 
-export function homePage(origin) {
+/** Words the home page search matches against: name, category and description. */
+function searchText(calculator, category) {
+  return `${calculator.name} ${category.name} ${calculator.description}`.toLowerCase();
+}
+
+export function homePage(origin, brand = {}) {
   const live = liveCalculators();
   const categories = Object.entries(CATEGORIES)
     .map(([key, category]) => ({ key, ...category, calculators: live.filter((calc) => calc.category === key) }))
     .filter((category) => category.calculators.length);
+  const popular = POPULAR.map((slug) => findCalculator(slug)).filter((calc) => calc?.status === 'live');
 
-  const body = html`<div class="container">
-<header class="page-header">
-  <h1>Calculators that show their work</h1>
-  <p class="lede">Clear answers for money decisions, home projects and everyday math. Each calculator shows the result, how it
-  was worked out and the assumptions it makes, with no sign-up. Calculations run in your browser.</p>
-</header>
-
-<section class="content-section" aria-labelledby="calculators-heading" id="calculators">
-  <h2 id="calculators-heading">Calculators</h2>
-  ${categories.map((category) => html`<section class="category" aria-labelledby="cat-${category.key}">
-    <h3 id="cat-${category.key}">${category.name}</h3>
-    <p class="note">${category.description}</p>
-    <ul class="card-list">
-      ${category.calculators.map((calculator) => html`<li class="card">
-        <a class="card__link" href="${calculator.path}">${calculator.name}</a>
-        <p>${calculator.summary}</p>
-      </li>`)}
-    </ul>
-  </section>`)}
+  const body = html`<section class="home-hero" aria-labelledby="home-heading">
+  <div class="container">
+    <h1 id="home-heading">Free online calculators for money, home and everyday math</h1>
+    <p class="home-hero__lede">${live.length} calculators for mortgages, loans, debt, savings, pay and home projects. Each one shows the formula and
+    assumptions behind the answer, with no sign-up.</p>
+    <form class="search" role="search" action="/" method="get" id="calc-search" data-total="${live.length}">
+      <label class="search__label" for="search-input">Find a calculator</label>
+      <div class="search__row">
+        <input class="search__input" id="search-input" type="search" name="q" autocomplete="off" spellcheck="false"
+          placeholder="Try “mortgage”, “concrete” or “tip”" aria-describedby="search-status">
+        <button class="button search__button" type="submit">Search</button>
+      </div>
+      <p class="search__status" id="search-status" aria-live="polite"></p>
+      <ul class="search__results" id="search-results" hidden></ul>
+    </form>
+  </div>
 </section>
 
-<section class="content-section" aria-labelledby="principles-heading">
-  <h2 id="principles-heading">What you can expect from every calculator</h2>
-  <ul>
-    <li><strong>The whole picture:</strong> totals, breakdowns and schedules where they matter, not just a single number.</li>
-    <li><strong>Stated assumptions:</strong> what is and is not included is written next to the results.</li>
-    <li><strong>Tested math:</strong> formulas are checked by automated tests against known results.</li>
-    <li><strong>Private by design:</strong> your numbers stay in your browser.</li>
+<div class="container">
+<section class="home-section" aria-labelledby="popular-heading" id="popular">
+  <h2 id="popular-heading">Popular calculators</h2>
+  <ul class="tile-list">
+    ${popular.map((calculator) => html`<li class="tile">
+      <a class="tile__link" href="${calculator.path}">${calculator.name}</a>
+      <p class="tile__text">${calculator.summary}</p>
+    </li>`)}
+  </ul>
+</section>
+
+<section class="home-section" aria-labelledby="calculators-heading" id="calculators">
+  <h2 id="calculators-heading">All calculators by category</h2>
+  <nav aria-label="Calculator categories">
+    <ul class="category-nav">
+      ${categories.map((category) => html`<li><a href="#${category.key}">${category.name} <span class="category-nav__count">${category.calculators.length}</span></a></li>`)}
+    </ul>
+  </nav>
+  <div class="directory">
+    ${categories.map((category) => html`<section class="directory__group" id="${category.key}" aria-labelledby="cat-${category.key}">
+      <h3 id="cat-${category.key}">${category.name}</h3>
+      <p class="directory__intro">${category.description}</p>
+      <ul class="directory__list">
+        ${category.calculators.map((calculator) => html`<li><a href="${calculator.path}" data-search="${searchText(calculator, category)}">${calculator.name}</a></li>`)}
+      </ul>
+    </section>`)}
+  </div>
+</section>
+
+<section class="home-section home-trust" aria-labelledby="principles-heading">
+  <h2 id="principles-heading">What you get with every ${SITE.name} calculator</h2>
+  <ul class="trust-list">
+    <li><strong>The whole picture.</strong> Totals, breakdowns and schedules where they matter, not just a single number.</li>
+    <li><strong>Assumptions in plain sight.</strong> What is and is not included is written next to the results.</li>
+    <li><strong>Tested math.</strong> Every formula is checked by automated tests against independent results.</li>
+    <li><strong>Private by design.</strong> Calculations run in your browser, and your numbers are not sent anywhere.</li>
   </ul>
   <p><a href="/about/">How we build and test calculators</a></p>
 </section>
 </div>`;
 
+  const url = new URL('/', origin).href;
   return {
     path: '/',
-    title: `Money, Home Project & Everyday Calculators | ${SITE.name}`,
+    title: `${SITE.name} — Free Online Calculators for Money, Home & More`,
     description: SITE.description,
     body,
+    scripts: ['client/search.js'],
     structuredData: [{
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: SITE.name,
-      url: new URL('/', origin).href,
+      alternateName: `${SITE.name} Calculators`,
+      url,
       inLanguage: SITE.locale
+    }, {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: SITE.name,
+      url,
+      ...(brand.mark ? { logo: new URL(brand.mark, origin).href } : {})
     }]
   };
 }
@@ -93,7 +134,7 @@ export function aboutPage() {
   return {
     path: '/about/',
     title: `How We Build and Test Calculators | ${SITE.name}`,
-    description: 'How our financial calculators are built: separate tested calculation engines, stated assumptions, rounding rules and privacy. Estimates, not financial advice.',
+    description: `How ${SITE.name} calculators are built: separate tested calculation engines, stated assumptions, rounding rules and privacy. Estimates, not advice.`,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'How we build calculators', path: '/about/' }],
     body
   };

@@ -7,24 +7,30 @@
  */
 
 export const SITE = Object.freeze({
-  // Working name; set the site name for your deployment here.
-  name: 'US Calculators',
+  name: 'Zuvogo',
   locale: 'en-US',
-  description: 'Free US calculators for loans, mortgages, savings, pay, home projects and everyday math, with transparent formulas and stated assumptions.'
+  description: 'Free online calculators for mortgages, loans, debt, savings, pay, home projects and everyday math, with the formula and assumptions shown.',
+  // Placements reserved for display ads. Off until the site is monetized; when
+  // on, each slot keeps a fixed height so an ad loading in never shifts the page.
+  ads: false
 });
 
+/** Display order is the order on the home page and in the footer directory. */
 export const CATEGORIES = Object.freeze({
-  loans: { name: 'Loans', description: 'Payments, total interest and payoff schedules for fixed-rate loans, from cars and personal loans to refinancing a mortgage.' },
-  credit: { name: 'Debt and credit', description: 'How long a balance takes to pay off and what it costs in interest.' },
-  savings: { name: 'Savings', description: 'How much to set aside each month, and how long a goal or emergency fund takes to reach.' },
-  homeImprovement: { name: 'Home improvement', description: 'Materials for projects around the house, with the math shown.' },
-  work: { name: 'Work and pay', description: 'Hours worked, overtime and gross pay, from a time card or an hourly wage converted to a salary.' },
-  driving: { name: 'Driving costs', description: 'What it costs in fuel to drive, per trip and per mile, and your real fuel economy.' },
-  everyday: { name: 'Everyday money', description: 'Everyday math for shopping and money, such as sales tax, percentages and discounts, with the formula shown.' },
-  business: { name: 'Small business', description: 'Pricing, profit margin and break-even math for a small business.' },
-  // Reserved category: not shown until a live calculator uses it.
-  home: { name: 'Home loans', description: 'Mortgage decisions compared on total cost, not just the monthly payment.' }
+  loans: { name: 'Loans & Mortgages', description: 'Monthly payments, total interest and payoff schedules for mortgages, car loans, personal loans and refinancing.' },
+  credit: { name: 'Debt & Credit', description: 'How long a balance takes to pay off, what it costs in interest and how your debt compares with your income.' },
+  savings: { name: 'Savings & Investing', description: 'How savings, CDs and dividend investments grow, and how much to set aside to reach a goal.' },
+  homeImprovement: { name: 'Home & Construction', description: 'Materials and quantities for projects around the house, from concrete and gravel to flooring, roofing and decks.' },
+  work: { name: 'Work & Income', description: 'Hours worked and pay, from a weekly time card or an hourly wage converted to a salary.' },
+  everyday: { name: 'Everyday Money', description: 'Quick everyday math: sales tax, tips, percentages and what a drive costs in fuel.' },
+  business: { name: 'Business', description: 'Pricing, profit margin and markup for a small business.' }
 });
+
+/** Shown first on the home page: the calculators people most often look for. */
+export const POPULAR = Object.freeze([
+  'mortgage-calculator', 'home-affordability-calculator', 'loan-payment-calculator', 'auto-loan-calculator',
+  'credit-card-payoff-calculator', 'compound-interest-calculator', 'hourly-to-salary-calculator', 'percentage-calculator'
+]);
 
 export const CALCULATORS = Object.freeze([
   {
@@ -435,7 +441,7 @@ export const CALCULATORS = Object.freeze([
     path: '/calculators/fuel-cost-calculator/',
     name: 'Fuel Cost Calculator',
     navName: 'Fuel cost',
-    category: 'driving',
+    category: 'everyday',
     status: 'live',
     updated: '2026-09-29',
     title: 'Fuel Cost Calculator — Gas Cost of a Trip and Your Real MPG',

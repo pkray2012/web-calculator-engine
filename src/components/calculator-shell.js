@@ -4,6 +4,8 @@
  */
 
 import { html } from '../lib/html.js';
+import { adSlot } from './layout.js';
+import { SITE } from '../content/site.js';
 
 /**
  * form: form markup (must use id="calc-form" and include #calc-form-errors).
@@ -22,5 +24,6 @@ export function calculatorShell({ inputsHeading, form, exampleNote, results }) {
     <div id="calc-results-body">${results}</div>
   </div>
   <p class="visually-hidden" id="calc-announcer" aria-live="polite" aria-atomic="true"></p>
-</div>`;
+</div>
+${SITE.ads ? adSlot('below-calculator') : ''}`;
 }

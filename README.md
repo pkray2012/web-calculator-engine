@@ -28,6 +28,7 @@ The build produces a static `dist/` directory that can be deployed to a static h
 src/calculators/   Pure calculation engines and math logic.
 src/adapters/      Input parsing, validation and display view models.
 src/components/    Shared HTML components.
+src/brand/         Logo, icons and share image, all derived from one source logo.
 src/lib/           Formatting, escaping and validation utilities.
 src/content/       Site configuration and calculator registry.
 src/pages/         Static page definitions.

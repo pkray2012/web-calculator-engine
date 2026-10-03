@@ -130,6 +130,15 @@ for (const viewport of VIEWPORTS) {
       const { page, errors, close } = await openPage(path, viewport);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.equal(overflow, 0, `${path} overflows by ${overflow}px at ${viewport.width}px`);
+      // The logo loads, and the header stays one compact row.
+      const logo = await page.evaluate(() => {
+        const img = /** @type {HTMLImageElement} */ (document.querySelector('.site-logo__img'));
+        return { loaded: img.complete && img.naturalWidth > 0, height: img.getBoundingClientRect().height };
+      });
+      assert.ok(logo.loaded, `logo did not load on ${path}`);
+      assert.ok(logo.height >= 28, `logo is ${logo.height}px tall on ${path}`);
+      const headerHeight = (await page.locator('.site-header').boundingBox()).height;
+      assert.ok(headerHeight <= 72, `header is ${headerHeight}px tall on ${path} at ${viewport.width}px`);
       if ([CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV].includes(path)) {
         if (![REFI, POINTS, SLR, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV].includes(path)) await page.locator('details.disclosure summary').click();
         const openOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -150,6 +159,30 @@ for (const viewport of VIEWPORTS) {
     }
   });
 }
+
+test('home search finds a calculator as you type and Enter opens the best match', async () => {
+  for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
+    const { page, errors, close } = await openPage('/', viewport);
+    // Search and the first popular calculators are above the fold on a phone.
+    const fold = viewport.height;
+    assert.ok((await page.locator('#search-input').boundingBox()).y < fold);
+    assert.ok((await page.locator('#popular .tile').first().boundingBox()).y < fold);
+    await page.fill('#search-input', 'concrete');
+    assert.equal((await page.locator('#search-results a').first().textContent()).trim(), 'Concrete Calculator');
+    assert.match(await page.locator('#search-status').textContent(), /match/);
+    await page.fill('#search-input', 'zzzz');
+    assert.equal(await page.locator('#search-results').isHidden(), true);
+    assert.match(await page.locator('#search-status').textContent(), /No calculator matches/);
+    await page.fill('#search-input', 'mortgage');
+    await Promise.all([page.waitForURL(/\/calculators\/mortgage-calculator\/$/), page.press('#search-input', 'Enter')]);
+    assert.deepEqual(errors, []);
+    await close();
+  }
+  // A ?q= link (or a submit before the script loads) opens with the results shown.
+  const { page, close } = await openPage('/?q=tip');
+  assert.equal((await page.locator('#search-results a').first().textContent()).trim(), 'Tip Calculator');
+  await close();
+});
 
 test('example results are pre-rendered and match the engine', async () => {
   const { page, errors, close } = await openPage(CALC);
@@ -1517,9 +1550,9 @@ test('dividend: a zero yield is reported on its field', async () => {
 
 test('home page lists every live calculator by category', async () => {
   const { page, close } = await openPage('/');
-  const links = await page.locator('#calculators .card__link').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
+  const links = await page.locator('#calculators .directory__list a').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
   assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV].sort());
-  assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans', 'Debt and credit', 'Savings', 'Home improvement', 'Work and pay', 'Driving costs', 'Everyday money', 'Small business']);
+  assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans & Mortgages', 'Debt & Credit', 'Savings & Investing', 'Home & Construction', 'Work & Income', 'Everyday Money', 'Business']);
   await close();
 });
 
@@ -1562,6 +1595,8 @@ for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
 
 test('axe finds no violations in error and alternate states', async () => {
   const states = [
+    ['/', async (page) => { await page.fill('#search-input', 'loan'); await page.locator('#search-results a').first().waitFor(); }],
+    ['/', async (page) => { await page.fill('#search-input', 'zzzz'); }],
     [CALC, async (page) => { await page.fill('#principal', ''); await page.locator('button[type="submit"]').click(); await page.locator('.error-summary').waitFor(); }],
     [CARD, async (page) => { await page.check('#mode-target'); await page.locator('button[type="submit"]').click(); }],
     [AUTO, async (page) => { await page.fill('#trade-in-payoff', '9000'); await page.fill('#trade-in-value', '5000'); await page.locator('button[type="submit"]').click(); }],
