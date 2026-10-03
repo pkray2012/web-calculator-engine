@@ -53,7 +53,7 @@ ${page.breadcrumbs?.length ? breadcrumbNav(page.breadcrumbs) : ''}
 ${page.body}
 ${ctx.site.ads ? adSlot('page-end') : ''}
 </main>
-${siteFooter(ctx)}
+${siteFooter(ctx, page)}
 ${(page.scripts ?? []).map((src) => html`<script type="module" src="${ctx.assets.js}${src}"></script>`)}
 </body>
 </html>`}
@@ -79,15 +79,16 @@ function siteHeader(page, ctx) {
 </header>`;
 }
 
-function siteFooter(ctx) {
+/** The home page already lists every calculator, so its footer skips the directory. */
+function siteFooter(ctx, page) {
   return html`<footer class="site-footer">
   <div class="container">
-    <nav aria-label="All calculators" class="footer-directory">
+    ${page.path === '/' ? '' : html`<nav aria-label="All calculators" class="footer-directory">
       ${(ctx.directory ?? []).map((group) => html`<div class="footer-directory__group">
         <p class="footer-directory__title">${group.name}</p>
         <ul>${group.calculators.map((calc) => html`<li><a href="${calc.path}">${calc.name}</a></li>`)}</ul>
       </div>`)}
-    </nav>
+    </nav>`}
     <div class="footer-bottom">
       <a class="footer-logo" href="/">${logo(ctx, 'footer-logo__img')}</a>
       <nav aria-label="Footer">

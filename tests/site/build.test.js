@@ -212,7 +212,10 @@ test('every page links to every live calculator, and the header nav stays short'
   const { liveCalculators } = await import('../../src/content/site.js');
   for (const path of ['index.html', 'about/index.html', '404.html', 'calculators/mortgage-refinance-calculator/index.html']) {
     const doc = await read(path);
-    const directory = doc.slice(doc.indexOf('aria-label="All calculators"'));
+    // The home page lists them in its directory, so its footer does not repeat them.
+    const marker = path === 'index.html' ? 'id="calculators"' : 'aria-label="All calculators"';
+    if (path === 'index.html') assert.doesNotMatch(doc, /aria-label="All calculators"/);
+    const directory = doc.slice(doc.indexOf(marker));
     for (const calc of liveCalculators()) assert.match(directory, new RegExp(`href="${calc.path}"`), `${path} misses ${calc.path}`);
     const header = doc.slice(doc.indexOf('<nav aria-label="Main">'), doc.indexOf('</header>'));
     assert.equal((header.match(/<li>/g) ?? []).length, 2);
