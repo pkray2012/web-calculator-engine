@@ -212,10 +212,13 @@ test('every page links to every live calculator, and the header nav stays short'
   const { liveCalculators } = await import('../../src/content/site.js');
   for (const path of ['index.html', 'about/index.html', '404.html', 'calculators/mortgage-refinance-calculator/index.html']) {
     const doc = await read(path);
-    const directory = doc.slice(doc.indexOf('aria-label="All calculators"'));
+    // The home page lists them in its directory, so its footer does not repeat them.
+    const marker = path === 'index.html' ? 'id="calculators"' : 'aria-label="All calculators"';
+    if (path === 'index.html') assert.doesNotMatch(doc, /aria-label="All calculators"/);
+    const directory = doc.slice(doc.indexOf(marker));
     for (const calc of liveCalculators()) assert.match(directory, new RegExp(`href="${calc.path}"`), `${path} misses ${calc.path}`);
     const header = doc.slice(doc.indexOf('<nav aria-label="Main">'), doc.indexOf('</header>'));
-    assert.equal((header.match(/<li>/g) ?? []).length, 3);
+    assert.equal((header.match(/<li>/g) ?? []).length, 2);
   }
 });
 
@@ -315,7 +318,7 @@ test('the smoke test flags a host that drops headers, caches HTML or soft-404s',
   assert.match(text, /returned 200, not 404/);
 });
 
-test('the placeholder brand lives only in the site registry', async () => {
+test('the brand name lives only in the site registry', async () => {
   const { SITE } = await import('../../src/content/site.js');
   const files = [];
   const walk = async (dir) => {
@@ -332,10 +335,50 @@ test('the placeholder brand lives only in the site registry', async () => {
     if ((await readFile(file, 'utf8')).includes(SITE.name)) offenders.push(file);
   }
   assert.deepEqual(offenders, [], 'hard-coded brand name; use SITE.name');
-  // Every built page carries the brand only through SITE.name.
-  for (const path of ['index.html', 'about/index.html', 'calculators/loan-payment-calculator/index.html']) {
-    assert.match(await read(path), new RegExp(`<a class="site-name" href="/">${SITE.name}</a>`));
+  // Every page carries the logo, linked home, with the brand name as its text alternative.
+  for (const path of ['index.html', '404.html', 'about/index.html', 'calculators/loan-payment-calculator/index.html']) {
+    const doc = await read(path);
+    assert.match(doc, new RegExp(`<a class="site-logo" href="/"><img class="site-logo__img" src="/assets/brand/zuvogo-logo-40\\.[0-9a-f]{10}\\.webp" srcset="[^"]+ 1x, [^"]+ 2x, [^"]+ 3x" width="167" height="40" alt="${SITE.name}"></a>`));
+    assert.match(doc, new RegExp(`<meta property="og:site_name" content="${SITE.name}">`));
   }
+});
+
+test('brand images are fingerprinted, and icons and the share image are linked from every page', async () => {
+  const { BRAND_FILES } = await import('../../scripts/build.js');
+  const files = await readdir(join(dist, 'assets', 'brand'));
+  for (const file of Object.values(BRAND_FILES)) {
+    const dot = file.lastIndexOf('.');
+    const pattern = new RegExp(`^${file.slice(0, dot).replace(/[.-]/g, '\\$&')}\\.[0-9a-f]{10}\\${file.slice(dot)}$`);
+    assert.ok(files.some((name) => pattern.test(name)), `${file} was not shipped`);
+  }
+  await assert.doesNotReject(stat(join(dist, 'favicon.ico')));
+  const doc = await read('calculators/mortgage-calculator/index.html');
+  assert.match(doc, /<meta property="og:image" content="https:\/\/calculators\.test\/assets\/brand\/og-image\.[0-9a-f]{10}\.png">/);
+  assert.match(doc, /<link rel="icon" href="\/favicon\.ico"/);
+  assert.match(doc, /<link rel="apple-touch-icon" href="\/assets\/brand\/apple-touch-icon\.[0-9a-f]{10}\.png">/);
+  const home = await read('index.html');
+  const organization = [...home.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map(([, json]) => JSON.parse(json)).find((data) => data['@type'] === 'Organization');
+  assert.match(organization.logo, /^https:\/\/calculators\.test\/assets\/brand\/zuvogo-mark-512\.[0-9a-f]{10}\.png$/);
+});
+
+test('the home page leads with search, popular calculators and the category directory', async () => {
+  const { liveCalculators, POPULAR } = await import('../../src/content/site.js');
+  const doc = await read('index.html');
+  const main = doc.slice(doc.indexOf('<main'), doc.indexOf('</main>'));
+  const order = ['id="calc-search"', 'id="popular"', 'id="calculators"'].map((marker) => main.indexOf(marker));
+  assert.ok(order.every((index, i) => index > 0 && (i === 0 || index > order[i - 1])), 'search, then popular, then the directory');
+  for (const slug of POPULAR) assert.match(main.slice(order[1], order[2]), new RegExp(`href="/calculators/${slug}/"`));
+  for (const calc of liveCalculators()) assert.match(main, new RegExp(`<a href="${calc.path}" data-search="[^"]+">`));
+  assert.match(doc, /<script type="module" src="\/assets\/js\/[0-9a-f]{10}\/client\/search\.js"><\/script>/);
+});
+
+test('ad placements stay out of the page until ads are switched on', async () => {
+  const { adSlot } = await import('../../src/components/layout.js');
+  for (const path of ['index.html', 'calculators/mortgage-calculator/index.html']) assert.doesNotMatch(await read(path), /ad-slot/);
+  assert.equal(String(adSlot('below-calculator')), '<aside class="ad-slot ad-slot--below-calculator" aria-label="Advertisement" data-ad-slot="below-calculator"></aside>');
+  const css = await readFile(new URL('../../src/styles/site.css', import.meta.url), 'utf8');
+  assert.match(css, /\.ad-slot \{[^}]*min-height: 280px/, 'a reserved slot keeps its height, so filling it does not shift the page');
 });
 
 test('Netlify contexts: previews are noindex, production needs the custom domain', () => {

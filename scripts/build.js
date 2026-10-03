@@ -1,7 +1,8 @@
 /**
  * Static site build. Renders every page to dist/ with clean directory URLs,
  * copies the browser modules the pages actually load (engines, adapters,
- * components, client code), and writes sitemap.xml, robots.txt and _headers.
+ * components, client code) and the brand images, and writes sitemap.xml,
+ * robots.txt and _headers.
  *
  * Usage:
  *   SITE_URL=https://www.example.com node scripts/build.js
@@ -125,11 +126,11 @@ function hash(content) {
  */
 
 /** @returns {Page[]} */
-export function buildPages(origin) {
+export function buildPages(origin, brand = {}) {
   const calculators = liveCalculators();
   const latest = calculators.map((calc) => calc.updated).sort().at(-1);
   return [
-    { ...homePage(origin), updated: latest },
+    { ...homePage(origin, brand), updated: latest },
     { ...mortgagePaymentPage(), updated: calculators.find((calc) => calc.slug === 'mortgage-calculator').updated },
     { ...homeAffordabilityPage(), updated: calculators.find((calc) => calc.slug === 'home-affordability-calculator').updated },
     { ...flooringPage(), updated: calculators.find((calc) => calc.slug === 'flooring-calculator').updated },
@@ -247,6 +248,37 @@ async function hashModules(paths) {
   return digest.digest('hex').slice(0, 10);
 }
 
+/**
+ * Logo and icon files, all derived from the supplied logo (src/brand/README.md).
+ * They are fingerprinted like the CSS so they can be cached as immutable;
+ * favicon.ico is also served from the root, where browsers look for it.
+ */
+export const BRAND_FILES = {
+  logo40: 'zuvogo-logo-40.webp',
+  logo80: 'zuvogo-logo-80.webp',
+  logo120: 'zuvogo-logo-120.webp',
+  icon32: 'favicon-32.png',
+  appleTouch: 'apple-touch-icon.png',
+  icon192: 'icon-192.png',
+  mark: 'zuvogo-mark-512.png',
+  og: 'og-image.png'
+};
+
+async function copyBrandFiles(outDir) {
+  const brandDir = join(SRC, 'brand');
+  await mkdir(join(outDir, 'assets', 'brand'), { recursive: true });
+  const paths = {};
+  for (const [key, file] of Object.entries(BRAND_FILES)) {
+    const content = await readFile(join(brandDir, file));
+    const dot = file.lastIndexOf('.');
+    const name = `assets/brand/${file.slice(0, dot)}.${hash(content)}${file.slice(dot)}`;
+    await writeFile(join(outDir, name), content);
+    paths[key] = `/${name}`;
+  }
+  await cp(join(brandDir, 'favicon.ico'), join(outDir, 'favicon.ico'));
+  return paths;
+}
+
 export function robotsTxt(origin) {
   return `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`;
 }
@@ -259,8 +291,9 @@ export async function build({ outDir = join(ROOT, 'dist'), origin, noindex = fal
   const css = await readFile(join(ROOT, 'src', 'styles', 'site.css'), 'utf8');
   const cssFile = `assets/site.${hash(css)}.css`;
   await writeFile(join(outDir, cssFile), css);
+  const brand = await copyBrandFiles(outDir);
 
-  const pages = buildPages(origin);
+  const pages = buildPages(origin, brand);
 
   // Only modules some page loads are shipped. They live in one content-hashed
   // directory, so relative imports keep working and every file can be cached
@@ -278,10 +311,10 @@ export async function build({ outDir = join(ROOT, 'dist'), origin, noindex = fal
     page.preload = [...new Set((page.scripts ?? []).flatMap((entry) => graphs.get(entry).slice(1)))];
   }
 
-  // The header stays short at any number of calculators; every live
-  // calculator is linked from the footer directory, grouped by category.
+  // The header stays short at any number of calculators (the logo links
+  // home); every live calculator is linked from the footer directory,
+  // grouped by category.
   const nav = [
-    { name: 'Home', path: '/' },
     { name: 'Calculators', path: '/#calculators' },
     { name: 'About', path: '/about/' }
   ];
@@ -291,7 +324,7 @@ export async function build({ outDir = join(ROOT, 'dist'), origin, noindex = fal
       calculators: liveCalculators().filter((calc) => calc.category === key).map((calc) => ({ name: calc.name, path: calc.path }))
     }))
     .filter((group) => group.calculators.length);
-  const ctx = { site: SITE, origin, nav, directory, assets: { css: `/${cssFile}`, js: `/${jsBase}` } };
+  const ctx = { site: SITE, origin, nav, directory, assets: { css: `/${cssFile}`, js: `/${jsBase}`, brand } };
 
   for (const page of pages) {
     const file = join(outDir, outputPathFor(page.path));
