@@ -314,6 +314,39 @@ identical to `de965bd`.
     and axe is clean at 320/390/1280 on Stair, Estimated Tax and Rent
     Affordability.
 
+## Review 4 fixes for the Rent Affordability draft (cycle ~21:40 UTC)
+
+Independent **Claude** review 4 (not Codex) of `f09975c`:
+`docs/claude-independent-review-4.md` and `.json`. 0 BLOCKER, 1 HIGH,
+3 MEDIUM, 5 LOW. Fixed in this commit:
+
+- **A4-001 HIGH:** a rent equal to the displayed 30% maximum was labelled
+  cost-burdened, because a floating-point remainder made it read
+  30.000000000000004%. Burden levels now compare dollars:
+  housing cost − share × monthly income > $0.000001.
+- **A4-002 MEDIUM:** maximum rents are now rounded down to the cent. A
+  property test covers 24,000+ income × utilities × multiple combinations:
+  the displayed 30% maximum is never cost-burdened, the displayed screen
+  maximum always passes, and one cent more always fails.
+- **A4-003 MEDIUM:** a percentage over a line never displays as the line.
+  It shows 2 decimals, or "just over 30%".
+- **A4-004 MEDIUM:** unsupported claims are removed: "often 40 times", "40
+  is common", "best-known guideline" and "local laws can limit". The page
+  now says "such as 40 times" and "one guideline".
+- **A4-005:** the page says HUD's line is on monthly income, and that the
+  calculator applies it to income before taxes.
+- **A4-006 / A4-007:** plain wording for income of $0 and for utilities
+  above half of income.
+- **A4-008:** a 0% share is rejected.
+- **A4-009:** the budget paragraph renders only when a budget exists, and
+  the share in the copy comes from the input.
+
+Results:
+- lint and typecheck pass; 666/666 unit tests; build 44 and audit pass;
+  browser 110/110.
+- Published pages are identical to `de965bd`.
+- Draft browser check: axe clean at 320/390/1280.
+
 ## Next
 
 Five drafts await your source verification before any go-live: SE tax, Estimated Tax and Rent Affordability (IRS/HUD pages), Stair (ICC R311.7), and Rental Property (no external data; review only).

@@ -51,11 +51,41 @@ test('a considered rent gets its burden level and the income the screen needs', 
   close(r.considered.leftAfterHousing, 3900 - 150 - 1700);
 });
 
-test('burden levels: 30% and 50% are the upper edges of each band', () => {
-  assert.equal(costBurdenLevel(30), 'none');
-  assert.equal(costBurdenLevel(30.01), 'burdened');
-  assert.equal(costBurdenLevel(50), 'burdened');
-  assert.equal(costBurdenLevel(50.01), 'severe');
+test('burden levels: 30% and 50% of monthly income are the upper edges of each band', () => {
+  assert.equal(costBurdenLevel(1500, 5000), 'none');
+  assert.equal(costBurdenLevel(1500.01, 5000), 'burdened');
+  assert.equal(costBurdenLevel(2500, 5000), 'burdened');
+  assert.equal(costBurdenLevel(2500.01, 5000), 'severe');
+});
+
+test('a displayed maximum entered back in always passes its own test (review A4-001, A4-002)', () => {
+  let checked = 0;
+  for (let income = 10000; income <= 200000; income += 97) {
+    for (const utilities of [0, 37.5, 150, 333.33]) {
+      for (const multiple of [36, 40, 45]) {
+        const limits = calculateRentAffordability({ annualGrossIncome: income, monthlyUtilities: utilities, incomeMultiple: multiple });
+        if (limits.guidelineRent > 0) {
+          const back = calculateRentAffordability({ annualGrossIncome: income, monthlyUtilities: utilities, incomeMultiple: multiple, rentConsidered: limits.guidelineRent });
+          assert.equal(back.considered.burdenLevel, 'none', `income ${income}, utilities ${utilities}`);
+        }
+        const screened = calculateRentAffordability({ annualGrossIncome: income, monthlyUtilities: utilities, incomeMultiple: multiple, rentConsidered: limits.screenRent });
+        assert.equal(screened.considered.passesScreen, true, `income ${income}, multiple ${multiple}`);
+        // and one cent more fails the screen
+        const over = calculateRentAffordability({ annualGrossIncome: income, incomeMultiple: multiple, rentConsidered: limits.screenRent + 0.01 });
+        assert.equal(over.considered.passesScreen, false, `income ${income}, multiple ${multiple} +1¢`);
+        checked += 1;
+      }
+    }
+  }
+  assert.ok(checked > 20000);
+});
+
+test('the reviewer’s cases: $12,400 at 30% and $60,001 at 40×', () => {
+  const a = calculateRentAffordability({ annualGrossIncome: 12400, rentConsidered: 310 });
+  assert.equal(a.considered.burdenLevel, 'none');
+  const b = calculateRentAffordability({ annualGrossIncome: 60001 });
+  assert.equal(b.screenRent, 1500.02);
+  assert.equal(calculateRentAffordability({ annualGrossIncome: 60001, rentConsidered: 1500.02 }).considered.passesScreen, true);
 });
 
 test('zero income: no division by zero', () => {

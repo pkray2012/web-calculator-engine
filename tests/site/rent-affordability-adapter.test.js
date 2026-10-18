@@ -42,6 +42,31 @@ test('checking a rent shows burden, the screen and the budget', () => {
   assert.ok(markup.includes('−$50.00 left'));
 });
 
+test('percentages never read as the line when over it (review A4-003)', () => {
+  // $1,352 + $150 at $5,000 a month is 30.04%.
+  const markup = String(rentAffordabilityResults(runRentAffordabilityCalculator({ ...RENT_AFFORD_DEFAULTS, rentConsidered: '1352' }).view));
+  assert.ok(markup.includes('30.04% of gross income'));
+  const exact = String(rentAffordabilityResults(runRentAffordabilityCalculator({ ...RENT_AFFORD_DEFAULTS, rentConsidered: '1350' }).view));
+  assert.ok(exact.includes('30.0% of gross income: not cost-burdened'));
+});
+
+test('zero income and utilities over half of income get plain wording (review A4-006, A4-007)', () => {
+  const zero = String(rentAffordabilityResults(runRentAffordabilityCalculator({ ...RENT_AFFORD_DEFAULTS, annualGrossIncome: '0', rentConsidered: '500' }).view));
+  assert.ok(zero.includes('With an income of $0'));
+  assert.ok(zero.includes('Utilities alone already take half'));
+});
+
+test('a 0% housing share is rejected (review A4-008)', () => {
+  assert.ok(parseRentAffordabilityForm({ ...RENT_AFFORD_DEFAULTS, housingSharePercent: '0' }).errors.housingSharePercent);
+});
+
+test('the page renders without the budget view when take-home is blank (review A4-009)', async () => {
+  const { parseRentAffordabilityForm: parse, buildRentAffordabilityView: build } = await import('../../src/adapters/rent-affordability.js');
+  const view = build(parse({ ...RENT_AFFORD_DEFAULTS, monthlyTakeHome: '' }).input);
+  assert.equal(view.result.budget, null);
+  assert.ok(String(rentAffordabilityResults(view)).length > 0);
+});
+
 test('the form labels every field', () => {
   const markup = String(rentAffordabilityForm());
   for (const id of Object.values(RENT_AFFORD_FIELD_IDS)) assert.match(markup, new RegExp(`<label[^>]+for="${id}"`), id);

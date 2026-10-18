@@ -40,7 +40,7 @@ export function rentAffordabilityForm(values = RENT_AFFORD_DEFAULTS, errors = {}
   ${field('rentConsidered', { label: 'Rent you are considering', prefix: '$', optional: true })}
   <h3 class="form-group-title">Rules of thumb</h3>
   ${field('housingSharePercent', { label: 'Share of income for housing', suffix: '%', optional: true, hint: '30% is the cost-burden line HUD uses for rent plus utilities.' })}
-  ${field('incomeMultiple', { label: 'Landlord income multiple', suffix: '× rent', optional: true, hint: 'Yearly income the landlord asks for as a multiple of monthly rent. 40 is common; ask the landlord.' })}
+  ${field('incomeMultiple', { label: 'Landlord income multiple', suffix: '× rent', optional: true, hint: 'Yearly income the landlord asks for as a multiple of monthly rent. Ask the landlord which multiple they use.' })}
   <button class="button" type="submit">Calculate</button>
   <p class="quick-result" id="quick-result"${quick ? '' : ' hidden'}>${quick ?? ''}</p>
 </form>`;

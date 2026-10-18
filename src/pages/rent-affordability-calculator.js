@@ -56,28 +56,28 @@ ${calculatorShell({
 <article class="content">
   <section class="content-section" aria-labelledby="ra-30-heading">
     <h2 id="ra-30-heading">The 30% rule</h2>
-    <p>The best-known guideline is to keep housing costs at or below 30% of gross income. For renters, the U.S. Department of Housing and Urban
-    Development counts rent plus utilities toward that 30%, and calls households above it cost-burdened and those above 50% severely cost-burdened.
-    In the example, 30% of ${formatCurrency(r.grossMonthly)} a month is ${formatCurrency(r.guidelineHousingCost)}; after ${formatCurrency(r.monthlyUtilities)} of utilities, that leaves
-    ${formatCurrency(r.guidelineRent)} for rent.</p>
+    <p>One guideline is to keep housing costs at or below 30% of income. The U.S. Department of Housing and Urban Development counts
+    housing costs including utilities, and calls households paying more than 30% of monthly income cost-burdened and more than 50% severely
+    cost-burdened. This calculator applies the share to income before taxes. In the example, ${input.housingSharePercent}% of ${formatCurrency(r.grossMonthly)} a month is
+    ${formatCurrency(r.guidelineHousingCost)}; after ${formatCurrency(r.monthlyUtilities)} of utilities, that leaves ${formatCurrency(r.guidelineRent)} for rent.</p>
     <p>It is a rule of thumb, not a budget. On a high income 30% can be more than you need to spend; on a low income it can leave too little for
     everything else, which is why the budget view below matters.</p>
   </section>
 
   <section class="content-section" aria-labelledby="ra-40-heading">
     <h2 id="ra-40-heading">The landlord income screen</h2>
-    <p>Many landlords ask for yearly income of a set multiple of the monthly rent, often 40 times. Divide your income by the multiple to find the
+    <p>Some landlords ask for yearly income of a set multiple of the monthly rent, such as 40 times. Divide your income by the multiple to find the
     highest rent you would qualify for: ${formatCurrency(r.annualGrossIncome)} ÷ ${input.incomeMultiple} = ${formatCurrency(r.screenRent)}. With no utilities, a
-    40× screen and the 30% rule give the same answer, because 12 months ÷ 40 is 30%. Landlords set their own rules: some use a different multiple,
-    count roommates' or a guarantor's income, or look at credit and savings instead. Ask before you apply.</p>
+    40× screen and the 30% rule give the same answer, because 12 months ÷ 40 is 30%. Landlords set their own screening rules, so ask before you
+    apply.</p>
   </section>
 
-  <section class="content-section" aria-labelledby="ra-budget-heading">
+  ${r.budget ? html`<section class="content-section" aria-labelledby="ra-budget-heading">
     <h2 id="ra-budget-heading">What your budget leaves</h2>
     <p>The budget view starts from take-home pay: ${formatCurrency(input.monthlyTakeHome)} − ${formatCurrency(input.monthlyDebts)} debts − ${formatCurrency(input.monthlyEssentials)}
     essentials − ${formatCurrency(input.monthlySavings)} savings = ${formatCurrency(r.budget.leftForHousing)} for housing, or ${formatCurrency(r.budget.rent)} for rent after
     utilities. If that is lower than the 30% figure, your budget is the real limit.</p>
-  </section>
+  </section>` : ''}
 
   <section class="content-section" aria-labelledby="ra-table-heading">
     <h2 id="ra-table-heading">Rent at 30% of income by salary (no utilities included)</h2>
@@ -97,7 +97,8 @@ ${calculatorShell({
     <ul>
       <li>Income is gross (before taxes) for the 30% rule and the landlord screen, and take-home for the budget view.</li>
       <li>Renters insurance, parking, fees and deposits are not included unless you add them to utilities or essentials.</li>
-      <li>Landlords decide their own screening rules, and local laws can limit what they may require.</li>
+      <li>Landlords decide their own screening rules.</li>
+      <li>Maximum rents are rounded down to the cent, so each one passes its own test.</li>
       <li>This is a planning estimate, not financial advice.</li>
     </ul>
   </section>

@@ -5,26 +5,36 @@
  *   of gross income, 30% by default (HUD's cost-burden line; over 50% is
  *   "severely cost-burdened"). Max rent = share × gross monthly − utilities.
  * - Landlord income screen: annual income of at least a multiple of the
- *   monthly rent, often 40 times. Max rent = annual income ÷ multiple.
+ *   monthly rent, such as 40 times. Max rent = annual income ÷ multiple.
  * - Budget: take-home pay minus debt payments, other essentials and savings,
  *   minus utilities.
  * - For a rent being considered: its cost burden ((rent + utilities) ÷ gross
  *   monthly income) and the income the landlord screen requires.
  * Results are never negative: a negative remainder means no rent fits.
+ * Maximum rents are rounded down to the cent, so a displayed maximum always
+ * passes its own test when entered back in; comparisons against a limit
+ * allow a millionth of a dollar for floating-point remainders.
  */
 
 export const COST_BURDEN_SHARE = 30;
 export const SEVERE_COST_BURDEN_SHARE = 50;
+const MONEY_EPSILON = 1e-6;
+
+/** The highest whole-cent amount not above the value (never negative). */
+const floorCents = (value) => Math.max(0, Math.floor(value * 100 + 1e-7) / 100);
 
 function nonNegative(name, value) {
   if (!Number.isFinite(value)) throw new RangeError(`${name} must be a finite number`);
   if (value < 0) throw new RangeError(`${name} cannot be negative`);
 }
 
-/** "none" up to 30%, "burdened" over 30% up to 50%, "severe" over 50%. */
-export function costBurdenLevel(sharePercent) {
-  if (sharePercent > SEVERE_COST_BURDEN_SHARE) return 'severe';
-  if (sharePercent > COST_BURDEN_SHARE) return 'burdened';
+/**
+ * "none" up to 30% of monthly income, "burdened" over 30% up to 50%,
+ * "severe" over 50% (HUD's "exceeding" wording), compared in dollars.
+ */
+export function costBurdenLevel(housingCost, grossMonthly) {
+  if (housingCost - grossMonthly * SEVERE_COST_BURDEN_SHARE / 100 > MONEY_EPSILON) return 'severe';
+  if (housingCost - grossMonthly * COST_BURDEN_SHARE / 100 > MONEY_EPSILON) return 'burdened';
   return 'none';
 }
 
@@ -50,14 +60,14 @@ export function calculateRentAffordability({
 
   const grossMonthly = annualGrossIncome / 12;
   const guidelineHousingCost = grossMonthly * housingSharePercent / 100;
-  const guidelineRent = Math.max(0, guidelineHousingCost - monthlyUtilities);
-  const severeRent = Math.max(0, grossMonthly * SEVERE_COST_BURDEN_SHARE / 100 - monthlyUtilities);
-  const screenRent = annualGrossIncome / incomeMultiple;
+  const guidelineRent = floorCents(guidelineHousingCost - monthlyUtilities);
+  const severeRent = floorCents(grossMonthly * SEVERE_COST_BURDEN_SHARE / 100 - monthlyUtilities);
+  const screenRent = floorCents(annualGrossIncome / incomeMultiple);
 
   let budget = null;
   if (monthlyTakeHome !== null) {
     const leftForHousing = monthlyTakeHome - monthlyDebts - monthlyEssentials - monthlySavings;
-    budget = { leftForHousing, rent: Math.max(0, leftForHousing - monthlyUtilities) };
+    budget = { leftForHousing, rent: floorCents(leftForHousing - monthlyUtilities) };
   }
 
   let considered = null;
@@ -66,9 +76,9 @@ export function calculateRentAffordability({
     considered = {
       rent: rentConsidered,
       burdenPercent,
-      burdenLevel: burdenPercent === null ? null : costBurdenLevel(burdenPercent),
+      burdenLevel: burdenPercent === null ? null : costBurdenLevel(rentConsidered + monthlyUtilities, grossMonthly),
       incomeNeededForScreen: rentConsidered * incomeMultiple,
-      passesScreen: annualGrossIncome >= rentConsidered * incomeMultiple,
+      passesScreen: annualGrossIncome > 0 && annualGrossIncome - rentConsidered * incomeMultiple >= -MONEY_EPSILON,
       leftAfterHousing: budget === null ? null : budget.leftForHousing - monthlyUtilities - rentConsidered
     };
   }

@@ -36,7 +36,7 @@ export function parseRentAffordabilityForm(values) {
   const monthlyEssentials = money('monthlyEssentials', 'Other essentials');
   const monthlySavings = money('monthlySavings', 'Savings');
   const rentConsidered = money('rentConsidered', 'Rent you are considering', null);
-  const housingSharePercent = take('housingSharePercent', numberField(values.housingSharePercent, { label: 'Share of income for housing', required: false, fallback: 30, min: 0, max: 100 }));
+  const housingSharePercent = take('housingSharePercent', numberField(values.housingSharePercent, { label: 'Share of income for housing', required: false, fallback: 30, min: 0, minExclusive: true, max: 100 }));
   const incomeMultiple = take('incomeMultiple', numberField(values.incomeMultiple, { label: 'Landlord income multiple', required: false, fallback: 40, min: 1, max: 200 }));
   if (Object.keys(errors).length) return { ok: false, errors };
   return {
