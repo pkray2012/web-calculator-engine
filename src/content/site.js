@@ -73,6 +73,21 @@ export const CALCULATORS = Object.freeze([
     related: ['home-affordability-calculator', 'mortgage-calculator', 'mortgage-points-calculator']
   },
   {
+    // Draft: page module, engine and tests exist, but it is not built until it
+    // has been reviewed (Codex audit ZA-002 still open).
+    slug: 'rental-property-calculator',
+    path: '/calculators/rental-property-calculator/',
+    name: 'Rental Property Calculator',
+    navName: 'Rental property',
+    category: 'loans',
+    status: 'planned',
+    updated: '2026-10-18',
+    title: 'Rental Property Calculator — Cash Flow, Cap Rate, Cash-on-Cash, DSCR',
+    description: 'Estimate first-year cash flow, cap rate, cash-on-cash return, DSCR and break-even rent for a rental property, with every income and cost line shown.',
+    summary: 'First-year cash flow, cap rate, cash-on-cash return, DSCR and break-even rent for a rental property.',
+    related: ['mortgage-calculator', 'rent-vs-buy-calculator', 'home-affordability-calculator', 'compound-interest-calculator']
+  },
+  {
     slug: 'loan-payment-calculator',
     path: '/calculators/loan-payment-calculator/',
     name: 'Loan Payment Calculator',

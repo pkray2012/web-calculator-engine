@@ -117,7 +117,70 @@ every page is identical to `de965bd` apart from asset hashes.
   as an in-session scheduled job. It is not a persistent server timer: it
   stops when this session ends.
 
+## Ready for review: draft Rental Property calculator (cycle 20:42 UTC)
+
+There was a gap: no Claude cycles ran from 10:19 to 20:40 UTC, because the
+in-session timer was lost when the container restarted. An hourly
+server-side scheduled task now wakes the Claude session.
+
+Draft only (registry status `planned`): no page is built, the sitemap is
+unchanged and nothing links to it. All 44 published pages are identical to
+`de965bd` apart from asset hashes.
+
+- Files (all new apart from one registry entry in `src/content/site.js`):
+  - `src/calculators/rental-property.js`
+  - `src/adapters/rental-property.js`
+  - `src/components/rental-property-form.js`
+  - `src/components/rental-property-results.js`
+  - `src/client/rental-property.js`
+  - `src/pages/rental-property-calculator.js`
+  - `tests/rental-property.test.js`
+  - `tests/site/rental-adapter.test.js`
+- Method (first year only):
+  - `GSI = 12 × (rent + other)` and `EGI = GSI × (1 − vacancy)`.
+  - Operating costs = tax + insurance + HOA + utilities + (maintenance +
+    capital reserve + management) % × EGI. Percentage costs use collected
+    income (audit A-008).
+  - `NOI = EGI − operating costs`; debt service, depreciation and tax are
+    excluded.
+  - Cap rate = NOI ÷ price.
+  - Debt service = 12 × `monthlyPayment()`, the existing engine, unmodified.
+  - Cash flow = NOI − debt service.
+  - Cash-on-cash = cash flow ÷ (down + closing + repairs).
+  - DSCR = NOI ÷ debt service (none if all cash).
+  - GRM = price ÷ GSI.
+  - Break-even rent = (fixed costs + debt service) ÷ (12 × (1 − vacancy) ×
+    (1 − percentage costs)) − other income.
+- No data dependency: every value is a user input. The defaults are labelled
+  illustrative, not market data. No rule-of-thumb thresholds (cap rate,
+  DSCR or the 1% rule) are stated as facts. The page says lenders set their
+  own DSCR minimums.
+- Example: $300k price, 25% down, 7%/30 yr, $2,400 rent, 5% vacancy, tax
+  $3,600, insurance $1,500, 8/5/5% → NOI $17,335.20, cap rate 5.78%, cash
+  flow −$627.97 a year, DSCR 0.965, break-even rent $2,467.18. Verified by
+  hand.
+- Tests: 19 new.
+  - Engine: the hand example; cash flow exactly 0 at the break-even rent;
+    other income lowers break-even rent dollar for dollar; all cash;
+    financing does not change NOI or cap rate; vacancy lowers percentage
+    costs; no break-even when costs take all income; zero rent gives no
+    division by zero; 1,000 random deals against an independent reference.
+  - Adapter: an all-cash purchase ignores a blank rate and term; percentage
+    costs over 100% are rejected; signed output.
+  - Page render: no NaN/∞; title and description lengths.
+  - The draft is never linked from a live page.
+- Results on this VM: lint and typecheck pass; 599/599 unit tests; build
+  44 pages and audit pass; browser suite 110/110.
+- Draft check on a scratch copy with the page temporarily published:
+  - axe WCAG 2.1 A/AA: no violations at 320/390/1280 px.
+  - No overflow; header 61 px at 320 px.
+  - All-cash and changed-rent results match hand calculations.
+  - Error summary takes focus.
+  - Tab order follows the visual order.
+  - With JavaScript off, the example is shown.
+- **Please review:** the cost conventions, the break-even formula and the
+  page copy for unsupported claims.
+
 ## Next
 
-Rental Property calculator (cap rate, cash-on-cash, DSCR), built the same
-draft way, then Stair.
+Stair calculator (draft), using the corrected pitch-line geometry from audit A-006.
