@@ -73,6 +73,20 @@ export const CALCULATORS = Object.freeze([
     related: ['home-affordability-calculator', 'mortgage-calculator', 'mortgage-points-calculator']
   },
   {
+    // Draft: not built until reviewed and its HUD source is read directly (Codex ZA-002).
+    slug: 'rent-affordability-calculator',
+    path: '/calculators/rent-affordability-calculator/',
+    name: 'Rent Affordability Calculator',
+    navName: 'Rent affordability',
+    category: 'loans',
+    status: 'planned',
+    updated: '2026-10-18',
+    title: 'Rent Affordability Calculator — How Much Rent Can I Afford?',
+    description: 'See how much rent you can afford with the 30% of income rule, a landlord’s 40× income screen and your own budget, and check any rent against all three.',
+    summary: 'Rent you can afford by the 30% rule, a landlord income screen and your budget.',
+    related: ['rent-vs-buy-calculator', 'home-affordability-calculator', 'debt-to-income-calculator', 'hourly-to-salary-calculator']
+  },
+  {
     // Draft: page module, engine and tests exist, but it is not built until it
     // has been reviewed (Codex audit ZA-002 still open).
     slug: 'rental-property-calculator',
