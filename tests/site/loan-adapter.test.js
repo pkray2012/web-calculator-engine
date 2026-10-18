@@ -148,3 +148,12 @@ test('extreme rate and term combinations become a field error, not a crash', () 
   assert.match(result.errors.annualRate, /too extreme/);
   assert.equal(runLoanCalculator(LOAN_DEFAULTS).ok, true);
 });
+
+test('a tiny accepted rate gives a finite payment, not $∞ (ZA-001)', () => {
+  const result = runLoanCalculator({ ...LOAN_DEFAULTS, annualRate: '0.00000000000001' });
+  assert.equal(result.ok, true);
+  assert.ok(Number.isFinite(result.view.monthlyPayment));
+  close(result.view.monthlyPayment, 25000 / 60);
+  assert.equal(result.view.payments, 60);
+  close(result.view.totalRepayment, 25000);
+});

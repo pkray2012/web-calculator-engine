@@ -28,9 +28,13 @@ export function monthlyPayment({ principal, annualRate, termMonths }) {
 
   if (annualRate === 0) return principal / termMonths;
 
+  // P·r / (1 − (1 + r)^−n), evaluated with log1p/expm1 so that tiny positive
+  // rates converge to the zero-rate payment P/n instead of rounding 1 + r to 1
+  // and dividing by zero.
   const monthlyRate = annualRate / 100 / 12;
-  const factor = Math.pow(1 + monthlyRate, termMonths);
-  return principal * (monthlyRate * factor) / (factor - 1);
+  const payment = principal * monthlyRate / -Math.expm1(-termMonths * Math.log1p(monthlyRate));
+  if (!Number.isFinite(payment)) throw new RangeError('payment is not finite for these inputs');
+  return payment;
 }
 
 /**
