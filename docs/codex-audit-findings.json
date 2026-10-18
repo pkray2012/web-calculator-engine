@@ -2,8 +2,8 @@
   "schema_version": 1,
   "repository": "https://github.com/pkray2012/web-calculator-engine",
   "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
-  "audit_branch": "audit/codex-baseline-20261018",
-  "generated_at": "2026-10-18T09:31:02.535229+00:00",
+  "audit_branch": "audit/codex-vm-20261018",
+  "generated_at": "2026-10-18T09:58:40.723305+00:00",
   "findings": [
     {
       "id": "ZA-001",
@@ -22,8 +22,16 @@
         "secondary_case": "annualRate=0.0000000001 yields 416.9999654993515, versus the near-zero-rate limit 416.6666666666667."
       },
       "recommendation": "Claude: use a numerically stable annuity expression with log1p/expm1 (or supported equivalent), validate finite computed outputs, and add near-zero continuity, finite-result and schedule-conservation regression tests. Audit all consumers. Keep source changes separate from this report.",
-      "status": "open",
-      "file_path": "src/calculators/loan-payment.js:26-33; src/adapters/loan-payment.js:91-104"
+      "status": "engine_fix_verified_browser_pending",
+      "file_path": "src/calculators/loan-payment.js:26-33; src/adapters/loan-payment.js:91-104",
+      "follow_up": {
+        "commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
+        "independent_decimal_cases": 84,
+        "targeted_tests": "32/32",
+        "full_checks": "557/557 plus lint/typecheck/build/site audit",
+        "baseline_tests": "552/552",
+        "browser": "running"
+      }
     },
     {
       "id": "ZA-002",
@@ -32,8 +40,9 @@
       "affected_calculator": "All new proposed calculators",
       "evidence": "2026-10-18: HTTPS requests to Google search, Calculator.net electricity and break-even calculators, DOE Energy Saver, ENERGY STAR, SBA, AFDC and PVWatts all failed with Tunnel connection failed: 403 Forbidden. No current search results, competitor content or authoritative pages were reviewed.",
       "recommendation": "Review/save the research-domain additions in cloud environment settings, apply the runtime network update, then retry sources and competition research before approving BUILD. Publication of the cloud development environment is separate from website deployment.",
-      "status": "blocked",
-      "file_path": null
+      "status": "partially_unblocked",
+      "file_path": null,
+      "follow_up": "VM retrieved Calculator.net and 2025 IRS Schedule SE/Form 8959 instructions. SSA 403; old DOE/ENERGY STAR URLs 404. Complete current-edition formula/constant and market verification remains required."
     },
     {
       "id": "ZA-003",
@@ -44,6 +53,17 @@
       "recommendation": "Recheck the authoritative chart, boundary convention, adjustment order, ceiling assumption and portable-rating language; record source retrieval/version date. This is an outstanding verification item, not a confirmed incorrect sizing result.",
       "status": "deferred",
       "file_path": "src/content/sources.js:222-226; src/calculators/btu.js:19-29; src/pages/btu-calculator.js:86-104"
+    },
+    {
+      "id": "ZA-004",
+      "severity": "BLOCKER",
+      "category": "execution/authentication",
+      "affected_calculator": "Requested unattended Claude/Codex cycles",
+      "evidence": "Both remote VMs have installed CLIs but neither Claude nor Codex is authenticated. systemd available; platform idle pause 1800 seconds. ChatGPT minimum cadence hourly.",
+      "recommendation": "Authenticate model CLIs securely on remote VM, establish lifecycle support, then create one guarded persistent timer per agent at requested cadence. Do not claim active model cycles before a real successful run.",
+      "status": "blocked",
+      "file_path": null
     }
-  ]
+  ],
+  "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815"
 }

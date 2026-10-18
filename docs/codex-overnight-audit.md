@@ -161,3 +161,41 @@ Browser runner completed with 110/110 passing and exit status 0. Independent nea
 Both original checkouts remained clean. Before this documentation commit the isolated worktree contained only these two new audit files; no tracked baseline file changed. JSON parsing/required-field/unique-ID checks and `git diff --check` passed. The handoff commit uses `[skip netlify] [skip ci]`; no pull request, merge or deployment command is part of the handoff.
 
 Cloud onboarding draft persistence was confirmed for `install_script`, `start_skill` and additive research destinations (the prior custom list was empty; package-manager presets were preserved). The scripts use the tested writable npm cache and system Chromium, preserve source/lockfiles, and document how to restart local services. Review/save these changes in **cloud environment settings**, then publish the **cloud development environment** when ready; this is separate from deploying the website. Draft persistence does not establish runtime application, publication or restoration in a new task. Source access remains blocked in the tested instance.
+
+
+## Remote Instabox follow-up — 2026-10-18T09:58:40.723305+00:00
+
+This section supplements the historical audit above; its earlier environment paths and blockers describe that earlier run only.
+
+### Verified state and independent review
+
+- All operations for this follow-up ran through the Instabox API on `codex-api-machine`, host `instabox-codex-api-machine`, without the owner's Mac.
+- New clone: `/data/workspace/zuvogo-isolated-20261018/repository`. Exact origin is `https://github.com/pkray2012/web-calculator-engine.git`. The clone was made with `--no-checkout`; its apparent staged deletions are the deliberately unpopulated index, not existing user edits. It is never used for implementation or commits.
+- Existing hometree projects on both VMs contain uncommitted edits and were left untouched. No work was placed in mydeisgn.
+- Provisional baseline `de965bd1e6e35c1efa6cb0df73021e111f11ac88` exists; it is an ancestor of Claude's reviewed `bdde12f82494c197c170ea4cf91dcef174e79815`. Batch 3 `eb95696ec0afa1d3698fb446e3d3665066449ba8` is absent from available objects; no historical claims inferred.
+- Separate audit branch/worktree `audit/codex-vm-20261018` starts at prior audit `07c118e69bda409791c6e87fd3efaa620b3c32de`. Separate detached baseline and Claude review worktrees preserve all existing branches. Claude development branch remains `claude/compassionate-dirac-cv1ipd`.
+- Read Claude's `docs/claude-status-for-codex.md` at `bdde12f`; it asks to independently review fix `a47af1e`. No new self-employment implementation files exist in that reviewed commit; its draft is described as in progress, not treated as delivered.
+- Focused loan/mortgage/adapter tests: **32/32 pass**. Full baseline unit suite: **552/552 pass**. Claude reviewed head `npm run check`: **passed**, lint, typecheck, **557/557 tests**, development build and 44-page SEO/site audit, exit 0.
+- Independent Python Decimal check at 80-digit precision: **84 cases** across principal 1/25,000/1,000,000, terms 1/12/60/360, rates 0/1e-14/1e-10/0.1/6.5/8/20 percent. Maximum absolute payment error `6.666666666666667e-11` dollars; principal conservation within $0.0051; tiny-rate adapter succeeds. Baseline same tiny-rate input returns Infinity. This supports the numerical ZA-001 fix at reviewed commit; browser verification is running and not yet claimed complete.
+- Browser suite launched in the VM as an owned background process; log `/data/workspace/zuvogo-isolated-20261018/claude-review-browser.log`. No server on the owner's Mac and no production deployment.
+
+### Research evidence obtained on the VM
+
+Retrieved and read actual HTML, not search summaries, at this timestamp:
+
+- `https://www.calculator.net/electricity-calculator.html`: HTTP 200. Existing competitor supports W/kW and other power units, capacity factor, numerous usage periods and user electricity price; it explicitly cautions cycling appliances. Do not claim these are unique features. Appliance comparison differentiation still requires stronger validation; no volume/CPC/revenue figures supplied.
+- `https://www.irs.gov/instructions/i1040sse`: HTTP 200, current page explicitly **2025** instructions. Verified ordinary filing threshold $400, 2025 Social Security maximum $176,100, Additional Medicare thresholds $250,000 MFJ / $125,000 MFS / $200,000 other listed statuses. Church employee and other exceptions are material exclusions. This is not proof of 2026 constants.
+- `https://www.irs.gov/instructions/i8959`: HTTP 200, **2025** instructions. Verified 0.9% additional Medicare rate and non-indexed status thresholds. Employer $200,000 withholding trigger is distinct from filing-status liability threshold; do not conflate them.
+- SSA contribution-base page returns HTTP 403. The old DOE appliance and ENERGY STAR sizing URLs return HTTP 404 here; these are not evidence that all network research is blocked. Required conductor/code sources and frozen guides remain excluded.
+- ZA-002 changes from blanket network blocker to **partially unblocked, source-specific verification still pending**. Source editions, 2026 wage base, full regular-method formulas, competitor/US-intent analysis and exclusions must be verified before a new calculator is approved. No new calculator approved or implemented by this audit.
+
+### Execution and scheduling limitations
+
+- Both VMs report running, no fixed timeout and autoSuspendAfterSeconds=1800. Background tasks and timers may not prevent platform idle suspension; no uptime guarantee, lifecycle change or external wakeup configured.
+- User systemd is running; lingering is enabled; no existing user timers were listed. crontab is absent.
+- Claude CLI auth reports loggedIn=false on both VMs; Codex reports Not logged in on both. No provider API credential was found in the ordinary execution environment (presence checks only). GitHub CLI is authenticated separately; that does not authenticate either model provider.
+- ChatGPT automation minimum interval is hourly, which cannot satisfy requested 15/25-minute cadence. No hourly substitute was created.
+- Therefore **Claude 25-minute and Codex 15-minute autonomous model cycles are NOT active**. Installing timers that repeatedly fail authentication would not meet the request; no such timers were installed. Current direct Codex review remains possible through this chat's VM tools.
+- A repository handoff for Claude is being committed on this isolated audit branch, then explicitly pushed and notified via a comment on Claude's handoff commit. Delivery/acknowledgment will be reported separately; a written message is not proof Claude read it.
+
+No previous calculator, implementation, test fixture, branding, existing branch/tag/PR, production setting or live page was modified. No deployment, merge or production branch push occurred.
