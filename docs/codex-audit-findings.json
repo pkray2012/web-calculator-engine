@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/pkray2012/web-calculator-engine",
+  "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
+  "audit_branch": "audit/codex-baseline-20261018",
+  "generated_at": "2026-10-18T09:31:02.535229+00:00",
+  "findings": [
+    {
+      "id": "ZA-001",
+      "severity": "HIGH",
+      "category": "formula/numerical-stability",
+      "affected_calculator": "Loan Payment Calculator (shared loan engine; other consumers need follow-up)",
+      "evidence": {
+        "baseline": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
+        "input": {
+          "principal": 25000,
+          "annualRate": "0.00000000000001",
+          "termMonths": 60
+        },
+        "observed": "monthlyPayment = Infinity; adapter ok=true; schedule pays off in month 1; Chromium displays $\u221e after Calculate",
+        "expected": "Finite payment approximately $416.6666666666667 and about 60 payments. At this rate floating-point 1+r becomes 1, so factor-1 is zero.",
+        "secondary_case": "annualRate=0.0000000001 yields 416.9999654993515, versus the near-zero-rate limit 416.6666666666667."
+      },
+      "recommendation": "Claude: use a numerically stable annuity expression with log1p/expm1 (or supported equivalent), validate finite computed outputs, and add near-zero continuity, finite-result and schedule-conservation regression tests. Audit all consumers. Keep source changes separate from this report.",
+      "status": "open",
+      "file_path": "src/calculators/loan-payment.js:26-33; src/adapters/loan-payment.js:91-104"
+    },
+    {
+      "id": "ZA-002",
+      "severity": "BLOCKER",
+      "category": "research/evidence-access",
+      "affected_calculator": "All new proposed calculators",
+      "evidence": "2026-10-18: HTTPS requests to Google search, Calculator.net electricity and break-even calculators, DOE Energy Saver, ENERGY STAR, SBA, AFDC and PVWatts all failed with Tunnel connection failed: 403 Forbidden. No current search results, competitor content or authoritative pages were reviewed.",
+      "recommendation": "Review/save the research-domain additions in cloud environment settings, apply the runtime network update, then retry sources and competition research before approving BUILD. Publication of the cloud development environment is separate from website deployment.",
+      "status": "blocked",
+      "file_path": null
+    },
+    {
+      "id": "ZA-003",
+      "severity": "MEDIUM",
+      "category": "methodology/evidence-verification",
+      "affected_calculator": "BTU Calculator",
+      "evidence": "Engine and visible copy agree on chart capacity, shade/sun +/-10%, 600 BTU/h per person beyond two and 4000 BTU/h kitchen addition. Current ENERGY STAR source could not be retrieved. Ordinary-ceiling and portable-rating claims were not independently source-verified. The implementation uses the smaller row at shared area boundaries.",
+      "recommendation": "Recheck the authoritative chart, boundary convention, adjustment order, ceiling assumption and portable-rating language; record source retrieval/version date. This is an outstanding verification item, not a confirmed incorrect sizing result.",
+      "status": "deferred",
+      "file_path": "src/content/sources.js:222-226; src/calculators/btu.js:19-29; src/pages/btu-calculator.js:86-104"
+    }
+  ]
+}

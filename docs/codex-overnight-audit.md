@@ -1,0 +1,163 @@
+# Independent Zuvogo audit — provisional baseline
+
+Audit date: 2026-10-18, approximately 15:00 IST (09:30 UTC). Auditor: Codex.
+Status: **baseline inspected; expansion and completion approval withheld**.
+
+## Identity, scope and protection
+
+- Verified repository: https://github.com/pkray2012/web-calculator-engine (origin fetch/push).
+- User-designated baseline: `de965bd1e6e35c1efa6cb0df73021e111f11ac88`, remote branch context `feat/zuvogo-brand`. Verified as a commit and inspected its files, not merely its message.
+- Original checkout: `/workspace/web-calculator-engine`, branch `work`, HEAD `79798d8ac61837b390be169a5ed1551896927f81`, clean before audit.
+- Isolated audit worktree: `/workspace/zuvogo-audit`, new branch `audit/codex-baseline-20261018`, created directly from the designated commit. Only these two audit documents are changed.
+- Other existing checkout: `/workspace/Calculator`, branch `work`, HEAD `703b196ff06a1f36506cca62db6e41765bd0096b`, clean; origin https://github.com/pkray2012/Calculator.git. No application files edited there.
+- Available branches and pull-request heads were fetched without resetting either checkout. Historical `eb95696ec0afa1d3698fb446e3d3665066449ba8` was not found in either repository's available objects. Do not infer its repository or content.
+- `mydeisgn` is not an audit destination. No files or branding were placed there.
+- Commands ran in the attached remote cloud VM, independently of the owner's Mac. Continuous execution after a chat ends is not guaranteed by that observation.
+- No deployment, Netlify changes, production configuration changes, DNS changes or Search Console operations occurred. Build origins below are local or the reserved `audit.invalid` test origin.
+
+## Baseline inventory and checks
+
+`src/content/site.js` identifies **Zuvogo**, with `ads: false`. Its 41 entries are live, with 41 unique slugs and 41 unique paths. The build produces **44 HTML pages**: 41 calculators, home, about and 404. The sitemap contains **43 indexable URLs**; 404 is excluded. This is not the claimed 55-page package, and does not establish 18 Batch 3 pages.
+
+Existing calculators span mortgage/loans/refinancing, credit, savings, pay, materials, fuel, sales tax, margin, percentages, tips, room AC sizing and dividends. Exact paths can be regenerated without a build:
+
+```sh
+node --input-type=module -e "import {CALCULATORS} from './src/content/site.js'; console.log(CALCULATORS.map(c=>c.path).join('\n'))"
+```
+
+Node `v24.19.0`, npm `11.9.0`, installed system Chromium. Node satisfies the repository's `>=22` requirement; Node 22 itself was not separately tested.
+
+| Check | Observed result |
+|---|---|
+| `npm ci --cache /workspace/.npm-cache --no-audit --no-fund` | Passed; 77 packages, lockfile unchanged. Initial default-cache attempt failed because `/home/agent/.npm` was unwritable; corrected with a supported cache override. |
+| `npm run check` | Passed lint, TypeScript check, 552 tests (552 passed, 0 failed/cancelled/skipped), development build, site audit of 44 pages. |
+| `CHROMIUM_PATH=/usr/bin/chromium npm run test:browser` | Passed: 110 tests, 110 passed, 0 failed/cancelled/skipped; approximately 299 seconds. Includes axe, keyboard, responsive layout, functional and CSP checks. |
+| Independent local HTTP smoke | Passed, 43 sitemap URLs, headers, cache directives, canonicals, robots/sitemap, 404 and redirects; zero problems. Built separately with `build({outDir:'/tmp/zuvogo-smoke-dist',origin:'https://audit.invalid'})`, served locally and called `smokeTest(localBase,{origin:'https://audit.invalid'})`. No request to a deployed website. |
+| No-JavaScript browser inspection | All 41 calculator pages have readable static results and a visible noscript explanation. They require JavaScript to calculate custom values; this is accurately disclosed in `src/components/calculator-shell.js:20`. |
+| Independent formula identities | Seven groups passed: discounted cash-flow identity for a loan; zero-rate limit; volume; inverse coverage; quarterly DRIP; taxed cash dividends; margin/break-even. Details below. |
+| Additional boundary reproduction | **Failed**: accepted tiny loan rate yields `$∞` in the actual browser; ZA-001. Existing passing suites do not cover this defect. |
+| Narrow credential-pattern scan | No matches in `src`, `scripts`, `netlify.toml` for private-key headers or selected token prefixes. This is not a comprehensive security certification; no credential values were printed. |
+
+An initial smoke invocation against a development-origin build reported localhost URLs, as expected from that build mode. The separate reserved-origin build above passed the production-oriented smoke checks; this does not indicate a production-site defect.
+
+## Formula and evidence audit
+
+This is a focused independent mathematical audit, **not certification of every formula or every claim across all 41 calculators**. Existing tests exercised the broader baseline; source retrieval remains blocked.
+
+- **Loans:** independently discounted the 60 monthly payments at 8% nominal annual rate and recovered the $25,000 principal within `1e-7`; zero rate gives $416.6666666666667. The ordinary annuity formula is mathematically correct, but its floating-point implementation is unstable near zero. See ZA-001.
+- **Cubic yards:** `src/calculators/cubic-yard.js:92` computes area × depth(in)/12 ÷27 ×(1+allowance/100). A 12×9 ft rectangle, 3 in depth, 10% allowance gives 1.1 yd³. Inverse coverage at `:117` returns 108 ft². The allowance inversion is division by 1.1, consistent with markup rather than removing 10% of delivered volume. Bags/trucks round up (`:68-69`); geometric volume does not establish supplier density, settlement, price or structural suitability.
+- **Dividends:** `src/calculators/dividend.js:43` explicitly models monthly price growth, contributions at month start, periodic dividends, annual dividend growth and flat payout tax. Independently verified $10,000 at 4% with quarterly reinvestment for 10 years against `10000×1.01^40`; without reinvestment and at 25% payout tax, 10-year cash is $3,000 and ending value $13,000. This verifies the illustrative model, not real tax eligibility or forecast returns. Current IRS/SEC source content was not verified.
+- **Margin:** `src/calculators/margin.js:25` correctly distinguishes margin from markup. Cost $30, price $50 gives 40% margin; fixed costs $1,001 require 51 whole units. Do not create a duplicate basic break-even page without addressing existing functionality.
+- **BTU:** inspected engine, adapter, chart, defaults and visible methodology/limits. The illustrative sunny 20×16 ft room with four people yields `8000×1.1+1200 = 10000 BTU/h`. Units distinguish cooling watts from electrical input. Boundary convention chooses the lower chart row at a shared endpoint; the page is limited to 100–1,000 ft² and excludes heating/whole-house load calculation. Current authoritative chart and ancillary claims still need external verification (ZA-003). No Manual J or electrical-code approval is implied.
+
+### ZA-001 — HIGH: accepted rate produces an infinite payment
+
+Location: `src/calculators/loan-payment.js:26-33`; adapter `src/adapters/loan-payment.js:91-104`.
+
+From the audit worktree:
+
+```js
+import { monthlyPayment } from './src/calculators/loan-payment.js';
+import { runLoanCalculator, LOAN_DEFAULTS } from './src/adapters/loan-payment.js';
+monthlyPayment({principal:25000, annualRate:0.00000000000001, termMonths:60}); // Infinity
+runLoanCalculator({...LOAN_DEFAULTS, annualRate:'0.00000000000001'}).ok; // true
+```
+
+Chromium reproduction: open the local `/calculators/loan-payment-calculator/`, enter `0.00000000000001` in `#annual-rate`, click Calculate. Primary result is `$∞`; engine schedule pays the whole loan in month 1. `1 + monthlyRate` rounds to 1, making the denominator zero. At `0.0000000001%`, payment is $416.9999654993515 instead of approximately $416.6666666666667. These are extreme inputs but accepted by the public form and adapter.
+
+Recommendation to Claude: stable annuity evaluation using `log1p`/`expm1` or equivalent, finite-output checks, continuity and conservation regressions, and inspection of shared consumers. No implementation fix was merged by Codex. **Open; completion approval withheld.**
+
+## Ranked opportunity shortlist — provisional, not market-validated
+
+No search volume, CPC, traffic, revenue estimate or competitor feature claim is made. Ranking below is an **engineering and user-intent hypothesis**, subject to actual US search-result and competitor review. Effort estimates are rough person-days for implementation plus focused tests/content, excluding external data procurement and legal/code review. All new candidates are **DEFER** until source/competition verification succeeds; none is approved for BUILD.
+
+### 1. Appliance Electricity Cost — `appliance-electricity-cost-calculator`
+
+- Intent: estimate a device's monthly cost and compare two usage scenarios. Hypothesis: useful adjacent cluster to fuel cost and BTU; monetization fit with appliance research, not verified demand.
+- Inputs: measured watts or kW, hours/day, days, user-entered marginal electricity rate ($/kWh). Outputs: kWh, dollars, scenario difference. Formula: `E=P_W/1000×hours×days`, `cost=E×rate`. Example dimensional check: 1,500 W ×2 h/day ×30 days =90 kWh; at an explicitly illustrative $0.20/kWh, $18.
+- Differentiation to investigate: measured-use vs nameplate-use explanation, marginal vs average rate, daily/monthly comparison. No claim that competitors omit these.
+- Competitors actually reviewed: **none**; attempted Calculator.net electricity calculator, blocked. Source target: DOE Energy Saver appliance-use article; optionally dated EIA tariff data only after verification. Units follow watt-hour definitions; publication-source validation pending.
+- Dependencies/defaults: no credential or dataset needed if all prices entered by user. No invented US rate default. Hours 0–24; nonnegative finite power/rate/days; reject mixed units and impossible schedules. Nameplate maximum is not measured average use; exclude demand charges, tiered bills, taxes and standby unless explicitly modeled.
+- Effort: 1–2 days. **DEFER** pending current evidence and SERP review.
+
+### 2. EV vs Gas Energy Cost — `ev-vs-gas-energy-cost-calculator`
+
+- Intent: compare energy cost per mile/month using the user's driving and charging mix. Hypothesis: commercial vehicle-shopping intent; organic potential unmeasured.
+- Inputs: miles, gasoline MPG, $/gallon, EV kWh/100 mi with explicit wall/battery basis, home/public charging fractions and rates. Outputs: dollars/100 mi, period energy costs and difference. Formula: gas cost=`miles/MPG×$/gal`; wall-basis EV cost=`miles/100×kWhPer100mi×weightedRate`. Battery-basis consumption requires dividing by efficiency once; do not add losses to wall-basis label data again.
+- Differentiation: transparent charging mix and consumption basis, clearly labeled **energy-only**, linking existing fuel-cost page. Do not claim full ownership savings without depreciation, insurance, financing and maintenance data.
+- Competitors actually reviewed: **none**; AFDC Vehicle Cost Calculator request blocked. Source target: AFDC and EPA/FuelEconomy.gov methodology; consumption-basis verification is essential. No vehicle dataset required for manual inputs; no unsupported national vehicle/rate defaults.
+- Risks: MPG>0, charging shares sum to 1, 0<efficiency≤1, finite nonnegative rates/mileage; preserve sign on savings. Effort: 2–3 days. **DEFER**.
+
+### 3. AC Operating Cost Comparison — `air-conditioner-running-cost-calculator`
+
+- Intent: translate cooling capacity and rated efficiency into a conditional operating-cost comparison. Hypothesis: adjacent to existing BTU sizing, appliance shopping; no measured demand.
+- Inputs: preferably measured average electrical watts and hours; any BTU/h and EER/CEER route requires verified rating definitions. Outputs: electrical energy, cost and difference. Verified dimensional proposal only: if EER is in BTU/(W·h), rated `W=BTU/h ÷ EER`; `kWh=W×hours/1000`. **Do not use SEER2 as instantaneous EER or assume rated runtime equals actual load.**
+- Competitors reviewed: **none**; general electricity calculator and ENERGY STAR requests blocked. Source targets: DOE/ENERGY STAR rating and test-method documentation, not just sizing guidance.
+- Differentiate sizing from operating cost and seasonal from instantaneous efficiency. Data/defaults: user rates and runtime; no regional weather or seasonal-savings claims without datasets. Risks: cycling, part-load efficiency, humidity, zero efficiency, rating mismatch, duplicate intent with candidate 1. Effort: 2–4 days if evidence supports scope. **DEFER**, preferably merge into candidate 1 unless separate intent is established.
+
+### 4. Solar Simple Payback Scenario — `solar-simple-payback-calculator`
+
+- Intent: compare quoted net cost with bill-offset assumptions. Hypothesis: strong commercial relevance but substantial methodological burden and competition; not measured.
+- Inputs: quoted installed cost, explicitly verified eligible incentives (or none), annual production kWh, self-consumption fraction, retail and export rates, annual operating cost. Outputs: first-year net savings and simple payback only. Formula: `savings=production×[selfShare×retail+(1-selfShare)×export]-annualOpex`; `payback=netCost/savings` only when savings>0. Zero savings => no finite payback; negative savings => no simple recovery.
+- Competitors reviewed: **none**; PVWatts request blocked. Source targets: PVWatts documentation for production modeling; current utility tariffs and applicable incentive rules. No tax-credit percentage, production default or assumed full-retail export credit supplied.
+- Differentiation: expose self-consumption/export assumptions and distinguish simple payback from NPV/IRR. Risks: tariffs, local rules, shading, degradation, battery replacement, financing, tax eligibility, demand charges and policy changes. User-entered production avoids inventing a location model; integration needs separate evidence/data review. Effort: 3–5 days plus tariff/policy research. **DEFER**.
+
+### 5. Standalone Basic Break-even — `break-even-calculator`
+
+- Intent: units/revenue needed to cover fixed costs. Inputs: fixed cost F, unit price p, unit variable cost v. Outputs: exact units F/(p−v), whole units rounded up, corresponding revenue. With p≤v and F>0 there is no positive contribution to recover fixed costs; F=0 needs a defined zero-unit result.
+- Competitors reviewed: **none**; Calculator.net break-even request blocked. Source target: SBA break-even page, blocked. No pricing dataset needed. Hypothesis: small-business usefulness, but existing `margin-calculator` already implements basic break-even (`src/calculators/margin.js:31`).
+- Differentiation would need a verified distinct scenario (e.g. multi-product mix with known fixed sales mix), not a renamed duplicate. Effort: 1–2 days for basic UI. **REJECT as a separate basic page** because verified overlap precedes speculative SEO benefits.
+
+### 6. Generic Loan Payment Variant — `monthly-loan-payment-calculator`
+
+- Intent: fixed monthly debt payments. Inputs: principal P, nominal annual percentage i, integer months n; outputs payment/interest/schedule. Formula: `r=i/1200`, `A=P*r/[1-(1+r)^(-n)]`, zero-rate P/n; evaluate stably.
+- Competitors reviewed: **none**. Evidence: existing `loan-payment-calculator`, auto/personal/mortgage pages and shared amortization engine already serve this intent. Authoritative source target: CFPB loan-rate/APR guidance; do not treat APR including fees as the contractual interest rate.
+- No extra dataset; reject negative/nonfinite inputs and test tiny rates. Effort: 1 day for a duplicate UI, unjustified. **REJECT**; prioritize ZA-001 and improve existing explanation instead.
+
+**Excluded regardless of ranking:** Solar Panel Wire Size remains blocked until applicable code requirements and sufficient conductor data are independently verified. The five frozen insulation guides and frozen garage guide remain excluded; their requirement documents are not present in this baseline and are not reconstructed from memory.
+
+## External research ledger
+
+These are **attempted, not reviewed**. Each retrieval returned `Tunnel connection failed: 403 Forbidden` on 2026-10-18. No page body or search ranking was obtained; no inference about competitor functionality is justified.
+
+- US-market query attempt: https://www.google.com/search?q=electricity+cost+calculator+US (no US geolocation/ranking verified).
+- https://www.calculator.net/electricity-calculator.html
+- https://www.calculator.net/break-even-calculator.html
+- https://www.energy.gov/energysaver/estimating-appliance-and-home-electronic-energy-use
+- https://www.energystar.gov/products/ask-the-experts/how-choose-right-sized-window-ac
+- https://www.sba.gov/business-guide/plan-your-business/calculate-your-startup-costs/break-even-point
+- https://afdc.energy.gov/calc/
+- https://pvwatts.nrel.gov/
+
+Source objects in `src/content/sources.js` were reviewed as repository content, not accepted as proof of current external content. Their publisher assertions require external confirmation. No fabricated search metrics, prices, technical rules or source review dates are supplied.
+
+## SEO, accessibility and regression assessment
+
+- Site audit passed checks for titles/descriptions, canonical and og:url consistency, structured data/breadcrumbs, local links, sitemap coverage and robots. Registry paths/slugs are unique. These checks do not prove rankings, rich-result eligibility or distinguishable intent on every existing financial page.
+- Existing related-link and navigation generation includes live entries only. The site audit checks local links; manual exhaustive orphan/semantic-overlap analysis across all 41 pages remains outside this focused pass. Reject known duplicate opportunities above.
+- Browser suite covers three widths (320, 390, 1280), keyboard navigation, alternate/error states, live calculations, strict CSP and automated axe WCAG 2.1 A/AA checks. Final runner outcome is recorded below; no manual screen-reader certification is claimed.
+- All 41 pages retain static examples without JavaScript. Custom interactive calculations require JavaScript, as disclosed. No-JavaScript computing was not promised or implemented.
+- No calculator implementation changes in this audit, so no implementation regression was introduced. A docs-only audit does not remove the pre-existing ZA-001 defect. Broad claim/source accuracy and regional finance/tax policies remain unverified.
+
+## Claude handoff and remaining gates
+
+Codex owns this report; Claude owns fixes and new calculators. Read these documents **before selecting or implementing a candidate**. Do not treat provisional hypotheses as approved specifications or current market research.
+
+Safe handoff branch: `audit/codex-baseline-20261018`. Fetch it from origin and inspect its diff against `de965bd1e6e35c1efa6cb0df73021e111f11ac88`; cherry-pick the documentation commit if useful. No shared branch is reset or overwritten. Final response records the actual handoff commit and whether push succeeded.
+
+Outstanding gates:
+
+1. ZA-001 HIGH: Claude fixes numerical stability; Codex independently checks actual changed files, tiny-rate UI and final commit. Not yet resolved.
+2. ZA-002 BLOCKER: enable required research destinations through cloud environment settings, retry authoritative and competitor pages, and complete real current-market research. Draft saves do not themselves apply runtime settings.
+3. ZA-003 MEDIUM: verify current BTU chart and claims, or document a justified deferral. No false claim that tests establish authoritative methodology.
+4. No new calculator was implemented or approved in this session. No final Claude implementation commit has been supplied or reviewed. Final implementation acceptance is pending, not complete.
+
+Finding counts: **3 raised, 0 resolved, 1 deferred (MEDIUM); 1 open HIGH and 1 blocked research prerequisite (BLOCKER)**. Deferred evidence review is not an approval. JSON holds machine-readable evidence and recommendations.
+
+## Final validation update
+
+Browser runner completed with 110/110 passing and exit status 0. Independent near-zero-rate reproduction remains a failure despite that result. The saved startup command `PORT=4187 npm run serve` was also exercised: a local GET returned HTTP 200 and the expected BTU heading. Only the server started for that check was stopped.
+
+Both original checkouts remained clean. Before this documentation commit the isolated worktree contained only these two new audit files; no tracked baseline file changed. JSON parsing/required-field/unique-ID checks and `git diff --check` passed. The handoff commit uses `[skip netlify] [skip ci]`; no pull request, merge or deployment command is part of the handoff.
+
+Cloud onboarding draft persistence was confirmed for `install_script`, `start_skill` and additive research destinations (the prior custom list was empty; package-manager presets were preserved). The scripts use the tested writable npm cache and system Chromium, preserve source/lockfiles, and document how to restart local services. Review/save these changes in **cloud environment settings**, then publish the **cloud development environment** when ready; this is separate from deploying the website. Draft persistence does not establish runtime application, publication or restoration in a new task. Source access remains blocked in the tested instance.
