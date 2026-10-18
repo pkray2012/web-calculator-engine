@@ -467,6 +467,21 @@ export const CALCULATORS = Object.freeze([
     related: ['board-foot-calculator', 'fence-calculator', 'square-footage-calculator', 'home-equity-loan-calculator']
   },
   {
+    // Draft: page module, engine and tests exist, but it is not built until the
+    // IRC R311.7 text is verified directly (audit A-019, Codex ZA-002).
+    slug: 'stair-calculator',
+    path: '/calculators/stair-calculator/',
+    name: 'Stair Calculator',
+    navName: 'Stairs',
+    category: 'homeImprovement',
+    status: 'planned',
+    updated: '2026-10-18',
+    title: 'Stair Calculator — Risers, Treads, Total Run and Stringer Length',
+    description: 'Work out the number of steps, riser height, total run and stringer layout from the floor-to-floor rise, checked against the code limits you enter.',
+    summary: 'Number of steps, riser height, total run and stringer layout from the floor-to-floor rise.',
+    related: ['deck-calculator', 'board-foot-calculator', 'concrete-calculator', 'square-footage-calculator']
+  },
+  {
     slug: 'fuel-cost-calculator',
     path: '/calculators/fuel-cost-calculator/',
     name: 'Fuel Cost Calculator',

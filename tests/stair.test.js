@@ -1,0 +1,91 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+
+import { calculateStairs } from '../src/calculators/stair.js';
+
+const close = (actual, expected, tolerance = 1e-6) =>
+  assert.ok(Math.abs(actual - expected) <= tolerance, `expected ${expected}, got ${actual}`);
+
+test('hand-checked: 108 in rise, 10.5 in treads, 1 in tread stock', () => {
+  const s = calculateStairs({ totalRise: 108, treadDepth: 10.5, treadThickness: 1 });
+  assert.equal(s.minimumRisers, 14);
+  assert.equal(s.risers, 14);
+  assert.equal(s.treads, 13);
+  close(s.riserHeight, 108 / 14);
+  close(s.totalRun, 136.5);
+  close(s.angleDegrees, 36.30, 0.005);
+  close(s.stepUnit, Math.sqrt((108 / 14) ** 2 + 10.5 ** 2));
+  close(s.pitchLength, 169.38, 0.005);
+  close(s.pitchLengthToFloor, 14 * s.stepUnit);
+  close(s.bottomStringerRiser, 108 / 14 - 1);
+  assert.equal(s.riserOk, true);
+  assert.equal(s.treadOk, true);
+  assert.equal(s.handrailExpected, true);
+});
+
+test('pitch length is not the total-rise × total-run diagonal (audit A-006)', () => {
+  const s = calculateStairs({ totalRise: 108, treadDepth: 10.5 });
+  const wrongDiagonal = Math.hypot(108, 136.5); // 174.06 in, at 38.35°, not the 36.30° stair slope
+  assert.ok(Math.abs(s.pitchLength - wrongDiagonal) > 4);
+});
+
+test('a rise that is an exact multiple of the maximum riser is not given an extra step', () => {
+  for (const [rise, expected] of [[77.5, 10], [93, 12], [85.25, 11], [7.75, 2]]) {
+    const s = calculateStairs({ totalRise: rise, treadDepth: 10 });
+    assert.equal(s.minimumRisers, Math.max(2, expected), `rise ${rise}`);
+    assert.ok(s.riserHeight <= 7.75 + 1e-9);
+  }
+});
+
+test('every option keeps risers equal and the run consistent', () => {
+  const s = calculateStairs({ totalRise: 100, treadDepth: 11 });
+  assert.equal(s.options.length, 4);
+  s.options.forEach((option, index) => {
+    assert.equal(option.risers, s.minimumRisers + index);
+    close(option.riserHeight * option.risers, 100);
+    close(option.totalRun, option.treads * 11);
+    assert.equal(option.riserOk, true);
+  });
+  assert.ok(s.options[0].riserHeight > s.options[3].riserHeight);
+});
+
+test('a chosen riser count is used and checked against the limit', () => {
+  const s = calculateStairs({ totalRise: 108, treadDepth: 10.5, risers: 13 });
+  assert.equal(s.risers, 13);
+  close(s.riserHeight, 108 / 13);
+  assert.equal(s.riserOk, false); // 8.31 in is over 7.75 in
+});
+
+test('limits are inputs, not hard-coded', () => {
+  const s = calculateStairs({ totalRise: 108, treadDepth: 9.5, maxRiser: 8.25, minTread: 9 });
+  assert.equal(s.minimumRisers, 14); // 108 / 8.25 = 13.09
+  assert.equal(s.treadOk, true);
+  assert.equal(calculateStairs({ totalRise: 108, treadDepth: 9.5 }).treadOk, false);
+});
+
+test('short flights: fewer than 4 risers are flagged as not needing a handrail check', () => {
+  const s = calculateStairs({ totalRise: 21, treadDepth: 11 });
+  assert.equal(s.risers, 3);
+  assert.equal(s.handrailExpected, false);
+});
+
+test('random rises always give risers at or under the limit with the fewest steps', () => {
+  let seed = 3;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let run = 0; run < 2000; run += 1) {
+    const totalRise = Math.round((8 + rand() * 200) * 16) / 16;
+    const maxRiser = [7, 7.5, 7.75, 8.25][Math.floor(rand() * 4)];
+    const s = calculateStairs({ totalRise, treadDepth: 10 + rand() * 2, maxRiser });
+    assert.ok(s.riserHeight <= maxRiser + 1e-9);
+    if (s.risers > 2) assert.ok(totalRise / (s.risers - 1) > maxRiser + 1e-9, `${totalRise} with ${s.risers}`);
+  }
+});
+
+test('invalid inputs are rejected', () => {
+  assert.throws(() => calculateStairs({ totalRise: 0, treadDepth: 10 }), RangeError);
+  assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: -1 }), RangeError);
+  assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: 10, risers: 1 }), RangeError);
+  assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: 10, risers: 12.5 }), RangeError);
+  assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: 10, treadThickness: 9 }), RangeError);
+  assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: 10, treadThickness: -1 }), RangeError);
+});
