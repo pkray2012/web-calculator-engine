@@ -18,9 +18,11 @@ import { findCalculator, relatedCalculators } from '../content/site.js';
 const IRS = 'Internal Revenue Service';
 
 /**
- * Pending direct verification: these were checked only through search-result
- * summaries because the build VM cannot reach irs.gov or ssa.gov. Move them
- * to src/content/sources.js once their content has been read directly.
+ * Read directly by the Codex audit on 2026-10-18 (audit/codex-vm-20261018):
+ * the 2025 Schedule SE and Form 8959 instructions ($400 threshold, $176,100
+ * 2025 wage base, 0.9% rate and filing-status thresholds) and Topics 554 and
+ * 751 (rates, 92.35%, the $184,500 2026 wage base). Kept page-local while the
+ * page is a draft; move to src/content/sources.js when it goes live.
  */
 export const SE_TAX_SOURCES = Object.freeze({
   scheduleSeInstructions: {
@@ -41,11 +43,11 @@ export const SE_TAX_SOURCES = Object.freeze({
     url: 'https://www.irs.gov/instructions/i8959',
     supports: 'A 0.9% Additional Medicare Tax applies to self-employment income above $200,000 (single, head of household, qualifying surviving spouse), $250,000 (married filing jointly) or $125,000 (married filing separately), reduced by Medicare wages; the thresholds are not indexed.'
   },
-  ssaWageBase: {
-    title: 'Contribution and Benefit Base',
-    publisher: 'Social Security Administration',
-    url: 'https://www.ssa.gov/oact/cola/cbb.html',
-    supports: 'The maximum earnings subject to Social Security tax were $176,100 for 2025 and are $184,500 for 2026.'
+  topic751: {
+    title: 'Topic no. 751, Social Security and Medicare withholding rates',
+    publisher: IRS,
+    url: 'https://www.irs.gov/taxtopics/tc751',
+    supports: 'The maximum amount of 2026 earnings subject to Social Security tax is $184,500.'
   }
 });
 
@@ -154,11 +156,13 @@ ${calculatorShell({
     <ul>
       <li>Uses the regular Schedule SE method for tax years ${TAX_YEARS.join(' and ')}, with Social Security wage bases of
       ${TAX_YEARS.map((y) => `${formatCurrency(SOCIAL_SECURITY_WAGE_BASE[y])} (${y})`).join(' and ')}.</li>
-      <li>W-2 wages are treated as both Social Security and Medicare wages. If your W-2 box 3 and box 5 differ (for example, tips or wages above the
-      wage base), results can differ slightly.</li>
+      <li>Your W-2 wages are treated as both Social Security and Medicare wages. If your W-2 box 3 and box 5 differ (for example, tips or wages above
+      the wage base), results can differ slightly.</li>
       <li>Not covered: the farm and nonfarm optional methods, church employee income, Conservation Reserve Program payments, income tax and state taxes.</li>
-      <li>For married couples, self-employment tax is figured separately for each spouse with business income. Enter one person's profit at a time;
-      for the Additional Medicare Tax, a joint return's threshold applies to both spouses' combined income.</li>
+      <li>For married couples, self-employment tax is figured separately for each spouse with business income, and only your own wages reduce your
+      Social Security wage base. On a joint return, your spouse's wages count toward the $250,000 Additional Medicare Tax threshold. If both spouses
+      have self-employment income, their combined income is tested against that threshold, which this calculator does not combine: its Additional
+      Medicare figure can then be too low.</li>
       <li>This is an estimate, not tax advice. Your tax return or a tax professional may calculate differently.</li>
     </ul>
   </section>

@@ -50,7 +50,7 @@ test('filing status changes only the Additional Medicare Tax', () => {
 
 test('the form exposes every field id with a label', () => {
   const markup = String(selfEmploymentTaxForm());
-  for (const id of ['se-net-profit', 'se-w2-wages']) assert.match(markup, new RegExp(`<label[^>]+for="${id}"`));
+  for (const id of ['se-net-profit', 'se-w2-wages', 'se-spouse-w2-wages']) assert.match(markup, new RegExp(`<label[^>]+for="${id}"`));
   for (const id of Object.values(SE_TAX_FIELD_IDS)) assert.ok(markup.includes(id), id);
   assert.match(markup, /id="se-tax-year-2026"[^>]*checked/);
 });
@@ -76,4 +76,28 @@ test('the calculator stays a draft: not live and never linked from live pages', 
   for (const calc of liveCalculators(CALCULATORS)) {
     assert.ok(!relatedCalculators(calc.slug).some((related) => related.slug === entry.slug));
   }
+});
+
+test('a spouse’s wages never reduce your Social Security wage base', () => {
+  const base = { ...SE_TAX_DEFAULTS, netProfit: '150000', w2Wages: '0', filingStatus: 'marriedJointly' };
+  const alone = runSelfEmploymentTaxCalculator(base).view.result;
+  const withSpouse = runSelfEmploymentTaxCalculator({ ...base, spouseW2Wages: '180000' }).view.result;
+  assert.equal(withSpouse.socialSecurityTax, alone.socialSecurityTax);
+  assert.equal(withSpouse.selfEmploymentTax, alone.selfEmploymentTax);
+});
+
+test('joint filers: both spouses’ wages use up the $250,000 Additional Medicare threshold', () => {
+  const r = runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, netProfit: '100000', w2Wages: '60000', spouseW2Wages: '150000', filingStatus: 'marriedJointly' }).view.result;
+  // Threshold left 250,000 − 210,000 = 40,000; NE 92,350 → 52,350 × 0.9%.
+  assert.ok(Math.abs(r.additionalMedicareTax - 52350 * 0.009) < 1e-9);
+  assert.ok(Math.abs(r.socialSecurityTax - 92350 * 0.124) < 1e-9);
+});
+
+test('spouse wages are ignored, and not validated, unless filing jointly', () => {
+  const run = runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, netProfit: '250000', spouseW2Wages: 'abc', filingStatus: 'single' });
+  assert.equal(run.ok, true);
+  assert.equal(run.input.spouseW2Wages, 0);
+  const joint = parseSelfEmploymentTaxForm({ ...SE_TAX_DEFAULTS, spouseW2Wages: 'abc', filingStatus: 'marriedJointly' });
+  assert.equal(joint.ok, false);
+  assert.ok(joint.errors.spouseW2Wages);
 });

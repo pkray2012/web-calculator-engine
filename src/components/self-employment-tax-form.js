@@ -12,7 +12,8 @@ export const SE_TAX_FIELD_IDS = Object.freeze({
   taxYear: 'se-tax-year',
   netProfit: 'se-net-profit',
   w2Wages: 'se-w2-wages',
-  filingStatus: 'se-filing-status'
+  filingStatus: 'se-filing-status',
+  spouseW2Wages: 'se-spouse-w2-wages'
 });
 
 /**
@@ -30,16 +31,17 @@ export function selfEmploymentTaxForm(values = SE_TAX_DEFAULTS, errors = {}, qui
     options: TAX_YEARS.map((year) => ({ value: String(year), label: String(year), id: `se-tax-year-${year}` }))
   })}
   ${field('netProfit', { label: 'Net profit from self-employment', prefix: '$', hint: 'Business income minus business expenses for the year, as on Schedule C (or your share of partnership self-employment earnings).' })}
-  ${field('w2Wages', { label: 'W-2 wages from a job', prefix: '$', optional: true, hint: 'Medicare wages, W-2 box 5, from any employer, for the same year. Leave at 0 if you had no job.' })}
+  ${field('w2Wages', { label: 'W-2 wages from a job', prefix: '$', optional: true, hint: 'Your own Medicare wages, W-2 box 5, from any employer, for the same year. Leave at 0 if you had no job.' })}
   ${radioField({
     id: ids.filingStatus, name: 'filingStatus', legend: 'Filing status', value: values.filingStatus,
-    hint: 'Only affects the 0.9% Additional Medicare Tax threshold. If married filing jointly, enter both spouses’ W-2 wages.',
+    hint: 'Only affects the 0.9% Additional Medicare Tax threshold.',
     options: [
       { value: 'single', label: 'Single, head of household or qualifying surviving spouse', id: 'se-filing-single' },
       { value: 'marriedJointly', label: 'Married filing jointly', id: 'se-filing-joint' },
       { value: 'marriedSeparately', label: 'Married filing separately', id: 'se-filing-separate' }
     ]
   })}
+  ${field('spouseW2Wages', { label: 'Spouse’s W-2 wages (joint filers only)', prefix: '$', optional: true, hint: 'Used only if you file jointly: your spouse’s Medicare wages, W-2 box 5. They count toward the joint $250,000 Additional Medicare Tax threshold, not toward your Social Security wage base.' })}
   <button class="button" type="submit">Calculate</button>
   <p class="quick-result" id="quick-result"${quick ? '' : ' hidden'}>${quick ?? ''}</p>
 </form>`;

@@ -15,7 +15,8 @@ export const SE_TAX_DEFAULTS = Object.freeze({
   taxYear: '2026',
   netProfit: '80000',
   w2Wages: '0',
-  filingStatus: 'single'
+  filingStatus: 'single',
+  spouseW2Wages: '0'
 });
 
 const MAX_AMOUNT = 100_000_000;
@@ -30,16 +31,22 @@ export function parseSelfEmploymentTaxForm(values) {
   const filingStatus = FILING_STATUSES.includes(values.filingStatus) ? values.filingStatus : 'single';
   const netProfit = take('netProfit', numberField(values.netProfit, { label: 'Net profit', min: -MAX_AMOUNT, max: MAX_AMOUNT }));
   const w2Wages = take('w2Wages', numberField(values.w2Wages, { label: 'W-2 wages', required: false, fallback: 0, min: 0, max: MAX_AMOUNT }));
+  // A spouse's wages only matter for the joint Additional Medicare threshold.
+  const spouseW2Wages = filingStatus === 'marriedJointly'
+    ? take('spouseW2Wages', numberField(values.spouseW2Wages, { label: 'Spouse’s W-2 wages', required: false, fallback: 0, min: 0, max: MAX_AMOUNT }))
+    : 0;
   if (Object.keys(errors).length) return { ok: false, errors };
-  return { ok: true, input: { taxYear, filingStatus, netProfit, w2Wages } };
+  return { ok: true, input: { taxYear, filingStatus, netProfit, w2Wages, spouseW2Wages } };
 }
 
 export function buildSelfEmploymentTaxView(input) {
   const result = calculateSelfEmploymentTax({
     taxYear: input.taxYear,
     netProfit: input.netProfit,
+    // Only your own wages use up your Social Security wage base; on a joint
+    // return both spouses' Medicare wages count toward the $250,000 threshold.
     socialSecurityWages: input.w2Wages,
-    medicareWages: input.w2Wages,
+    medicareWages: input.w2Wages + input.spouseW2Wages,
     filingStatus: input.filingStatus
   });
   return { input, result };
