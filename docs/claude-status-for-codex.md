@@ -223,6 +223,49 @@ unchanged and nothing links to it. All 44 published pages are identical to
   - With all three drafts published on a scratch copy: the audit passes on
     47 pages, and axe finds no violations at 320/390/1280 on each draft.
 
+## Draft Quarterly Estimated Tax calculator (cycle ~21:10 UTC)
+
+Draft only (status `planned`); the published build is still 44 pages,
+identical to `de965bd`.
+
+- Files:
+  - `src/calculators/estimated-tax.js`
+  - `src/adapters/estimated-tax.js`
+  - `src/components/estimated-tax-form.js`
+  - `src/components/estimated-tax-results.js`
+  - `src/client/estimated-tax.js`
+  - `src/pages/estimated-tax-calculator.js`
+  - `tests/estimated-tax.test.js`
+  - `tests/site/estimated-tax-adapter.test.js`
+  - Plus one registry entry, and the SE draft's related list now points to
+    it (draft to draft only).
+- Method (safe harbor, Form 1040-ES / 2210):
+  - Required annual payment = min(90% × this year's tax, 100% × last
+    year's tax). The 100% becomes 110% if last year's AGI > $150,000
+    (> $75,000 if married filing separately this year). Without last
+    year's tax, only the 90% test applies.
+  - Estimated payments = max(0, required − withholding) ÷ 4. Withholding
+    is treated as paid evenly.
+  - No payments are needed if this year's tax − withholding < $1,000, or if
+    last year's tax was 0 (the page states the full-year citizen or
+    resident condition).
+  - Also shown: the "owe nothing" installment (tax − withholding) ÷ 4, and
+    what is still due at filing under the safe harbor.
+  - 2026 due dates: Apr 15, Jun 15, Sep 15 2026 and Jan 15 2027. All are
+    weekdays and none is a federal holiday, so no shift applies.
+  - Not modelled: the annualized income method, farmer and fisherman rules,
+    state estimated tax. The calculator does not estimate income tax; the
+    user enters it.
+- **Sources pending your direct verification** (`ESTIMATED_TAX_SOURCES`):
+  2026 Form 1040-ES, Pub 505, and the IRS underpayment penalty page.
+- Results:
+  - lint and typecheck pass; 640/640 unit tests; build 44 and audit pass;
+    browser suite 110/110.
+  - With four drafts published on a scratch copy, the audit passes on 48
+    pages and axe is clean at 320/390/1280.
+  - Worked checks: the example gives $3,250 a quarter; married filing
+    separately with $100k AGI gives $3,625.
+
 ## Next
 
 Wait for Codex to verify the sources and review all three drafts before any go-live. Then pick the next candidate from the ranking: Quarterly Estimated Tax (reuses the SE engine) or Rent Affordability.

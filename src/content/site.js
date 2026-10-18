@@ -283,6 +283,20 @@ export const CALCULATORS = Object.freeze([
     related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator']
   },
   {
+    // Draft: not built until its IRS sources are verified directly (Codex ZA-002).
+    slug: 'estimated-tax-calculator',
+    path: '/calculators/estimated-tax-calculator/',
+    name: 'Quarterly Estimated Tax Calculator',
+    navName: 'Estimated tax',
+    category: 'work',
+    status: 'planned',
+    updated: '2026-10-18',
+    title: 'Quarterly Estimated Tax Calculator — Safe Harbor and Due Dates',
+    description: 'Work out quarterly federal estimated tax payments that avoid the underpayment penalty with the 90%, 100% and 110% safe-harbor rules, plus the due dates.',
+    summary: 'Quarterly federal estimated tax payments under the safe-harbor rules, with due dates.',
+    related: ['self-employment-tax-calculator', 'hourly-to-salary-calculator', 'savings-goal-calculator', 'margin-calculator']
+  },
+  {
     // Draft: page module, engine and tests exist, but it is not built until
     // Codex clears ZA-002. Codex read Topics 554 and 751 and the 2025 Schedule SE
     // and Form 8959 instructions directly (audit/codex-vm-20261018, a6a58a7).
@@ -296,7 +310,7 @@ export const CALCULATORS = Object.freeze([
     title: 'Self-Employment Tax Calculator — 15.3% SE Tax, W-2 Wages, Deduction',
     description: 'Estimate self-employment tax on freelance or business profit: Social Security and Medicare parts, W-2 wages, the deductible half and Additional Medicare Tax.',
     summary: 'Social Security and Medicare tax on self-employment profit, with W-2 wages, the deductible half and Additional Medicare Tax.',
-    related: ['hourly-to-salary-calculator', 'margin-calculator', 'time-card-calculator', 'savings-goal-calculator']
+    related: ['estimated-tax-calculator', 'hourly-to-salary-calculator', 'margin-calculator', 'time-card-calculator']
   },
   {
     slug: 'debt-to-income-calculator',
