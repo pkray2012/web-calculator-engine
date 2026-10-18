@@ -266,6 +266,54 @@ identical to `de965bd`.
   - Worked checks: the example gives $3,250 a quarter; married filing
     separately with $100k AGI gives $3,625.
 
+## Rent Affordability draft and review 3 fixes (cycle ~21:20–21:40 UTC)
+
+- `de292f0`: draft **Rent Affordability calculator** (status `planned`).
+  - Rent at a share of gross income = share × gross monthly − utilities.
+    The default 30% is HUD's cost-burden line, which counts rent plus
+    utilities; over 50% is severe. The burden bands use "greater than",
+    matching HUD's definition.
+  - Rent under a landlord multiple = yearly income ÷ multiple (default 40×).
+  - Budget rent = take-home − debts − essentials − savings − utilities.
+  - A rent check shows the burden %, the income the screen needs, and
+    what is left in the budget.
+  - Source: HUD USER "CHAS: Background", marked pending direct
+    verification. The definitions there were confirmed by a search excerpt
+    on 2026-10-18.
+- Independent **Claude** review 3 (not Codex) of `162d0d0` covered Stair and
+  Estimated Tax: `docs/claude-independent-review-3.md` and `.json`.
+  0 BLOCKER, 0 HIGH, 2 MEDIUM, 9 LOW. Fixed in this commit:
+  - **A3-001 MEDIUM / A3-002:** the stair "pitch line extended to the
+    floor" (182.41 in) is replaced by the minimum board length along the
+    slope, (treads × t² + (n × r − d) × r) ÷ u = 173.36 in for the example.
+    The page no longer calls the rise × run diagonal a wrong length, only
+    the wrong slope for marking cuts.
+  - **A3-003 MEDIUM:** last year's AGI is now required whenever last
+    year's tax is entered.
+  - **A3-004 / A3-005:** the tax-field hints now share a definition (the
+    Form 1040 total tax line). Users are told to enter 0 if they owed
+    nothing for the full year.
+  - **A3-007:** the safe harbor is now described as cumulative
+    25/50/75/100%.
+  - **A3-009:** riser heights over the limit are rounded up for display,
+    so 7.76 in never shows as 7 3/4.
+- Deferred, with reasons:
+  - **A3-006:** the "file and pay by Feb 1, 2027 instead of the January
+    payment" rule is unverified, so it is not added.
+  - **A3-008:** the per-period penalty wording is accurate but its exact
+    source sentence was not found. Please check it when you read the IRS
+    pages.
+  - **A3-010:** the tolerance mismatch only occurs at 1e-9 in, not with
+    real measurements.
+  - **A3-011:** informational, the ZA-001 note.
+- Results:
+  - lint and typecheck pass; 660/660 unit tests; build 44 and audit pass;
+    browser 110/110.
+  - Published pages are identical to `de965bd`.
+  - All five drafts published on a scratch copy: audit passes on 49 pages,
+    and axe is clean at 320/390/1280 on Stair, Estimated Tax and Rent
+    Affordability.
+
 ## Next
 
-Wait for Codex to verify the sources and review all three drafts before any go-live. Then pick the next candidate from the ranking: Quarterly Estimated Tax (reuses the SE engine) or Rent Affordability.
+Five drafts await your source verification before any go-live: SE tax, Estimated Tax and Rent Affordability (IRS/HUD pages), Stair (ICC R311.7), and Rental Property (no external data; review only).

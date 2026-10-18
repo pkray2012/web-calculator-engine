@@ -1,0 +1,128 @@
+{
+  "reviewer": "Claude (Anthropic), independent reviewer standing in while OpenAI Codex is offline; not Codex",
+  "commit": "162d0d0",
+  "reviewed_at": "2026-10-18T21:21:34Z",
+  "findings": [
+    {
+      "id": "A3-001",
+      "severity": "MEDIUM",
+      "category": "content-accuracy",
+      "affected_calculator": "stair-calculator",
+      "path": "src/pages/stair-calculator.js",
+      "line": 71,
+      "evidence": "Page says the total-rise x total-run diagonal \"is not the stringer's slope ... and gives the wrong length\". The slope part is true, but as a board length the diagonal is close to the geometric minimum. Projecting every vertex of the cut stringer polygon (top edge through the nosing corners, plumb/level bottom cut at the first riser, plumb top cut) onto the pitch direction gives minimum board length L = ((n-1)t^2 + n r^2 - d r)/u. Example (n=14, r=7.7143, t=10.5, d=1): L = 173.36 in (173.95 in with d=0); the diagonal is 174.06 in (14 ft 6 1/16 in); the page's \"pitch line extended to the floor\" is 182.41 in (15 ft 2 7/16 in). Script: review3-work/stringer-geometry.mjs. (Test tests/stair.test.js:26 correctly asserts only that the pitch length differs from the diagonal.)",
+      "recommendation": "Drop \"gives the wrong length\". Either say the diagonal is a close estimate of board length but not the cutting slope, or show the computed minimum board length ((n-1)t^2 + n r^2 - d r)/u plus an allowance for the top connection.",
+      "status": "open"
+    },
+    {
+      "id": "A3-002",
+      "severity": "LOW",
+      "category": "content-accuracy",
+      "affected_calculator": "stair-calculator",
+      "path": "src/components/stair-results.js",
+      "line": 192,
+      "evidence": "\"Buy stringer boards longer than the pitch line extended to the floor\" uses risers x unit (182.41 in in the example). That line meets the floor one tread in front of the first riser, outside the stringer, so it is longer than the board needs to be by t^2/u (8.46 in here). The error makes the board longer, so it causes waste, not a short board. The geometry of the value itself (n*u) is correct: it matches a coordinate check to full precision.",
+      "recommendation": "Label it as a generous upper figure, or replace it with the minimum board length from A3-001 plus a stated allowance.",
+      "status": "open"
+    },
+    {
+      "id": "A3-003",
+      "severity": "MEDIUM",
+      "category": "tax-rule-coverage",
+      "affected_calculator": "estimated-tax-calculator",
+      "path": "src/calculators/estimated-tax.js",
+      "line": 53,
+      "evidence": "Prior-year AGI is optional (src/adapters/estimated-tax.js:124). When last year's tax is entered but the AGI is left blank, highIncome is false and the 100% test is used without comment. A filer with prior AGI over $150,000 ($75,000 MFS) then gets a required payment that is too low, which is the exact case the calculator exists to prevent. Example: $50,000 tax now, $30,000 last year, AGI blank -> $30,000 required instead of $33,000.",
+      "recommendation": "When priorYearTax is entered, require priorYearAgi or ask a yes/no \"Was last year's AGI over $150,000 ($75,000 MFS)?\". Otherwise show a visible warning in the results that 110% may apply.",
+      "status": "open"
+    },
+    {
+      "id": "A3-004",
+      "severity": "LOW",
+      "category": "input-definition",
+      "affected_calculator": "estimated-tax-calculator",
+      "path": "src/components/estimated-tax-form.js",
+      "line": 251,
+      "evidence": "The current-year hint (line 248) says tax \"minus credits\", but the prior-year hint says \"The total tax line on your 2025 Form 1040\". Form 1040 total tax (line 24) is before refundable credits, which appear in the payments section. Form 2210 figures both years' tax net of certain refundable credits (UNVERIFIED: I recall this from the Form 2210 instructions but could not confirm the line 8 wording by search). With the prior-year field as worded, filers with EIC/ACTC/PTC overstate the 100% test and overpay, which is the safe direction.",
+      "recommendation": "Define both fields the same way. Say whether refundable credits are subtracted, and point to the matching Form 2210 lines once the instructions have been read directly.",
+      "status": "open"
+    },
+    {
+      "id": "A3-005",
+      "severity": "LOW",
+      "category": "tax-rule-coverage",
+      "affected_calculator": "estimated-tax-calculator",
+      "path": "src/components/estimated-tax-form.js",
+      "line": 251,
+      "evidence": "\"Leave blank if you did not file.\" The IRS estimated-taxes page, as summarized in a search result, says you had no tax liability if your total tax was zero OR you did not have to file. A filer who did not file because they were not required to gets only the 90% test from a blank field, and loses the zero-liability exception that entering 0 would give (calculateEstimatedTax noPriorYearTax).",
+      "recommendation": "Reword: \"Enter 0 if you had no tax or did not have to file (full-year U.S. citizen or resident). Leave blank only if you were required to file but did not, or last year was shorter than 12 months.\"",
+      "status": "open"
+    },
+    {
+      "id": "A3-006",
+      "severity": "LOW",
+      "category": "content-completeness",
+      "affected_calculator": "estimated-tax-calculator",
+      "path": "src/pages/estimated-tax-calculator.js",
+      "line": 92,
+      "evidence": "The due-dates section does not mention the rule that you need not make the January installment if you file the 2026 return and pay all tax due by January 31, 2027. Jan 31, 2027 is a Sunday, so this computes to Monday Feb 1, 2027 (weekday computed). UNVERIFIED: the search did not return the IRS wording; this is from reviewer knowledge.",
+      "recommendation": "After direct verification in the 2026 Form 1040-ES, add one sentence. Otherwise leave it out and say other exceptions exist.",
+      "status": "open"
+    },
+    {
+      "id": "A3-007",
+      "severity": "LOW",
+      "category": "content-precision",
+      "affected_calculator": "estimated-tax-calculator",
+      "path": "src/pages/estimated-tax-calculator.js",
+      "line": 77,
+      "evidence": "\"by each due date, withholding and estimated payments together cover a quarter of the smaller of\" can be read as each installment standing alone. Form 2210 tests cumulative payments of 25/50/75/100% of the required annual payment, and an overpayment carries forward to later periods.",
+      "recommendation": "Say \"together reach 25%, 50%, 75% and 100% of the smaller of ... by the four due dates\".",
+      "status": "open"
+    },
+    {
+      "id": "A3-008",
+      "severity": "LOW",
+      "category": "sourcing",
+      "affected_calculator": "estimated-tax-calculator",
+      "path": "src/pages/estimated-tax-calculator.js",
+      "line": 43,
+      "evidence": "The source entry claims the IRS underpayment-penalty page supports \"paying late in the year does not fully cure an earlier shortfall\". The rule is correct in substance: IRS pages say the penalty depends on the period the underpayment was due and underpaid. But a search did not find the specific wording on that page. The page text at line 92 (\"does not fully make up for skipping April\") is accurate and not overstated: a later payment stops further penalty on the earlier shortfall but does not remove what has already accrued.",
+      "recommendation": "Before going live, confirm the statement on the cited page, or cite the Form 2210 instructions / Pub 505 passage that says it.",
+      "status": "open"
+    },
+    {
+      "id": "A3-009",
+      "severity": "LOW",
+      "category": "display",
+      "affected_calculator": "stair-calculator",
+      "path": "src/components/stair-results.js",
+      "line": 162,
+      "evidence": "formatInches rounds to the nearest 1/16 in, so an over-limit riser such as 7.76 in shows as \"7 3/4 in\" next to \"Over limit\". The decimal in the note (7.76 in) resolves it, but the main stat looks compliant.",
+      "recommendation": "For over-limit risers, show the decimal in the main value too, or round away from the limit when flagging.",
+      "status": "open"
+    },
+    {
+      "id": "A3-010",
+      "severity": "LOW",
+      "category": "numerical-edge",
+      "affected_calculator": "stair-calculator",
+      "path": "src/calculators/stair.js",
+      "line": 59,
+      "evidence": "The ceil guard subtracts 1e-9 from the ratio, while riserOk adds 1e-9 inches. For totalRise 15.500000005 the engine picks the minimum of 2 risers (7.7500000025 in) and then flags it \"Over limit\", and the options table offers no compliant count, which is inconsistent. This cannot happen with realistic inputs.",
+      "recommendation": "Use one tolerance: compare riserHeight to maxRiser with the same relative epsilon, or compute n with the check riserHeight <= maxRiser*(1+1e-12).",
+      "status": "open"
+    },
+    {
+      "id": "A3-011",
+      "severity": "LOW",
+      "category": "test-change",
+      "affected_calculator": "loan-payment (ZA-001)",
+      "path": "tests/mortgage-payment.test.js",
+      "line": 72,
+      "evidence": "An existing calculator's test tolerance was relaxed from 1e-8 to 1e-7 as part of the documented ZA-001 loan-payment fix (src/calculators/loan-payment.js now uses log1p/expm1). The justification comment is reasonable, and the tolerance is still far below a cent. Noted for traceability only.",
+      "recommendation": "None required. Optionally keep a 1e-9 check against a high-precision reference for a few fixed loans.",
+      "status": "open"
+    }
+  ]
+}

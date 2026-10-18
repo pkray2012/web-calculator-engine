@@ -40,6 +40,8 @@ test('inches are shown to the nearest 1/16, reduced', () => {
   assert.equal(formatInches(169.38, { feet: true }), '14 ft 1 3/8 in');
   assert.equal(formatInches(144, { feet: true }), '12 ft 0 in');
   assert.equal(formatInches(7.99), '8 in');
+  assert.equal(formatInches(7.76, { up: true }), '7 13/16 in'); // over a 7.75 in limit never shows as 7 3/4 (review A3-009)
+  assert.equal(formatInches(7.75, { up: true }), '7 3/4 in');
 });
 
 test('the form labels every field', () => {
@@ -54,6 +56,7 @@ test('draft page renders with computed figures and no broken values', () => {
   assert.equal((body.match(/<h1[\s>]/g) ?? []).length, 1);
   assert.ok(body.includes('7 11/16 in'));
   assert.ok(body.includes('14 ft 1 3/8 in'));
+  assert.ok(body.includes('14 ft 5 3/8 in')); // minimum board length 173.36 in, rounded up
   assert.ok(!/NaN|undefined|Infinity|∞/.test(body));
   for (const source of Object.values(STAIR_SOURCES)) assert.ok(body.includes(source.url));
   const escapedTitle = page.title.replace(/&/g, '&amp;').replace(/</g, '&lt;');

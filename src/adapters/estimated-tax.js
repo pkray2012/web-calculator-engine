@@ -30,6 +30,11 @@ export function parseEstimatedTaxForm(values) {
   const withholding = money('withholding', 'Withholding this year');
   const priorYearTax = money('priorYearTax', 'Last year’s total tax', false, null);
   const priorYearAgi = money('priorYearAgi', 'Last year’s adjusted gross income', false, null);
+  // Without last year's AGI the 100%/110% choice cannot be made, and assuming
+  // 100% could tell a higher-income filer to pay too little (review A3-003).
+  if (priorYearTax !== null && priorYearAgi === null && !errors.priorYearAgi) {
+    errors.priorYearAgi = 'Enter last year’s adjusted gross income. It decides whether 100% or 110% of last year’s tax applies.';
+  }
   if (Object.keys(errors).length) return { ok: false, errors };
   return {
     ok: true,

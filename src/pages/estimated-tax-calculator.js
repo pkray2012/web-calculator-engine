@@ -74,7 +74,8 @@ ${calculatorShell({
 
   <section class="content-section" aria-labelledby="est-harbor-heading">
     <h2 id="est-harbor-heading">The safe-harbor rules</h2>
-    <p>You avoid the underpayment penalty if, by each due date, withholding and estimated payments together cover a quarter of the smaller of:</p>
+    <p>You avoid the underpayment penalty if, by each due date, withholding and estimated payments together add up to at least 25%, 50%, 75% and
+    then 100% of the smaller of:</p>
     <ul>
       <li>90% of this year's tax, or</li>
       <li>100% of last year's tax, or 110% if last year's adjusted gross income was over $150,000 ($75,000 if married filing separately).</li>

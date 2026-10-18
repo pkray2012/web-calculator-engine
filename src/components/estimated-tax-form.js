@@ -26,11 +26,11 @@ export function estimatedTaxForm(values = ESTIMATED_TAX_DEFAULTS, errors = {}, q
   return html`<form class="calc-form" id="calc-form" action="" method="get" novalidate>
   <div class="error-slot" id="calc-form-errors"></div>
   <h3 class="form-group-title">This year (2026)</h3>
-  ${field('currentYearTax', { label: 'Expected total tax', prefix: '$', hint: 'Federal income tax plus self-employment tax and other taxes on your return, minus credits. An estimate is fine.' })}
+  ${field('currentYearTax', { label: 'Expected total tax', prefix: '$', hint: 'Your estimate of the total tax line on your 2026 Form 1040: income tax after credits, plus self-employment tax and other taxes.' })}
   ${field('withholding', { label: 'Federal tax withheld', prefix: '$', optional: true, hint: 'From paychecks, pensions and other income for the whole year.' })}
   <h3 class="form-group-title">Last year (2025)</h3>
-  ${field('priorYearTax', { label: 'Total tax on last year’s return', prefix: '$', optional: true, hint: 'The total tax line on your 2025 Form 1040. Leave blank if you did not file.' })}
-  ${field('priorYearAgi', { label: 'Adjusted gross income on last year’s return', prefix: '$', optional: true })}
+  ${field('priorYearTax', { label: 'Total tax on last year’s return', prefix: '$', optional: true, hint: 'The total tax line on your 2025 Form 1040. Enter 0 if you owed no tax for the full year; leave blank if you do not know it.' })}
+  ${field('priorYearAgi', { label: 'Adjusted gross income on last year’s return', prefix: '$', optional: true, hint: 'Needed whenever you enter last year’s tax.' })}
   ${checkboxField({ id: ids.marriedFilingSeparately, name: 'marriedFilingSeparately', label: 'Married filing separately this year', checked: values.marriedFilingSeparately === 'on' })}
   <button class="button" type="submit">Calculate</button>
   <p class="quick-result" id="quick-result"${quick ? '' : ' hidden'}>${quick ?? ''}</p>

@@ -8,9 +8,11 @@
  * - Total run = treads × tread depth t.
  * - Angle = atan(r ÷ t).
  * - Step unit (one riser and one tread along the slope) u = √(r² + t²).
- * - Pitch-line length from the first to the top nosing = treads × u. The
- *   stringer board must be longer: the pitch line continues one more unit
- *   down to the floor, plus material for the top connection and cuts.
+ * - Pitch-line length from the first to the top nosing = treads × u.
+ * - Minimum stringer board length along the slope: the stringer spans a run
+ *   of treads × t and a rise of n × r − tread thickness, so its length along
+ *   the slope is (treads × t² + (n × r − d) × r) ÷ u. Add material for the
+ *   top connection and cuts.
  * - Bottom stringer riser = r − tread thickness, so the first step is not
  *   taller than the rest once treads are fastened on top.
  * All lengths are inches; precision is kept and rounded only for display.
@@ -33,7 +35,7 @@ function layout({ totalRise, treadDepth, treadThickness, risers, maxRiser, minTr
     angleDegrees: Math.atan2(riserHeight, treadDepth) * 180 / Math.PI,
     stepUnit: unit,
     pitchLength: treads * unit,
-    pitchLengthToFloor: risers * unit,
+    minimumBoardLength: (treads * treadDepth * treadDepth + (risers * riserHeight - treadThickness) * riserHeight) / unit,
     bottomStringerRiser: riserHeight - treadThickness,
     riserOk: riserHeight <= maxRiser + 1e-9,
     treadOk: treadDepth >= minTread - 1e-9,

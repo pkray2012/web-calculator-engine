@@ -6,9 +6,13 @@
 import { html } from '../lib/html.js';
 import { statGrid, dataTable } from './results.js';
 
-/** 7.7143 → "7 11/16 in"; 169.38 → "14 ft 1 3/8 in". Rounded to the nearest 1/16 in for a tape measure. */
-export function formatInches(value, { feet = false } = {}) {
-  let sixteenths = Math.round(value * 16);
+/**
+ * 7.7143 → "7 11/16 in"; 169.38 → "14 ft 1 3/8 in". Rounded to the nearest
+ * 1/16 in for a tape measure, or up with { up: true } so a value over a limit
+ * never displays as the limit itself.
+ */
+export function formatInches(value, { feet = false, up = false } = {}) {
+  let sixteenths = up ? Math.ceil(value * 16 - 1e-9) : Math.round(value * 16);
   const sign = sixteenths < 0 ? '−' : '';
   sixteenths = Math.abs(sixteenths);
   let whole = Math.floor(sixteenths / 16);
@@ -33,7 +37,7 @@ const check = (ok) => (ok ? 'Within limit' : 'Over limit');
 
 export function stairResults({ result: s }) {
   const stats = [
-    { label: 'Riser height', value: formatInches(s.riserHeight), primary: true, note: `${s.risers} risers of ${decimal(s.riserHeight)} · ${check(s.riserOk)} (${s.maxRiser} in max)` },
+    { label: 'Riser height', value: formatInches(s.riserHeight, { up: !s.riserOk }), primary: true, note: `${s.risers} risers of ${decimal(s.riserHeight)} · ${check(s.riserOk)} (${s.maxRiser} in max)` },
     { label: 'Treads', value: String(s.treads), note: `${formatInches(s.treadDepth)} deep · ${s.treadOk ? 'Within limit' : 'Under the minimum'} (${s.minTread} in min)` },
     { label: 'Total run', value: formatInches(s.totalRun, { feet: true }), note: `${s.treads} × ${formatInches(s.treadDepth)}` },
     { label: 'Stair angle', value: `${s.angleDegrees.toFixed(1)}°`, note: 'atan(riser ÷ tread)' }
@@ -59,11 +63,12 @@ export function stairResults({ result: s }) {
       { item: 'Rise and run of each step (framing square settings)', value: `${formatInches(s.riserHeight)} × ${formatInches(s.treadDepth)}` },
       { item: 'One step along the slope', value: formatInches(s.stepUnit) },
       { item: `Pitch line, bottom nosing to top nosing (${s.treads} steps)`, value: formatInches(s.pitchLength, { feet: true }) },
-      { item: 'Pitch line extended to the floor', value: formatInches(s.pitchLengthToFloor, { feet: true }) },
+      { item: 'Minimum stringer board length along the slope', value: formatInches(s.minimumBoardLength, { feet: true, up: true }) },
       { item: 'Bottom riser cut on the stringer (riser − tread thickness)', value: formatInches(s.bottomStringerRiser) }
     ]
   })}
-  <p class="note">Buy stringer boards longer than the pitch line extended to the floor, to leave room for the top connection and the cuts.
+  <p class="note">The minimum board length covers the stringer from the floor to the top riser; buy longer stock to leave room for the top
+  connection and the cuts.
   ${s.handrailExpected ? `With ${s.risers} risers, plan for a handrail; the IRC requires one on flights with four or more risers.` : ''}</p>
 </section>
 <section class="result-block" aria-labelledby="options-heading">
@@ -80,7 +85,7 @@ export function stairResults({ result: s }) {
     ],
     rows: s.options.map((option) => ({
       risers: `${option.risers}${option.risers === s.risers ? ' (shown above)' : ''}`,
-      riser: formatInches(option.riserHeight),
+      riser: formatInches(option.riserHeight, { up: !option.riserOk }),
       run: formatInches(option.totalRun, { feet: true }),
       angle: `${option.angleDegrees.toFixed(1)}°`,
       ok: check(option.riserOk)

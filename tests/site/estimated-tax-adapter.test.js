@@ -14,6 +14,12 @@ test('defaults calculate the example: $3,250 a quarter', () => {
   assert.equal(run.input.marriedFilingSeparately, false);
 });
 
+test('last year’s AGI is required once last year’s tax is entered (review A3-003)', () => {
+  const parsed = parseEstimatedTaxForm({ ...ESTIMATED_TAX_DEFAULTS, priorYearAgi: '' });
+  assert.equal(parsed.ok, false);
+  assert.match(parsed.errors.priorYearAgi, /110%/);
+});
+
 test('blank prior-year fields mean "not entered", not zero tax', () => {
   const run = runEstimatedTaxCalculator({ ...ESTIMATED_TAX_DEFAULTS, priorYearTax: '', priorYearAgi: '' });
   assert.equal(run.ok, true);

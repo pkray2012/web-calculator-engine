@@ -66,10 +66,11 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="stair-stringer-heading">
     <h2 id="stair-stringer-heading">Stringer length</h2>
     <p>Each step adds one riser and one tread along the slope: √(${s.riserHeight.toFixed(3)}² + ${s.treadDepth}²) = ${s.stepUnit.toFixed(3)} in. The pitch line from the
-    bottom nosing to the top nosing covers the ${s.treads} treads, ${formatInches(s.pitchLength, { feet: true })}, and extended to the floor it is
-    ${formatInches(s.pitchLengthToFloor, { feet: true })}.</p>
-    <p>A common shortcut, the diagonal of the total rise and total run (${formatInches(naive, { feet: true })} here), is not the stringer's slope: there is
-    one more riser than tread, so that diagonal is steeper than the stairs and gives the wrong length.</p>
+    bottom nosing to the top nosing covers the ${s.treads} treads, ${formatInches(s.pitchLength, { feet: true })}. The board itself must also reach from the
+    floor to the top riser: the stringer spans ${formatInches(s.totalRun, { feet: true })} of run and ${formatInches(s.totalRise - s.treadThickness, { feet: true })} of rise,
+    which along the slope is at least ${formatInches(s.minimumBoardLength, { feet: true, up: true })}, before any allowance for the top connection.</p>
+    <p>A common shortcut is the diagonal of the total rise and total run, ${formatInches(naive, { feet: true })} here. It gives a similar length, but it is
+    not the stair's slope (${(Math.atan2(s.totalRise, s.totalRun) * 180 / Math.PI).toFixed(1)}° instead of ${s.angleDegrees.toFixed(1)}°), so do not use it to mark the cuts.</p>
     <p>Treads fastened on top of the stringer raise every step by their thickness, but only the bottom step starts from the floor. Cutting
     ${formatInches(s.treadThickness)} off the bottom of the stringer keeps the first step the same height as the rest.</p>
   </section>
@@ -119,7 +120,7 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="stair-method-heading">
     <h2 id="stair-method-heading">Methodology and testing</h2>
     <p>Automated tests check a hand-worked 9 ft stair, rises that are exact multiples of the maximum riser (so no extra step is added by rounding),
-    that the pitch line differs from the rise-and-run diagonal, and 2,000 random rises for the fewest risers within the limit.
+    that the board length equals the stringer's span projected onto the slope, and 2,000 random rises for the fewest risers within the limit.
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 

@@ -16,17 +16,30 @@ test('hand-checked: 108 in rise, 10.5 in treads, 1 in tread stock', () => {
   close(s.angleDegrees, 36.30, 0.005);
   close(s.stepUnit, Math.sqrt((108 / 14) ** 2 + 10.5 ** 2));
   close(s.pitchLength, 169.38, 0.005);
-  close(s.pitchLengthToFloor, 14 * s.stepUnit);
+  // Span: run 136.5 in, rise 108 − 1 = 107 in, projected onto the slope (review A3-001).
+  close(s.minimumBoardLength, (136.5 * 10.5 + 107 * (108 / 14)) / s.stepUnit);
+  close(s.minimumBoardLength, 173.36, 0.005);
   close(s.bottomStringerRiser, 108 / 14 - 1);
   assert.equal(s.riserOk, true);
   assert.equal(s.treadOk, true);
   assert.equal(s.handrailExpected, true);
 });
 
-test('pitch length is not the total-rise × total-run diagonal (audit A-006)', () => {
+test('the rise-and-run diagonal is a different slope from the stair (audit A-006)', () => {
   const s = calculateStairs({ totalRise: 108, treadDepth: 10.5 });
-  const wrongDiagonal = Math.hypot(108, 136.5); // 174.06 in, at 38.35°, not the 36.30° stair slope
-  assert.ok(Math.abs(s.pitchLength - wrongDiagonal) > 4);
+  const diagonalAngle = Math.atan2(108, 136.5) * 180 / Math.PI; // 38.35°
+  assert.ok(diagonalAngle - s.angleDegrees > 2);
+  assert.ok(Math.abs(s.pitchLength - Math.hypot(108, 136.5)) > 4);
+});
+
+test('minimum board length equals the span projected onto the stair slope', () => {
+  for (const [rise, tread, thick] of [[108, 10.5, 1], [96, 11, 0], [30, 10, 1.5]]) {
+    const s = calculateStairs({ totalRise: rise, treadDepth: tread, treadThickness: thick });
+    const ux = tread / s.stepUnit;
+    const uy = s.riserHeight / s.stepUnit;
+    close(s.minimumBoardLength, s.totalRun * ux + (rise - thick) * uy);
+    assert.ok(s.minimumBoardLength > s.pitchLength);
+  }
 });
 
 test('a rise that is an exact multiple of the maximum riser is not given an extra step', () => {
