@@ -50,7 +50,7 @@ test('filing status changes only the Additional Medicare Tax', () => {
 
 test('the form exposes every field id with a label', () => {
   const markup = String(selfEmploymentTaxForm());
-  for (const id of ['se-net-profit', 'se-w2-wages', 'se-spouse-w2-wages']) assert.match(markup, new RegExp(`<label[^>]+for="${id}"`));
+  for (const id of ['se-net-profit', 'se-w2-wages', 'se-w2-medicare-wages', 'se-spouse-w2-wages']) assert.match(markup, new RegExp(`<label[^>]+for="${id}"`));
   for (const id of Object.values(SE_TAX_FIELD_IDS)) assert.ok(markup.includes(id), id);
   assert.match(markup, /id="se-tax-year-2026"[^>]*checked/);
 });
@@ -100,4 +100,32 @@ test('spouse wages are ignored, and not validated, unless filing jointly', () =>
   const joint = parseSelfEmploymentTaxForm({ ...SE_TAX_DEFAULTS, spouseW2Wages: 'abc', filingStatus: 'marriedJointly' });
   assert.equal(joint.ok, false);
   assert.ok(joint.errors.spouseW2Wages);
+});
+
+test('Medicare-only wages do not use up the Social Security wage base (review A2-001)', () => {
+  // A job not covered by Social Security: W-2 box 3 is $0, box 5 is $100,000.
+  const r = runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, netProfit: '100000', w2Wages: '0', w2MedicareWages: '100000' }).view.result;
+  assert.ok(Math.abs(r.socialSecurityTax - 92350 * 0.124) < 1e-9); // $11,451.40, not $10,478.00
+  assert.equal(r.additionalMedicareTax, 0); // 92,350 is under the 100,000 of threshold left
+});
+
+test('blank Medicare wages default to the Social Security wages', () => {
+  const run = runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, w2Wages: '120000', w2MedicareWages: '' });
+  assert.equal(run.input.w2MedicareWages, 120000);
+});
+
+test('wages above the threshold are called out instead of saying no Additional Medicare Tax applies (review A2-002)', async () => {
+  const { selfEmploymentTaxResults } = await import('../../src/components/self-employment-tax-results.js');
+  const view = runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, netProfit: '50000', w2Wages: '184500', w2MedicareWages: '300000' }).view;
+  const markup = String(selfEmploymentTaxResults(view));
+  assert.ok(markup.includes('Form 8959 Part I'));
+  assert.ok(markup.includes('$100,000.00 of wages'));
+});
+
+test('half-cent amounts round up and under-$400 wording never shows $400.00 (review A2-003, A2-004)', async () => {
+  const { selfEmploymentTaxResults } = await import('../../src/components/self-employment-tax-results.js');
+  const mixed = String(selfEmploymentTaxResults(runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, netProfit: '150000', w2Wages: '100000' }).view));
+  assert.ok(mixed.includes('$346.73'));
+  const small = String(selfEmploymentTaxResults(runSelfEmploymentTaxCalculator({ ...SE_TAX_DEFAULTS, netProfit: '433.13' }).view));
+  assert.ok(small.includes('Net earnings of $399.99 are under $400'));
 });

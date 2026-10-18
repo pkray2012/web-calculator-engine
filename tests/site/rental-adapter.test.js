@@ -75,3 +75,17 @@ test('the calculator stays a draft: not live and never linked from live pages', 
     assert.ok(!relatedCalculators(calc.slug).some((related) => related.slug === entry.slug));
   }
 });
+
+test('negative percentages and ratios use a true minus sign (review A2-007)', () => {
+  const markup = String(rentalResults(runRentalCalculator({ ...RENTAL_DEFAULTS, monthlyRent: '500' }).view));
+  assert.ok(!/>-\d|\s-\d/.test(markup.replace(/<[^>]*>/g, ' ')), 'found an ASCII hyphen-minus before a number');
+  assert.ok(markup.includes('−'));
+});
+
+test('no cash invested shows an explanation, not a division by $0.00 (review A2-008)', () => {
+  const view = runRentalCalculator({ ...RENTAL_DEFAULTS, downPaymentPercent: '0', closingCosts: '0', repairCosts: '0' }).view;
+  assert.equal(view.result.cashOnCash, null);
+  const markup = String(rentalResults(view));
+  assert.ok(!markup.includes('÷ $0.00 invested'));
+  assert.ok(markup.includes('No cash invested'));
+});

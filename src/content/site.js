@@ -283,8 +283,9 @@ export const CALCULATORS = Object.freeze([
     related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator']
   },
   {
-    // Draft: page module, engine and tests exist, but it is not built until its
-    // IRS and SSA sources are verified directly (Codex audit ZA-002).
+    // Draft: page module, engine and tests exist, but it is not built until
+    // Codex clears ZA-002. Codex read Topics 554 and 751 and the 2025 Schedule SE
+    // and Form 8959 instructions directly (audit/codex-vm-20261018, a6a58a7).
     slug: 'self-employment-tax-calculator',
     path: '/calculators/self-employment-tax-calculator/',
     name: 'Self-Employment Tax Calculator',

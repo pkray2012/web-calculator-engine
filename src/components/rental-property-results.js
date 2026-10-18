@@ -7,15 +7,16 @@ import { html } from '../lib/html.js';
 import { formatCurrency } from '../lib/format.js';
 import { statGrid, dataTable } from './results.js';
 
-const pct = (ratio, digits = 2) => (ratio === null ? '—' : `${(ratio * 100).toFixed(digits)}%`);
+const minus = (text) => text.replace(/^-/, '−');
+const pct = (ratio, digits = 2) => (ratio === null ? '—' : minus(`${(ratio * 100).toFixed(digits)}%`));
 const signed = (value) => (value < -0.005 ? `−${formatCurrency(-value)}` : formatCurrency(value));
 
 export function rentalResults({ input, result: r }) {
   const stats = [
     { label: 'Cash flow per month', value: signed(r.monthlyCashFlow), primary: true, note: `${signed(r.annualCashFlow)} per year after the loan payment` },
-    { label: 'Cash-on-cash return', value: pct(r.cashOnCash), note: `First-year cash flow ÷ ${formatCurrency(r.cashInvested)} invested` },
-    { label: 'Cap rate', value: pct(r.capRate), note: `${formatCurrency(r.netOperatingIncome)} NOI ÷ ${formatCurrency(r.purchasePrice)} price` },
-    { label: 'DSCR', value: r.dscr === null ? 'No loan' : r.dscr.toFixed(2), note: r.dscr === null ? 'All-cash purchase' : 'NOI ÷ yearly loan payments' }
+    { label: 'Cash-on-cash return', value: pct(r.cashOnCash), note: r.cashOnCash === null ? 'No cash invested, so there is no return to divide by' : `First-year cash flow ÷ ${formatCurrency(r.cashInvested)} invested` },
+    { label: 'Cap rate', value: pct(r.capRate), note: `${signed(r.netOperatingIncome)} NOI ÷ ${formatCurrency(r.purchasePrice)} price` },
+    { label: 'DSCR', value: r.dscr === null ? 'No loan' : minus(r.dscr.toFixed(2)), note: r.dscr === null ? 'All-cash purchase' : 'NOI ÷ yearly loan payments' }
   ];
   let note;
   if (r.breakEvenRent === null) note = 'Vacancy and percentage costs take all of the income, so no rent breaks even.';
@@ -49,7 +50,7 @@ export function rentalResults({ input, result: r }) {
       { item: 'Cash flow', amount: signed(r.annualCashFlow) }
     ]
   })}
-  <p class="note">Gross rent multiplier: ${r.grossRentMultiplier === null ? '—' : r.grossRentMultiplier.toFixed(2)}. Operating costs are
+  <p class="note">Gross rent multiplier: ${r.grossRentMultiplier === null ? '—' : minus(r.grossRentMultiplier.toFixed(2))}. Operating costs are
   ${pct(r.expenseRatio, 1)} of collected income. Cash invested: ${formatCurrency(r.downPayment)} down + ${formatCurrency(input.closingCosts)} closing +
   ${formatCurrency(input.repairCosts)} repairs.</p>
 </section>`;

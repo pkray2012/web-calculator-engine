@@ -5,7 +5,8 @@
  */
 
 import { html } from '../lib/html.js';
-import { formatCurrency } from '../lib/format.js';
+import { formatCurrency as formatRounded } from '../lib/format.js';
+import { roundCents } from '../calculators/sales-tax.js';
 import { selfEmploymentTaxForm } from '../components/self-employment-tax-form.js';
 import { selfEmploymentTaxResults, selfEmploymentTaxQuickResult } from '../components/self-employment-tax-results.js';
 import { relatedLinks, sourcesSection } from '../components/layout.js';
@@ -16,6 +17,9 @@ import { calculateSelfEmploymentTax, SOCIAL_SECURITY_WAGE_BASE, TAX_YEARS } from
 import { findCalculator, relatedCalculators } from '../content/site.js';
 
 const IRS = 'Internal Revenue Service';
+
+// Half-up to the cent, matching the results panel.
+const formatCurrency = (value) => formatRounded(roundCents(value));
 
 /**
  * Read directly by the Codex audit on 2026-10-18 (audit/codex-vm-20261018):
@@ -71,7 +75,7 @@ export function selfEmploymentTaxPage() {
 <header class="page-header">
   <h1>${calculator.name}</h1>
   <p class="lede">Work out the Social Security and Medicare tax you owe on freelance, gig or small-business profit, the half you can deduct,
-  and whether the 0.9% Additional Medicare Tax applies. Wages from a job are taken into account. Your inputs stay in your browser.</p>
+  and the 0.9% Additional Medicare Tax on that profit. Wages from a job are taken into account. Your inputs stay in your browser.</p>
 </header>
 
 ${calculatorShell({
@@ -156,8 +160,10 @@ ${calculatorShell({
     <ul>
       <li>Uses the regular Schedule SE method for tax years ${TAX_YEARS.join(' and ')}, with Social Security wage bases of
       ${TAX_YEARS.map((y) => `${formatCurrency(SOCIAL_SECURITY_WAGE_BASE[y])} (${y})`).join(' and ')}.</li>
-      <li>Your W-2 wages are treated as both Social Security and Medicare wages. If your W-2 box 3 and box 5 differ (for example, tips or wages above
-      the wage base), results can differ slightly.</li>
+      <li>Social Security wages are W-2 boxes 3 and 7; Medicare wages are box 5. If you leave Medicare wages blank, they are taken to be the same as
+      Social Security wages, which is wrong if your job was not covered by Social Security or paid more than the wage base.</li>
+      <li>Only the Additional Medicare Tax on self-employment income is calculated. If your wages alone are above the threshold, the 0.9% on those
+      wages (Form 8959 Part I) is not included.</li>
       <li>Not covered: the farm and nonfarm optional methods, church employee income, Conservation Reserve Program payments, income tax and state taxes.</li>
       <li>For married couples, self-employment tax is figured separately for each spouse with business income, and only your own wages reduce your
       Social Security wage base. On a joint return, your spouse's wages count toward the $250,000 Additional Medicare Tax threshold. If both spouses

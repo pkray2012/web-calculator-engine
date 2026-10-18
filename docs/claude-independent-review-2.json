@@ -1,0 +1,117 @@
+{
+  "reviewer": "Claude (independent reviewer agent, Anthropic; standing in while OpenAI Codex is offline; not Codex)",
+  "commit": "7952f57 (branch claude/compassionate-dirac-cv1ipd, base de965bd)",
+  "reviewed_at": "2026-10-18T20:56:01Z",
+  "findings": [
+    {
+      "id": "A2-001",
+      "severity": "MEDIUM",
+      "category": "tax-semantics",
+      "affected_calculator": "self-employment-tax",
+      "path": "src/components/self-employment-tax-form.js",
+      "line": 34,
+      "evidence": "The W-2 field asks for 'Medicare wages, W-2 box 5' and the adapter (src/adapters/self-employment-tax.js:147) passes it as socialSecurityWages, which reduces the wage base exactly like Schedule SE line 8a. Line 8a is W-2 boxes 3 + 7 (plus tier 1 railroad retirement compensation), with lines 8b/8c adding Form 4137 tips and Form 8919 wages (IRS Schedule SE, corroborated by search only). Box 5 can be much larger than box 3, e.g. Medicare-only state or local government employees (box 3 = 0). Reproduced: $100,000 of Medicare-only wages and $100,000 profit for 2026 give SS tax $10,478.00 from the calculator vs $11,451.40 correct (12.4% x 92,350), an understatement of $973.40. The page copy (src/pages/self-employment-tax-calculator.js:159-160) says results 'can differ slightly', which is not true in that case.",
+      "recommendation": "Ask for Social Security wages (box 3 + box 7, plus tier 1 RRTA compensation) and Medicare wages (box 5) separately, defaulting Medicare wages to the SS figure, or at least change the hint to box 3 + box 7 and reword the assumption to name the Medicare-only employee case and its size.",
+      "status": "open"
+    },
+    {
+      "id": "A2-002",
+      "severity": "MEDIUM",
+      "category": "misleading-copy",
+      "affected_calculator": "self-employment-tax",
+      "path": "src/components/self-employment-tax-results.js",
+      "line": 15,
+      "evidence": "Only Form 8959 Part II (Additional Medicare Tax on SE income) is computed. Part I tax on wages above the threshold is ignored, yet when the Part II amount is 0 the card reads 'None: under the $200,000.00 threshold'. Reproduced: W-2 wages $300,000 with profit $0, and W-2 wages $250,000 with profit $433, both show 'None: under the $200,000.00 threshold' although 0.9% applies to the wages above $200,000 (Part I). The lede (src/pages/self-employment-tax-calculator.js:74) promises to show 'whether the 0.9% Additional Medicare Tax applies'.",
+      "recommendation": "Label the figure 'Additional Medicare Tax on self-employment income' and replace the 'None: under the threshold' note with a condition-aware message, e.g. when Medicare wages exceed the threshold, say that Additional Medicare Tax on wages (Form 8959 Part I) applies and is not shown. Narrow the lede to match.",
+      "status": "open"
+    },
+    {
+      "id": "A2-003",
+      "severity": "LOW",
+      "category": "rounding-display",
+      "affected_calculator": "self-employment-tax",
+      "path": "src/pages/self-employment-tax-calculator.js",
+      "line": 121,
+      "evidence": "Exact half-cent values are rounded down by binary floating point at display: the W-2 example Additional Medicare 0.009 x 38,525 = 346.725 shows $346.72 (hand rounding $346.73); the table row for $150,000 shows SE tax $21,194.32 for an exact 21,194.325 ($21,194.33). Meanwhile Medicare 4,017.225 shows $4,017.23 and 277.875 shows $277.88, so a reader hand-checking sees inconsistent rounding. Independent Decimal recomputation in review-work/recompute.py.",
+      "recommendation": "Round to cents with a decimal-safe half-up (e.g. Math.round((x + Number.EPSILON*x) * 100)/100 or scaled integer arithmetic) in formatCurrency or before display; or pick worked examples without half-cent results.",
+      "status": "open"
+    },
+    {
+      "id": "A2-004",
+      "severity": "LOW",
+      "category": "boundary-copy",
+      "affected_calculator": "self-employment-tax",
+      "path": "src/components/self-employment-tax-results.js",
+      "line": 19,
+      "evidence": "Profit $433.13 gives net earnings 399.996, displayed as 'Net earnings of $400.00 are under $400, so no self-employment tax is due.' The math is right (399.996 < 400) but the sentence contradicts itself on screen.",
+      "recommendation": "Show net earnings with floor-to-cent in this message (e.g. $399.99), or phrase it 'are less than $400 ($399.996)'.",
+      "status": "open"
+    },
+    {
+      "id": "A2-005",
+      "severity": "LOW",
+      "category": "source-provenance",
+      "affected_calculator": "self-employment-tax",
+      "path": "src/pages/self-employment-tax-calculator.js",
+      "line": 21,
+      "evidence": "The page comment claims the sources were 'Read directly by the Codex audit on 2026-10-18', while src/content/site.js:287 says the page is not built 'until its IRS and SSA sources are verified directly (Codex audit ZA-002)'. No SSA source is cited; the 2026 $184,500 figure is attributed to IRS Topic 751. This reviewer could not open the IRS/SSA pages; web-search snippets corroborate $176,100 (2025), $184,500 (2026) and Topic 751 stating the 2026 cap, but that is not a direct read.",
+      "recommendation": "Reconcile the two comments; record who read which page and when; consider citing SSA's contribution and benefit base page for the wage bases before going live.",
+      "status": "open"
+    },
+    {
+      "id": "A2-006",
+      "severity": "LOW",
+      "category": "test-independence",
+      "affected_calculator": "self-employment-tax",
+      "path": "tests/self-employment-tax.test.js",
+      "line": 12,
+      "evidence": "The 'independent line-by-line reference' mirrors the engine's own structure and constants (same 400 test on 0.9235 x profit, same min/max) and medicareWages is always >= socialSecurityWages in the random cases, so it cannot catch a shared semantic error such as A2-001. The page's methodology claim (src/pages/self-employment-tax-calculator.js:172-174) is literally true but overstates assurance.",
+      "recommendation": "Add fixed cases taken from published IRS worked examples or a Schedule SE filled by hand, including medicareWages > socialSecurityWages with SS wages 0.",
+      "status": "open"
+    },
+    {
+      "id": "A2-007",
+      "severity": "LOW",
+      "category": "format-consistency",
+      "affected_calculator": "rental-property",
+      "path": "src/components/rental-property-results.js",
+      "line": 10,
+      "evidence": "Negative values use two different minus signs: cash flow and cost lines use U+2212 via signed(), but percentages use toFixed ('-0.70%', '-25.63%', '-1.70%') and the cap-rate note uses formatCurrency ('-$5,100.00 NOI'). Same on the page (src/pages/rental-property-calculator.js:21, cash-on-cash '-0.70%'). DSCR prints '-0.28'.",
+      "recommendation": "Route percentages, ratios and the NOI note through one signed formatter so every negative uses the same sign.",
+      "status": "open"
+    },
+    {
+      "id": "A2-008",
+      "severity": "LOW",
+      "category": "edge-case-copy",
+      "affected_calculator": "rental-property",
+      "path": "src/components/rental-property-results.js",
+      "line": 16,
+      "evidence": "With 0% down and no closing or repair costs, cash invested is $0: the card shows '—' with the note 'First-year cash flow ÷ $0.00 invested'.",
+      "recommendation": "When cashInvested is 0, use a note such as 'No cash invested, so cash-on-cash return is undefined'.",
+      "status": "open"
+    },
+    {
+      "id": "A2-009",
+      "severity": "LOW",
+      "category": "copy-accuracy",
+      "affected_calculator": "rental-property",
+      "path": "src/pages/rental-property-calculator.js",
+      "line": 53,
+      "evidence": "The NOI formula 'NOI = rent × 12 × (1 − vacancy) − operating costs' and the assumption at line 100 ('percentages of rent actually collected') omit other monthly income, which the engine includes in GSI/EGI and in the percentage-cost base (src/calculators/rental-property.js:79-91). Vacancy also applies to other income.",
+      "recommendation": "Write '(rent + other income) × 12 × (1 − vacancy)' and 'percentages of income actually collected'.",
+      "status": "open"
+    },
+    {
+      "id": "A2-010",
+      "severity": "LOW",
+      "category": "scope-shared-file",
+      "affected_calculator": "shared (loan-payment engine)",
+      "path": "src/calculators/loan-payment.js",
+      "line": 35,
+      "evidence": "The branch range de965bd..HEAD also contains commit a47af1e (ZA-001 fix), which changes the shared monthlyPayment formula used by about 11 live calculators (mortgage, refinance, auto, personal, HELOC, home-equity, affordability, payoff, balance transfer, credit card payoff) and loosens the tolerance in tests/mortgage-payment.test.js:72,78 from 1e-8 to 1e-7. I checked the math: P·r/(−expm1(−n·log1p r)) equals the annuity formula; max |new − old| over P to $100M, rates 0.01–36%, terms 12–480 is $0.00006, and tiny rates now give finite P/n instead of Infinity. Behaviour change is benign and is a correctness improvement, but it is not part of the two drafts and touches live pages.",
+      "recommendation": "Keep it, but report it as its own change (ZA-001) separately from the draft calculators, and have the live calculators' browser/visual tests rerun before the next deploy.",
+      "status": "open"
+    }
+  ]
+}

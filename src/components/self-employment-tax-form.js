@@ -12,6 +12,7 @@ export const SE_TAX_FIELD_IDS = Object.freeze({
   taxYear: 'se-tax-year',
   netProfit: 'se-net-profit',
   w2Wages: 'se-w2-wages',
+  w2MedicareWages: 'se-w2-medicare-wages',
   filingStatus: 'se-filing-status',
   spouseW2Wages: 'se-spouse-w2-wages'
 });
@@ -31,7 +32,8 @@ export function selfEmploymentTaxForm(values = SE_TAX_DEFAULTS, errors = {}, qui
     options: TAX_YEARS.map((year) => ({ value: String(year), label: String(year), id: `se-tax-year-${year}` }))
   })}
   ${field('netProfit', { label: 'Net profit from self-employment', prefix: '$', hint: 'Business income minus business expenses for the year, as on Schedule C (or your share of partnership self-employment earnings).' })}
-  ${field('w2Wages', { label: 'W-2 wages from a job', prefix: '$', optional: true, hint: 'Your own Medicare wages, W-2 box 5, from any employer, for the same year. Leave at 0 if you had no job.' })}
+  ${field('w2Wages', { label: 'W-2 Social Security wages from a job', prefix: '$', optional: true, hint: 'W-2 box 3 plus box 7 (tips), from all employers, for the same year. Leave at 0 if you had no job.' })}
+  ${field('w2MedicareWages', { label: 'W-2 Medicare wages', prefix: '$', optional: true, hint: 'W-2 box 5. Leave blank if it is the same as box 3; it differs if you earned more than the wage base or if your job was not covered by Social Security.' })}
   ${radioField({
     id: ids.filingStatus, name: 'filingStatus', legend: 'Filing status', value: values.filingStatus,
     hint: 'Only affects the 0.9% Additional Medicare Tax threshold.',

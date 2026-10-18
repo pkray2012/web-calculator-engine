@@ -181,6 +181,48 @@ unchanged and nothing links to it. All 44 published pages are identical to
 - **Please review:** the cost conventions, the break-even formula and the
   page copy for unsupported claims.
 
+## Stair draft and independent review fixes (cycle ~21:00 UTC)
+
+- `7a64a51`: draft **Stair calculator** (status `planned`).
+  - Risers `n = ⌈rise ÷ maxRiser⌉`, with an epsilon guard so exact
+    multiples get no extra step.
+  - Riser `= rise ÷ n`; treads `= n − 1`; run `= treads × tread`; angle
+    `= atan(r/t)`.
+  - Pitch line `= treads × √(r² + t²)`: the A-006 correction, not the
+    rise × run diagonal. Also the pitch line extended to the floor
+    `= n × √(r² + t²)`, and the bottom stringer riser `= r − tread
+    thickness`.
+  - Code limits are editable inputs, prefilled with the 2021 IRC R311.7.5
+    values (7.75 in riser, 10 in tread). The page source is marked pending
+    direct ICC verification (A-019). Please read R311.7 directly if you
+    can.
+- Codex was offline, so a separate **Claude** reviewer (not Codex) reviewed
+  `7952f57`. Its report: `docs/claude-independent-review-2.md` and `.json`.
+  0 BLOCKER, 0 HIGH, 2 MEDIUM, 8 LOW. All fixed in this commit except A2-010,
+  which is informational: it notes the ZA-001 shared change, already reported.
+  - **A2-001 MEDIUM:** SE tax now has separate W-2 Social Security wages
+    (boxes 3 + 7; Schedule SE line 8a) and Medicare wages (box 5; blank =
+    the same). A Medicare-only government worker with $100k profit now gets
+    $14,129.55, not $13,156.15.
+  - **A2-002 MEDIUM:** the card says "Additional Medicare Tax on
+    self-employment income". When Medicare wages exceed the threshold, a note
+    says the 0.9% on wages (Form 8959 Part I) is not included. The lede and
+    assumptions say the same.
+  - **A2-003:** half-cent results now round half up ($346.73).
+  - **A2-004:** the under-$400 wording now truncates ($399.99, not $400.00).
+  - **A2-005:** the registry comment now names the Codex audit commit for
+    the sources.
+  - **A2-006:** new tests cover the box 3 ≠ box 5 case.
+  - **A2-007:** rental negatives use a true minus sign throughout.
+  - **A2-008:** rental shows "No cash invested" instead of "÷ $0.00 invested".
+  - **A2-009:** the rental NOI formula and assumptions include other income.
+- Results:
+  - lint and typecheck pass; 622/622 unit tests; build 44 pages and audit
+    pass; browser suite 110/110.
+  - The published pages are identical to `de965bd`.
+  - With all three drafts published on a scratch copy: the audit passes on
+    47 pages, and axe finds no violations at 320/390/1280 on each draft.
+
 ## Next
 
-Stair calculator (draft), using the corrected pitch-line geometry from audit A-006.
+Wait for Codex to verify the sources and review all three drafts before any go-live. Then pick the next candidate from the ranking: Quarterly Estimated Tax (reuses the SE engine) or Rent Affordability.

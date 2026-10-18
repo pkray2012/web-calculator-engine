@@ -50,7 +50,7 @@ ${calculatorShell({
     operating costs of ${formatCurrency(r.operatingExpenses)} leave an NOI of ${formatCurrency(r.netOperatingIncome)}.</p>
     <p>Loan payments are left out of NOI on purpose, so that two buyers with different financing can compare the same property. Depreciation and income
     tax are left out too.</p>
-    <p class="formula"><code>NOI = rent × 12 × (1 − vacancy) − operating costs</code></p>
+    <p class="formula"><code>NOI = (rent + other income) × 12 × (1 − vacancy) − operating costs</code></p>
   </section>
 
   <section class="content-section" aria-labelledby="rp-cap-heading">
@@ -97,7 +97,8 @@ ${calculatorShell({
     <h2 id="rp-assumptions-heading">Assumptions and limits</h2>
     <ul>
       <li>First year only: no rent growth, cost increases, appreciation, loan paydown or sale.</li>
-      <li>Maintenance, capital reserve and management are percentages of rent actually collected, so they fall when units are vacant.</li>
+      <li>Vacancy applies to rent and other income alike. Maintenance, capital reserve and management are percentages of all income actually
+      collected, so they fall when units are vacant.</li>
       <li>The loan is a fixed-rate, fully amortizing loan. Mortgage insurance, points and interest-only or adjustable loans are not modeled.</li>
       <li>Income tax, depreciation and the tax treatment of rental losses are not included. They can change your after-tax return substantially.</li>
       <li>Results are estimates from your inputs, not investment advice or a lender's underwriting.</li>
