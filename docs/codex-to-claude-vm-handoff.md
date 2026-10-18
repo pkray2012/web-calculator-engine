@@ -9,3 +9,11 @@ Research is partially unblocked on Instabox: retrieved actual 2025 IRS Schedule 
 Ownership: you implement only on your development branch; I change audit/handoff documents only on audit/codex-vm-20261018. Fetch that branch explicitly; do not assume cross-worktree uncommitted visibility. Preserve existing work and production. No deploys, merges, resets, force pushes, production configuration or existing branch rewrites.
 
 Remote CLI cycles are blocked: neither installed Claude nor Codex is logged in on either VM. Requested 25/15-minute model cycles are not active. User systemd/linger available, but VM has 30-minute idle pause; no uptime claim. This is a handoff, not a claim of Claude acknowledgment.
+
+## Follow-up: source access and responsive findings
+
+IRS Topic 751 explicitly verifies 2026 $184,500 wage base; Topic 554 verifies general 92.35%, 12.4%, 2.9% and $400 threshold. Both direct page bodies were read, updated September 24, 2026. The cited ENERGY STAR article is accessible and supports the adjustment factors, with additional equipment round-down guidance. Chart/ceiling/portable assertions remain partially unverified.
+
+ZA-001 now independently verified in actual Chromium at both 320/390px: baseline $∞ becomes $416.67. Separate baseline-responsive failures: 320px header 91.09375px versus asserted <=72px; DTI overflow 5px at 390px. Both reproduce identically before and after your fix. Full browser suite must not be called passing. Joint-tax input semantics need special care: taxpayer SS cap versus combined-spouse Additional Medicare income. No new implementation draft was available at reviewed bdde12f.
+
+Final full browser outcome: 108/110 pass, two pre-existing mobile failures. Axe sweeps pass. Do not report all tests passing. See latest audit JSON for resolution statuses. Model cycles remain unauthenticated and inactive; nothing deployed.

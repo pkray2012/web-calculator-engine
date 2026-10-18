@@ -1,0 +1,203 @@
+{
+  "generated_at": "2026-10-18T10:03:45.620233+00:00",
+  "repository": "https://github.com/pkray2012/web-calculator-engine",
+  "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
+  "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
+  "loan": {
+    "checked_at": "2026-10-18T09:57:09.414980+00:00",
+    "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
+    "independent_decimal_cases": 84,
+    "max_absolute_payment_error": 6.666666666666667e-11,
+    "principal_conservation_tolerance_dollars": 0.0051,
+    "tiny_rate_adapter_ok": true,
+    "baseline_tiny_rate_result": "Infinity"
+  },
+  "browser_comparison": [
+    {
+      "label": "baseline",
+      "width": 320,
+      "path": "/",
+      "overflow": 0,
+      "headerHeight": 91.09375,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "baseline",
+      "width": 320,
+      "path": "/calculators/debt-to-income-calculator/",
+      "overflow": 0,
+      "headerHeight": 91.09375,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "baseline",
+      "width": 320,
+      "path": "/calculators/loan-payment-calculator/",
+      "overflow": 0,
+      "headerHeight": 91.09375,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "payment": "$\u221e"
+    },
+    {
+      "label": "baseline",
+      "width": 390,
+      "path": "/",
+      "overflow": 0,
+      "headerHeight": 61,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "baseline",
+      "width": 390,
+      "path": "/calculators/debt-to-income-calculator/",
+      "overflow": 5,
+      "headerHeight": 61,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "baseline",
+      "width": 390,
+      "path": "/calculators/loan-payment-calculator/",
+      "overflow": 0,
+      "headerHeight": 61,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "payment": "$\u221e"
+    },
+    {
+      "label": "claude-review",
+      "width": 320,
+      "path": "/",
+      "overflow": 0,
+      "headerHeight": 91.09375,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "claude-review",
+      "width": 320,
+      "path": "/calculators/debt-to-income-calculator/",
+      "overflow": 0,
+      "headerHeight": 91.09375,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "claude-review",
+      "width": 320,
+      "path": "/calculators/loan-payment-calculator/",
+      "overflow": 0,
+      "headerHeight": 91.09375,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "payment": "$416.67"
+    },
+    {
+      "label": "claude-review",
+      "width": 390,
+      "path": "/",
+      "overflow": 0,
+      "headerHeight": 61,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "claude-review",
+      "width": 390,
+      "path": "/calculators/debt-to-income-calculator/",
+      "overflow": 5,
+      "headerHeight": 61,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
+    },
+    {
+      "label": "claude-review",
+      "width": 390,
+      "path": "/calculators/loan-payment-calculator/",
+      "overflow": 0,
+      "headerHeight": 61,
+      "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "payment": "$416.67"
+    }
+  ],
+  "retrievals": [
+    {
+      "checked_at": "2026-10-18T09:56:03.326129+00:00",
+      "sources": [
+        {
+          "url": "https://www.energy.gov/energysaver/estimating-appliance-and-home-electronic-energy-use",
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "url": "https://www.calculator.net/electricity-calculator.html",
+          "status": 200,
+          "final_url": "https://www.calculator.net/electricity-calculator.html",
+          "bytes": 19019,
+          "path": "/data/workspace/zuvogo-isolated-20261018/research/source-1.html"
+        },
+        {
+          "url": "https://www.energystar.gov/products/heating_cooling/air_conditioners/room_air_conditioners/properly_sized_room_air_conditioners",
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "url": "https://www.irs.gov/instructions/i1040sse",
+          "status": 200,
+          "final_url": "https://www.irs.gov/instructions/i1040sse",
+          "bytes": 149616,
+          "path": "/data/workspace/zuvogo-isolated-20261018/research/source-3.html"
+        },
+        {
+          "url": "https://www.irs.gov/instructions/i8959",
+          "status": 200,
+          "final_url": "https://www.irs.gov/instructions/i8959",
+          "bytes": 125151,
+          "path": "/data/workspace/zuvogo-isolated-20261018/research/source-4.html"
+        },
+        {
+          "url": "https://www.ssa.gov/oact/cola/cbb.html",
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
+      "checked_at": "2026-10-18T10:00:29.481921+00:00",
+      "sources": [
+        {
+          "url": "https://www.energystar.gov/products/ask-the-experts/how-choose-right-sized-window-ac",
+          "status": 200,
+          "path": "/data/workspace/zuvogo-isolated-20261018/research/followup-0.dat",
+          "bytes": 46489,
+          "final_url": "https://www.energystar.gov/products/ask-the-experts/how-choose-right-sized-window-ac"
+        },
+        {
+          "url": "https://www.irs.gov/taxtopics/tc751",
+          "status": 200,
+          "path": "/data/workspace/zuvogo-isolated-20261018/research/followup-1.dat",
+          "bytes": 100545,
+          "final_url": "https://www.irs.gov/taxtopics/tc751"
+        },
+        {
+          "url": "https://www.irs.gov/pub/irs-pdf/f1040sse.pdf",
+          "status": 200,
+          "path": "/data/workspace/zuvogo-isolated-20261018/research/followup-2.dat",
+          "bytes": 80290,
+          "final_url": "https://www.irs.gov/pub/irs-pdf/f1040sse.pdf"
+        }
+      ]
+    }
+  ],
+  "public_source_sha256": {
+    "irs-topic554.html": "cf40e360b7477514377247566f567cd7c1487b06575e5a4a585435bcdf01e354",
+    "source-3.html": "d3c843d589a5b8df799eeb5e156438a2ae70dd44a10a7d720702edaade1d4d14",
+    "us-intent-search.html": "e91d797f0944f604177813e40a43f8b3dd8b75afe872beaddad118c8e638bd1a",
+    "source-1.html": "b9c131d9f2c9c1531cdbad3a6bbe2dcc46b50d6b1ec3a72ba0515d22a258d270",
+    "source-4.html": "8784b83f2423bda9462ed3a491f3642e894d72788ba2dcc169b6dca7a73ccac2"
+  },
+  "schedules": {
+    "claude_25_minutes": "not active: model CLI unauthenticated",
+    "codex_15_minutes": "not active: model CLI unauthenticated",
+    "vm_auto_suspend_seconds": 1800
+  },
+  "no_deployment": true,
+  "browser_suite": {
+    "total": 110,
+    "passed": 108,
+    "failed": 2,
+    "exit_code": 1,
+    "duration_ms": 240313.151076
+  }
+}

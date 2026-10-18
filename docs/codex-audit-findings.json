@@ -3,7 +3,7 @@
   "repository": "https://github.com/pkray2012/web-calculator-engine",
   "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
   "audit_branch": "audit/codex-vm-20261018",
-  "generated_at": "2026-10-18T09:58:40.723305+00:00",
+  "generated_at": "2026-10-18T10:04:27.737881+00:00",
   "findings": [
     {
       "id": "ZA-001",
@@ -22,7 +22,7 @@
         "secondary_case": "annualRate=0.0000000001 yields 416.9999654993515, versus the near-zero-rate limit 416.6666666666667."
       },
       "recommendation": "Claude: use a numerically stable annuity expression with log1p/expm1 (or supported equivalent), validate finite computed outputs, and add near-zero continuity, finite-result and schedule-conservation regression tests. Audit all consumers. Keep source changes separate from this report.",
-      "status": "engine_fix_verified_browser_pending",
+      "status": "resolved_on_reviewed_development_commit",
       "file_path": "src/calculators/loan-payment.js:26-33; src/adapters/loan-payment.js:91-104",
       "follow_up": {
         "commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
@@ -30,7 +30,7 @@
         "targeted_tests": "32/32",
         "full_checks": "557/557 plus lint/typecheck/build/site audit",
         "baseline_tests": "552/552",
-        "browser": "running"
+        "browser": "Independent baseline-vs-reviewed UI: Infinity becomes $416.67 at 320/390px. Full suite has separate baseline-responsive failures."
       }
     },
     {
@@ -42,7 +42,7 @@
       "recommendation": "Review/save the research-domain additions in cloud environment settings, apply the runtime network update, then retry sources and competition research before approving BUILD. Publication of the cloud development environment is separate from website deployment.",
       "status": "partially_unblocked",
       "file_path": null,
-      "follow_up": "VM retrieved Calculator.net and 2025 IRS Schedule SE/Form 8959 instructions. SSA 403; old DOE/ENERGY STAR URLs 404. Complete current-edition formula/constant and market verification remains required."
+      "follow_up": "VM retrieved Calculator.net and 2025 IRS Schedule SE/Form 8959 instructions. SSA 403; old DOE/ENERGY STAR URLs 404. Complete current-edition formula/constant and market verification remains required. Later retrieved IRS Topic 554 general SE factors/rates and Topic 751 explicitly verifying 2026 $184,500 wage base. US search interstitial yields no result evidence. Full source/market gate remains partial."
     },
     {
       "id": "ZA-003",
@@ -51,8 +51,9 @@
       "affected_calculator": "BTU Calculator",
       "evidence": "Engine and visible copy agree on chart capacity, shade/sun +/-10%, 600 BTU/h per person beyond two and 4000 BTU/h kitchen addition. Current ENERGY STAR source could not be retrieved. Ordinary-ceiling and portable-rating claims were not independently source-verified. The implementation uses the smaller row at shared area boundaries.",
       "recommendation": "Recheck the authoritative chart, boundary convention, adjustment order, ceiling assumption and portable-rating language; record source retrieval/version date. This is an outstanding verification item, not a confirmed incorrect sizing result.",
-      "status": "deferred",
-      "file_path": "src/content/sources.js:222-226; src/calculators/btu.js:19-29; src/pages/btu-calculator.js:86-104"
+      "status": "partially_verified_deferred",
+      "file_path": "src/content/sources.js:222-226; src/calculators/btu.js:19-29; src/pages/btu-calculator.js:86-104",
+      "follow_up": "Actual cited ENERGY STAR article supports shade/sun, occupants and kitchen adjustments; article includes round-down equipment guidance. Chart table, ordinary-ceiling and portable-rating statements require further verification."
     },
     {
       "id": "ZA-004",
@@ -63,7 +64,43 @@
       "recommendation": "Authenticate model CLIs securely on remote VM, establish lifecycle support, then create one guarded persistent timer per agent at requested cadence. Do not claim active model cycles before a real successful run.",
       "status": "blocked",
       "file_path": null
+    },
+    {
+      "id": "ZA-005",
+      "severity": "MEDIUM",
+      "category": "accessibility/responsive-layout",
+      "affected_calculator": "Home/header at 320px and debt-to-income at 390px",
+      "evidence": {
+        "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
+        "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
+        "header_height_px": 91.09375,
+        "header_test_limit_px": 72,
+        "dti_overflow_px": 5,
+        "baseline_metrics_identical": true
+      },
+      "recommendation": "Claude: investigate in a separate additive fix branch with targeted responsive tests; preserve all unrelated layout and numerical behavior. Do not loosen assertions merely to pass.",
+      "status": "open_preexisting",
+      "file_path": "src/styles/site.css; tests/browser/site.browser.mjs:128-141"
     }
   ],
-  "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815"
+  "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
+  "validation": {
+    "baseline_unit_tests": {
+      "passed": 552,
+      "failed": 0
+    },
+    "reviewed_check": {
+      "passed": true,
+      "unit_tests_passed": 557
+    },
+    "browser": {
+      "total": 110,
+      "passed": 108,
+      "failed": 2,
+      "exit_code": 1,
+      "failures": "ZA-005; same independent baseline metrics"
+    },
+    "new_calculators_implemented_by_codex": 0,
+    "deployment_performed": false
+  }
 }
