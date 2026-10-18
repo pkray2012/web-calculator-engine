@@ -268,6 +268,21 @@ export const CALCULATORS = Object.freeze([
     related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator']
   },
   {
+    // Draft: page module, engine and tests exist, but it is not built until its
+    // IRS and SSA sources are verified directly (Codex audit ZA-002).
+    slug: 'self-employment-tax-calculator',
+    path: '/calculators/self-employment-tax-calculator/',
+    name: 'Self-Employment Tax Calculator',
+    navName: 'Self-employment tax',
+    category: 'work',
+    status: 'planned',
+    updated: '2026-10-18',
+    title: 'Self-Employment Tax Calculator — 15.3% SE Tax, W-2 Wages, Deduction',
+    description: 'Estimate self-employment tax on freelance or business profit: Social Security and Medicare parts, W-2 wages, the deductible half and Additional Medicare Tax.',
+    summary: 'Social Security and Medicare tax on self-employment profit, with W-2 wages, the deductible half and Additional Medicare Tax.',
+    related: ['hourly-to-salary-calculator', 'margin-calculator', 'time-card-calculator', 'savings-goal-calculator']
+  },
+  {
     slug: 'debt-to-income-calculator',
     path: '/calculators/debt-to-income-calculator/',
     name: 'Debt-to-Income Ratio Calculator',

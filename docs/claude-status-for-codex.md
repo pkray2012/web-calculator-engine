@@ -28,32 +28,57 @@ never edits those.
 2. **Review the draft Self-Employment Tax calculator** when it lands (in
    progress now; see below).
 
-## In progress
+## Ready for review: draft Self-Employment Tax calculator
 
-**Self-Employment Tax calculator** (`/calculators/self-employment-tax-calculator/`).
-It is built as a **draft**: the registry status is `planned`, it is not in
-`buildPages`, so there is no page, no sitemap URL and no links to it. Codex's
-ZA-002 (source-evidence blocker) still stands.
+Draft only: the registry status is `planned`, so there is no built page, no
+sitemap URL and no links to it. The published build is still 44 pages, and
+every page is identical to `de965bd` apart from asset hashes.
 
+- Files (all new apart from one registry entry in `src/content/site.js`):
+  - `src/calculators/self-employment-tax.js`
+  - `src/adapters/self-employment-tax.js`
+  - `src/components/self-employment-tax-form.js`
+  - `src/components/self-employment-tax-results.js`
+  - `src/client/self-employment-tax.js`
+  - `src/pages/self-employment-tax-calculator.js`
+  - `tests/self-employment-tax.test.js`
+  - `tests/site/se-tax-adapter.test.js`
 - Method: Schedule SE regular method.
-  - Net earnings `NE = 0.9235 × profit`; no SE tax if `NE < $400`.
-  - Social Security `12.4% × min(NE, max(0, wageBase − W-2 SS wages))`.
+  - Net earnings `NE = 0.9235 × max(0, profit)`; zero if `NE < $400`.
+  - Social Security `12.4% × min(NE, max(0, wageBase − W-2 wages))`.
   - Medicare `2.9% × NE`.
-  - Additional Medicare (Form 8959) `0.9% × max(0, NE − max(0, threshold − W-2 Medicare wages))`.
-  - Deduction `= ½ × (SS + Medicare)`.
+  - Additional Medicare `0.9% × max(0, NE − max(0, threshold − W-2 wages))`.
+  - Deduction `= ½ × SE tax`.
 - Constants:
-  - Wage base: 2025 $176,100, 2026 $184,500 (SSA).
-  - Additional Medicare thresholds (not indexed): $200k single/HoH/QSS,
-    $250k MFJ, $125k MFS.
-  - 2027 ($192,300) is left out until it is read on ssa.gov.
-- Sources are cited in the page module and marked **pending direct
-  verification**: the VM cannot fetch irs.gov or ssa.gov, only search
-  summaries. Please verify:
-  - IRS Schedule SE instructions (lines 4a–13)
-  - IRS Form 8959 instructions
-  - IRS Topic 554
-  - SSA contribution and benefit base
+  - Wage base: 2025 $176,100, 2026 $184,500.
+  - Thresholds: $200k / $250k / $125k.
+  - 2027 left out until verified.
+- Simplification, stated on the page: one W-2 wage input is used as both
+  Social Security and Medicare wages.
+- Tests:
+  - Hand examples: $80k profit → $11,303.64; $150k profit + $100k W-2 →
+    $14,495.23 plus $346.72; $250k profit → SS capped.
+  - The $400 boundary, losses, the wage-base cap, each filing status.
+  - 2,000 random cases against an independent line-by-line reference.
+  - Adapter parsing and errors.
+  - Page render: one h1, no NaN/∞, title ≤70 characters after escaping,
+    description 70–170.
+  - The draft is never linked from a live page.
+- Browser check on a scratch copy with the draft temporarily published (not
+  committed):
+  - axe WCAG 2.1 A/AA: no violations at 320/390/1280 px.
+  - No horizontal overflow.
+  - Calculation and error-summary focus work.
+  - Keyboard: arrow keys change the year radio, Tab moves to profit, Enter
+    calculates.
+  - With JavaScript off, the example result and the `<noscript>` notice show.
+- **Please verify the four sources in `SE_TAX_SOURCES` directly**; they are
+  marked pending direct verification. Please also check the claims in the page
+  copy. To go live, move the sources to `src/content/sources.js`, set the
+  status to `live`, add the page to `buildPages`, the build test list and the
+  browser suite.
 
 ## Next
 
-Rental Property calculator, then Stair, both built the same draft way.
+Rental Property calculator (cap rate, cash-on-cash, DSCR), built the same
+draft way, then Stair.
