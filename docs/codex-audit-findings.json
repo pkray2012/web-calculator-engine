@@ -2,8 +2,8 @@
   "schema_version": 1,
   "repository": "https://github.com/pkray2012/web-calculator-engine",
   "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
-  "audit_branch": "audit/codex-vm-20261018",
-  "generated_at": "2026-10-18T10:04:27.737881+00:00",
+  "audit_branch": "audit/codex-review-20261020",
+  "generated_at": "2026-10-20T02:56:56.226957+00:00",
   "findings": [
     {
       "id": "ZA-001",
@@ -81,26 +81,66 @@
       "recommendation": "Claude: investigate in a separate additive fix branch with targeted responsive tests; preserve all unrelated layout and numerical behavior. Do not loosen assertions merely to pass.",
       "status": "open_preexisting",
       "file_path": "src/styles/site.css; tests/browser/site.browser.mjs:128-141"
+    },
+    {
+      "id": "ZA-006",
+      "severity": "HIGH",
+      "category": "tax/worksheet-input-semantics",
+      "affected_calculator": "Quarterly Estimated Tax draft",
+      "file_path": "src/components/estimated-tax-form.js; src/calculators/estimated-tax.js; src/pages/estimated-tax-calculator.js",
+      "evidence": {
+        "currentYearTax": 1200,
+        "withholding": 0,
+        "missing_refundable_credit": 400,
+        "observed_quarterly_required": 270,
+        "expected_under_1000_exception_required": 0,
+        "sources": [
+          "https://www.irs.gov/publications/p505",
+          "https://www.irs.gov/instructions/i2210"
+        ]
+      },
+      "recommendation": "Model credit/tax adjustments or require accurate adjusted worksheet tax inputs; add refundable-credit and prior-year regressions.",
+      "status": "open"
+    },
+    {
+      "id": "ZA-007",
+      "severity": "MEDIUM",
+      "category": "geometry/alternative-feasibility",
+      "affected_calculator": "Stair draft",
+      "file_path": "src/calculators/stair.js; src/components/stair-results.js",
+      "evidence": {
+        "accepted_form": {
+          "totalRise": 24,
+          "treadThickness": 5,
+          "other_fields": "STAIR_DEFAULTS"
+        },
+        "invalid_alternative_bottom_cuts_inches": [
+          -0.2,
+          -1,
+          -1.5714285716
+        ]
+      },
+      "recommendation": "Validate thickness on every alternative; suppress or label invalid options, test zero/negative bottom cuts.",
+      "status": "open"
     }
   ],
-  "reviewed_commit": "bdde12f82494c197c170ea4cf91dcef174e79815",
+  "reviewed_commit": "39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e",
   "validation": {
-    "baseline_unit_tests": {
-      "passed": 552,
+    "audited_commit": "39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e",
+    "unit_tests": {
+      "passed": 666,
       "failed": 0
     },
-    "reviewed_check": {
-      "passed": true,
-      "unit_tests_passed": 557
-    },
+    "lint_typecheck_build_site_audit": "pass; 44 pages",
     "browser": {
       "total": 110,
       "passed": 108,
       "failed": 2,
       "exit_code": 1,
-      "failures": "ZA-005; same independent baseline metrics"
+      "failures": "ZA-005 baseline-responsive cases",
+      "duration_ms": 273280.575686
     },
-    "new_calculators_implemented_by_codex": 0,
+    "new_drafts": 5,
     "deployment_performed": false
   }
 }

@@ -12,3 +12,6 @@ Updated 2026-10-18T10:03:45.620233+00:00.
 - Claude/Codex CLI model authentication unavailable on both remote VMs. No 15/25-minute model schedule active; systemd exists but VM idle pause 1800sec precludes uptime claims.
 - Next: after this final documentation commit/push and comment update, a later authenticated cycle must fetch refs, verify actual status and latest Claude work; resolve pending source/UI findings before expansion approval.
 - Never deploy/merge/reset/force-push or alter existing user projects.
+
+## 2026-10-20T02:56:56.226957+00:00
+Reviewed 39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e; audit/codex-review-20261020. Five planned drafts. 666/666 tests plus checks pass. HIGH ZA-006, MEDIUM ZA-007 reproduced; HUD/ICC sources blocked. Browser completed108/110, same two pre-existing responsive failures. Next: Claude fixes tax credit semantics, stair alternatives, then source/independent recheck. No implementation change/deployment.

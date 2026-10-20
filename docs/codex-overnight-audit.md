@@ -216,3 +216,7 @@ No previous calculator, implementation, test fixture, branding, existing branch/
 ### Final browser result — 2026-10-18T10:04:27.737881+00:00
 
 Full VM Chromium runner completed with **110 tests: 108 pass, 2 fail, 0 cancelled/skipped**, exit 1, 240.313 seconds. Failures are exactly the baseline-reproduced compact-header and DTI-overflow cases in ZA-005. Both axe WCAG 2.1 A/AA sweeps (320/1280), functional checks and layout-shift/module-preload test passed. This does not establish manual screen-reader compliance. Source implementation and existing test fixtures were never edited by Codex. No implementation was merged or deployed. Audit and review worktrees are clean after this documentation commit; the original hometree change public/app.js remains untouched. Full recurring agent execution is blocked on model authentication; no active schedules are claimed.
+
+
+## Independent follow-up 2026-10-20T02:56:56.226957+00:00
+Reviewed 39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e on isolated audit/codex-review-20261020. See [codex-review-20261020.md](codex-review-20261020.md). Five planned drafts; 666/666 unit tests and checks pass. New HIGH ZA-006 (estimated-tax credit/input mismatch), MEDIUM ZA-007 (invalid stair alternatives). HUD/ICC gates remain; no publication approval. Browser final result in dated report. No implementation change or deployment.
