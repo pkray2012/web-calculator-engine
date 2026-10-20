@@ -347,6 +347,27 @@ Results:
 - Published pages are identical to `de965bd`.
 - Draft browser check: axe clean at 320/390/1280.
 
+## Contact, Privacy, Terms and Disclaimer pages (2026-10-20, owner request)
+
+The owner asked for a contact option that publishes no email address, and
+approved building these pages with "Zuvogo" as the named operator.
+
+- `src/pages/legal-pages.js`: `/contact/`, `/privacy/`, `/terms/`,
+  `/disclaimer/` (indexable, in the sitemap) and `/contact/thanks/` (noindex).
+- The contact form is a Netlify form (`data-netlify="true"`, honeypot field
+  `company`). It posts to this origin, so the existing CSP `form-action 'self'`
+  is unchanged. It uses no JavaScript; native validation requires a message.
+  The owner must turn on form detection in Netlify after a deploy.
+- The footer on every page now links Contact, Privacy, Terms and Disclaimer.
+  Published pages therefore differ from `de965bd` in the footer, by design.
+- The Privacy Policy states that the site uses no cookies, analytics or ads.
+  It must be updated before AdSense code is added. The Terms leave out a
+  governing-law clause until the owner names a state.
+- Validation: lint and typecheck pass; 669/669 unit tests; build 49 pages and
+  audit pass; browser 111/111 (axe clean on the new pages at 320 and 1280 px).
+
+Please review the page wording and the Netlify form markup.
+
 ## Next
 
 Five drafts await your source verification before any go-live: SE tax, Estimated Tax and Rent Affordability (IRS/HUD pages), Stair (ICC R311.7), and Rental Property (no external data; review only).

@@ -62,6 +62,7 @@ import { gravelPage } from '../src/pages/gravel-calculator.js';
 import { mulchPage } from '../src/pages/mulch-calculator.js';
 import { loanPayoffPage } from '../src/pages/loan-payoff-calculator.js';
 import { homePage, aboutPage, notFoundPage } from '../src/pages/static-pages.js';
+import { privacyPage, termsPage, disclaimerPage, contactPage, contactThanksPage, LEGAL_UPDATED } from '../src/pages/legal-pages.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const DEV_ORIGIN = 'http://localhost:4173';
@@ -173,6 +174,11 @@ export function buildPages(origin, brand = {}) {
     { ...studentLoanRefinancePage(), updated: calculators.find((calc) => calc.slug === 'student-loan-refinance-calculator').updated },
     { ...loanPayoffPage(), updated: calculators.find((calc) => calc.slug === 'loan-payoff-calculator').updated },
     { ...aboutPage(), updated: '2026-09-27' },
+    { ...contactPage(), updated: LEGAL_UPDATED },
+    { ...privacyPage(), updated: LEGAL_UPDATED },
+    { ...termsPage(), updated: LEGAL_UPDATED },
+    { ...disclaimerPage(), updated: LEGAL_UPDATED },
+    contactThanksPage(),
     notFoundPage()
   ];
 }

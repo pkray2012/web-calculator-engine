@@ -106,6 +106,8 @@ test.after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
+const LEGAL_PAGES = ['/contact/', '/privacy/', '/terms/', '/disclaimer/'];
+
 async function openPage(path, viewport = VIEWPORTS[2]) {
   const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
   const page = await context.newPage();
@@ -126,7 +128,7 @@ async function primaryPayment(page) {
 
 for (const viewport of VIEWPORTS) {
   test(`no horizontal overflow and results visible at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, '/about/']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, '/about/', ...LEGAL_PAGES]) {
       const { page, errors, close } = await openPage(path, viewport);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       assert.equal(overflow, 0, `${path} overflows by ${overflow}px at ${viewport.width}px`);
@@ -1587,7 +1589,7 @@ async function axeViolations(path, viewport, prepare = async () => {}) {
 
 for (const viewport of [VIEWPORTS[0], VIEWPORTS[2]]) {
   test(`axe finds no WCAG 2.1 A/AA violations on any page at ${viewport.name}`, async () => {
-    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, '/about/', '/404.html']) {
+    for (const path of ['/', CALC, AUTO, PERSONAL, CARD, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, '/about/', ...LEGAL_PAGES, '/contact/thanks/', '/404.html']) {
       assert.deepEqual(await axeViolations(path, viewport), [], path);
     }
   });
@@ -1724,4 +1726,25 @@ test('pages load without layout shift, and the preloaded modules are the ones th
       await context.close();
     }
   }
+});
+
+test('contact form needs a message, hides the spam trap and reaches every field by keyboard', async () => {
+  const { page, errors, close } = await openPage('/contact/');
+  await page.locator('button[type="submit"]').click();
+  // Native validation stops an empty message from being sent.
+  assert.equal(new URL(page.url()).pathname, '/contact/');
+  assert.equal(await page.locator('#contact-message').evaluate((el) => /** @type {HTMLTextAreaElement} */ (el).validity.valueMissing), true);
+  assert.equal(await page.locator('#contact-company').isVisible(), false);
+  await page.locator('#contact-email').fill('not-an-email');
+  await page.locator('#contact-message').fill('The tip calculator rounds 15% of $10.05 to $1.51.');
+  assert.equal(await page.locator('#contact-email').evaluate((el) => /** @type {HTMLInputElement} */ (el).validity.typeMismatch), true);
+  const order = [];
+  await page.locator('#contact-topic').focus();
+  for (let i = 0; i < 5; i += 1) {
+    order.push(await page.evaluate(() => document.activeElement?.id || document.activeElement?.tagName));
+    await page.keyboard.press('Tab');
+  }
+  assert.deepEqual(order, ['contact-topic', 'contact-message', 'contact-page', 'contact-name', 'contact-email']);
+  assert.deepEqual(errors, []);
+  await close();
 });

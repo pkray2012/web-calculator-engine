@@ -95,6 +95,10 @@ function siteFooter(ctx, page) {
         <ul class="footer-nav">
           <li><a href="/#calculators">All calculators</a></li>
           <li><a href="/about/">How we build calculators</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+          <li><a href="/disclaimer/">Disclaimer</a></li>
         </ul>
       </nav>
     </div>

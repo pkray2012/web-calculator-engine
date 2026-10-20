@@ -27,8 +27,35 @@ test('builds only real destinations with clean URLs', async () => {
   const { pages, indexable } = await auditSite(dist);
   const calculators = ['asphalt-calculator', 'auto-loan-calculator', 'auto-loan-refinance-calculator', 'balance-transfer-calculator', 'board-foot-calculator', 'btu-calculator', 'car-lease-calculator', 'cd-calculator', 'compound-interest-calculator', 'concrete-calculator', 'credit-card-payoff-calculator', 'cubic-yard-calculator', 'debt-to-income-calculator', 'deck-calculator', 'dividend-calculator', 'drywall-calculator', 'fence-calculator', 'flooring-calculator', 'fuel-cost-calculator', 'gravel-calculator', 'heloc-payment-calculator', 'home-affordability-calculator', 'home-equity-loan-calculator', 'hourly-to-salary-calculator', 'loan-payment-calculator', 'loan-payoff-calculator', 'margin-calculator', 'mortgage-calculator', 'mortgage-points-calculator', 'mortgage-refinance-calculator', 'mulch-calculator', 'percentage-calculator', 'personal-loan-calculator', 'rent-vs-buy-calculator', 'roofing-calculator', 'sales-tax-calculator', 'savings-goal-calculator', 'square-footage-calculator', 'student-loan-refinance-calculator', 'time-card-calculator', 'tip-calculator']
     .map((slug) => `/calculators/${slug}/`);
-  assert.deepEqual(pages, ['/', '/404.html', '/about/', ...calculators]);
-  assert.deepEqual(indexable, ['/', '/about/', ...calculators]);
+  const legal = ['/contact/', '/contact/thanks/', '/disclaimer/', '/privacy/', '/terms/'];
+  assert.deepEqual(pages, ['/', '/404.html', '/about/', ...calculators, ...legal]);
+  assert.deepEqual(indexable, ['/', '/about/', ...calculators, ...legal.filter((path) => path !== '/contact/thanks/')]);
+});
+
+test('contact page is a Netlify form that publishes no email address', async () => {
+  const doc = await read('contact/index.html');
+  assert.match(doc, /<form class="calc-form contact-form" name="contact" method="post" action="\/contact\/thanks\/"\s+data-netlify="true" netlify-honeypot="company">/);
+  assert.match(doc, /<input type="hidden" name="form-name" value="contact">/);
+  assert.match(doc, /<textarea id="contact-message" name="message"[^>]*required/);
+  assert.match(doc, /<input id="contact-email" name="email" type="email"/);
+  assert.doesNotMatch(doc, /mailto:|@[a-z0-9-]+\.[a-z]{2,}/i);
+  // The form posts to this origin, which the CSP allows.
+  assert.match(CONTENT_SECURITY_POLICY, /form-action 'self'/);
+});
+
+test('contact thanks page is noindex and stays out of the sitemap', async () => {
+  const doc = await read('contact/thanks/index.html');
+  assert.match(doc, /<meta name="robots" content="noindex">/);
+  const sitemap = await read('sitemap.xml');
+  assert.doesNotMatch(sitemap, /contact\/thanks/);
+  for (const path of ['contact', 'privacy', 'terms', 'disclaimer']) assert.match(sitemap, new RegExp(`/${path}/</loc>`));
+});
+
+test('every page footer links the contact, privacy, terms and disclaimer pages', async () => {
+  for (const path of ['index.html', 'about/index.html', 'calculators/tip-calculator/index.html']) {
+    const doc = await read(path);
+    for (const href of ['/contact/', '/privacy/', '/terms/', '/disclaimer/']) assert.match(doc, new RegExp(`<a href="${href}">`), `${path} links ${href}`);
+  }
 });
 
 test('built site passes the technical SEO audit', async () => {
@@ -63,7 +90,7 @@ test('robots.txt allows crawling and points at the sitemap', async () => {
   assert.equal(await read('robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   const sitemap = await read('sitemap.xml');
   assert.match(sitemap, /<loc>https:\/\/calculators\.test\/calculators\/loan-payment-calculator\/<\/loc>/);
-  assert.equal((sitemap.match(/<url>/g) ?? []).length, 43);
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 47);
 });
 
 test('every relative import in shipped browser modules resolves', async () => {
@@ -289,7 +316,7 @@ test('the deployment smoke test passes against a host that serves the build corr
   try {
     const ok = await smokeTest(base, { origin: ORIGIN });
     assert.deepEqual(ok.problems, []);
-    assert.equal(ok.checked, 43);
+    assert.equal(ok.checked, 47);
     // A build made for a different domain is caught.
     const wrong = await smokeTest(base, { origin: 'https://other.test' });
     assert.match(wrong.problems.join('\n'), /robots\.txt does not name https:\/\/other\.test\/sitemap\.xml/);

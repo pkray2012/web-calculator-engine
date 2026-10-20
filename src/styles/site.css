@@ -342,6 +342,13 @@ main:focus { outline: none; }
   font: inherit; font-size: 1.05rem; padding: 10px 12px; color: var(--text);
 }
 .input--prefix input { padding-left: 4px; }
+.input textarea {
+  flex: 1 1 auto; min-width: 0; width: 100%; border: 0; background: transparent; resize: vertical;
+  font: inherit; font-size: 1.05rem; padding: 10px 12px; color: var(--text);
+}
+.input textarea:focus { outline: none; }
+.contact-form { max-width: 560px; }
+.contact-form select { width: 100%; }
 .input input:focus { outline: none; }
 select {
   font: inherit; font-size: 1.05rem; min-height: 48px; padding: 8px 12px;
