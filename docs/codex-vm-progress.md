@@ -17,3 +17,7 @@ Updated 2026-10-18T10:03:45.620233+00:00.
 Reviewed 39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e; audit/codex-review-20261020. Five planned drafts. 666/666 tests plus checks pass. HIGH ZA-006, MEDIUM ZA-007 reproduced; HUD/ICC sources blocked. Browser completed108/110, same two pre-existing responsive failures. Next: Claude fixes tax credit semantics, stair alternatives, then source/independent recheck. No implementation change/deployment.
 
 2026-10-20T04:38:32.436525+00:00: rechecked7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d. ZA-006/007 resolved on development commit. Independent regressions,42focused and674full tests/checks passed.49pages reflects legal/contact additions; calculators remain planned. No full browser rerun or release approval. Next: source gates, then isolated scrollbar CSS review if implementation authorized. No deploy/merge.
+
+2026-10-20T06:42:00.191250+00:00: reviewed6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5; original ZA-005 fixed;675tests/checks pass. NewZA-008 test-portability medium,ZA-009 pre-existing boundary overflow low. Fullbrowser collecting. No implementation/deploy; next Claude fixes test setup, retains source gates.
+
+Final CSS recheck: full browser 113/114 pass, sole failure ZA-008 test-portability setup. Original ZA-005 layout assertions and both axe sweeps pass. Source gates and low pre-existing boundary case remain. No implementation edits, merge or deployment.

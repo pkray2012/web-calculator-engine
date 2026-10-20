@@ -1,0 +1,246 @@
+{
+  "audited_commit": "6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5",
+  "chromium_version": "154.0.8037.57 Debian13",
+  "measurements": [
+    {
+      "version": "before",
+      "mode": "native",
+      "width": 320,
+      "clientWidth": 305,
+      "overflow": 0,
+      "header": 91.09375,
+      "resultContentWidth": 273,
+      "columns": 1
+    },
+    {
+      "version": "before",
+      "mode": "native",
+      "width": 379,
+      "clientWidth": 364,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 332,
+      "columns": 1
+    },
+    {
+      "version": "before",
+      "mode": "native",
+      "width": 380,
+      "clientWidth": 365,
+      "overflow": 10,
+      "header": 61,
+      "resultContentWidth": 333,
+      "columns": 2
+    },
+    {
+      "version": "before",
+      "mode": "native",
+      "width": 390,
+      "clientWidth": 375,
+      "overflow": 5,
+      "header": 61,
+      "resultContentWidth": 343,
+      "columns": 2
+    },
+    {
+      "version": "before",
+      "mode": "native",
+      "width": 420,
+      "clientWidth": 405,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 373,
+      "columns": 2
+    },
+    {
+      "version": "before",
+      "mode": "native",
+      "width": 900,
+      "clientWidth": 885,
+      "overflow": 0,
+      "header": 69,
+      "resultContentWidth": 445,
+      "columns": 3
+    },
+    {
+      "version": "before",
+      "mode": "scrollbar-hidden",
+      "width": 320,
+      "clientWidth": 320,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 288,
+      "columns": 1
+    },
+    {
+      "version": "before",
+      "mode": "scrollbar-hidden",
+      "width": 379,
+      "clientWidth": 379,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 347,
+      "columns": 1
+    },
+    {
+      "version": "before",
+      "mode": "scrollbar-hidden",
+      "width": 380,
+      "clientWidth": 380,
+      "overflow": 2,
+      "header": 61,
+      "resultContentWidth": 348,
+      "columns": 2
+    },
+    {
+      "version": "before",
+      "mode": "scrollbar-hidden",
+      "width": 390,
+      "clientWidth": 390,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 358,
+      "columns": 2
+    },
+    {
+      "version": "before",
+      "mode": "scrollbar-hidden",
+      "width": 420,
+      "clientWidth": 420,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 388,
+      "columns": 2
+    },
+    {
+      "version": "before",
+      "mode": "scrollbar-hidden",
+      "width": 900,
+      "clientWidth": 900,
+      "overflow": 0,
+      "header": 69,
+      "resultContentWidth": 460,
+      "columns": 3
+    },
+    {
+      "version": "after",
+      "mode": "native",
+      "width": 320,
+      "clientWidth": 305,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 273,
+      "columns": 1
+    },
+    {
+      "version": "after",
+      "mode": "native",
+      "width": 379,
+      "clientWidth": 364,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 332,
+      "columns": 1
+    },
+    {
+      "version": "after",
+      "mode": "native",
+      "width": 380,
+      "clientWidth": 365,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 333,
+      "columns": 1
+    },
+    {
+      "version": "after",
+      "mode": "native",
+      "width": 390,
+      "clientWidth": 375,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 343,
+      "columns": 1
+    },
+    {
+      "version": "after",
+      "mode": "native",
+      "width": 420,
+      "clientWidth": 405,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 373,
+      "columns": 2
+    },
+    {
+      "version": "after",
+      "mode": "native",
+      "width": 900,
+      "clientWidth": 885,
+      "overflow": 0,
+      "header": 69,
+      "resultContentWidth": 445,
+      "columns": 3
+    },
+    {
+      "version": "after",
+      "mode": "scrollbar-hidden",
+      "width": 320,
+      "clientWidth": 320,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 288,
+      "columns": 1
+    },
+    {
+      "version": "after",
+      "mode": "scrollbar-hidden",
+      "width": 379,
+      "clientWidth": 379,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 347,
+      "columns": 1
+    },
+    {
+      "version": "after",
+      "mode": "scrollbar-hidden",
+      "width": 380,
+      "clientWidth": 380,
+      "overflow": 2,
+      "header": 61,
+      "resultContentWidth": 348,
+      "columns": 2
+    },
+    {
+      "version": "after",
+      "mode": "scrollbar-hidden",
+      "width": 390,
+      "clientWidth": 390,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 358,
+      "columns": 2
+    },
+    {
+      "version": "after",
+      "mode": "scrollbar-hidden",
+      "width": 420,
+      "clientWidth": 420,
+      "overflow": 0,
+      "header": 61,
+      "resultContentWidth": 388,
+      "columns": 2
+    },
+    {
+      "version": "after",
+      "mode": "scrollbar-hidden",
+      "width": 900,
+      "clientWidth": 900,
+      "overflow": 0,
+      "header": 69,
+      "resultContentWidth": 460,
+      "columns": 3
+    }
+  ]
+}

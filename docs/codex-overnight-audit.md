@@ -233,3 +233,9 @@ ZA-007 resolved on this development commit: 24in rise with5in thickness retains 
 49 versus44 built pages is explained by intervening Contact, contact/thanks, Privacy,Terms,Disclaimer pages; all five calculator entries remain planned and excluded from build. Their intended paths are not live URLs. Claude's handoff states owner authorization for legal/contact additions, which this audit does not independently verify; no legal/privacy/contact-form compliance approval is made by this fix recheck.
 
 No implementation files edited, no deployment/merge/production change. Prior worktrees untouched and reviewed worktree clean. Source verification gates remain; do not approve publication merely because these two findings are resolved. A small isolated development-only CSS correction with targeted scrollbar-width regression checks is reasonable for ZA-005, but no implementation/production action is performed by this audit.
+
+
+## CSS follow-up 2026-10-20T06:42:00.191250+00:00
+Reviewed 6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5; detailed report [codex-css-recheck-20261020.md](codex-css-recheck-20261020.md). Original ZA-005 cases now fixed; new MEDIUM ZA-008 test assumes overlay scrollbars, LOW ZA-009 pre-existing2px no-scrollbar380px DTI overflow.675/675tests and full code/build/site check pass. Browser final counts in dated report. No implementation/deploy.
+
+Final CSS recheck: full browser 113/114 pass, sole failure ZA-008 test-portability setup. Original ZA-005 layout assertions and both axe sweeps pass. Source gates and low pre-existing boundary case remain. No implementation edits, merge or deployment.

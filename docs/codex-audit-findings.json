@@ -3,7 +3,7 @@
   "repository": "https://github.com/pkray2012/web-calculator-engine",
   "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
   "audit_branch": "audit/codex-review-20261020",
-  "generated_at": "2026-10-20T04:38:32.436525+00:00",
+  "generated_at": "2026-10-20T06:42:00.191250+00:00",
   "findings": [
     {
       "id": "ZA-001",
@@ -79,8 +79,15 @@
         "baseline_metrics_identical": true
       },
       "recommendation": "Claude: investigate in a separate additive fix branch with targeted responsive tests; preserve all unrelated layout and numerical behavior. Do not loosen assertions merely to pass.",
-      "status": "open_preexisting",
-      "file_path": "src/styles/site.css; tests/browser/site.browser.mjs:128-141"
+      "status": "original_reproductions_resolved_on_development_commit",
+      "file_path": "src/styles/site.css; tests/browser/site.browser.mjs:128-141",
+      "resolution": {
+        "commit": "6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5",
+        "css_commit": "682664e",
+        "native_320_header_height_after": 61,
+        "native_390_dti_overflow_after": 0,
+        "caveat": "See distinct test-portability ZA-008 and pre-existing boundary ZA-009"
+      }
     },
     {
       "id": "ZA-006",
@@ -140,19 +147,64 @@
         "browser": "not independently rerun in this targeted recheck",
         "scope": "specific reproduced defect; source/publication gates remain"
       }
+    },
+    {
+      "id": "ZA-008",
+      "severity": "MEDIUM",
+      "category": "testing/environment-assumptions",
+      "affected_calculator": "ZA-005 browser regression setup",
+      "file_path": "tests/browser/site.browser.mjs:1825-1829",
+      "evidence": {
+        "viewport": 380,
+        "actual_document_width": 365,
+        "result_content_width": 333,
+        "expected_columns_in_test": 2,
+        "actual_correct_columns": 1,
+        "focused_tests_passed": 2,
+        "focused_tests_total": 3
+      },
+      "recommendation": "Explicitly establish/verify overlay and classic scrollbar fixtures, or use measured content width for expected columns; retain real scrollbar and overflow checks.",
+      "status": "open"
+    },
+    {
+      "id": "ZA-009",
+      "severity": "LOW",
+      "category": "responsive-layout/boundary",
+      "affected_calculator": "DTI at effective380px width",
+      "file_path": "src/styles/site.css stats breakpoint",
+      "evidence": {
+        "before_commit": "7b0a0d1",
+        "after_commit": "6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5",
+        "scrollbars": "explicitly hidden in test",
+        "viewport_and_client_width": 380,
+        "result_content_width": 348,
+        "overflow_pixels": 2,
+        "preexisting": true
+      },
+      "recommendation": "Fix narrow-boundary card sizing/wrapping or content-safe breakpoint and add no-overflow test at actual380px content viewport.",
+      "status": "open_preexisting"
     }
   ],
-  "reviewed_commit": "7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d",
+  "reviewed_commit": "6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5",
   "validation": {
-    "audited_commit": "7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d",
+    "audited_commit": "6cc1cc67322f5e3bf3155b3a11cfb3590c4722a5",
     "unit_tests": {
-      "passed": 674,
+      "passed": 675,
       "failed": 0
     },
-    "lint_typecheck_build_site_audit": "pass;49 pages (five added legal/contact pages, not calculators)",
-    "focused_tests_passed": 42,
-    "browser": "prior audited head108/110; current full browser not rerun",
-    "new_calculator_drafts": 5,
+    "lint_typecheck_build_site_audit": "passed49pages",
+    "focused_scrollbar_browser_tests": {
+      "passed": 2,
+      "failed": 1
+    },
+    "full_browser": {
+      "total": 114,
+      "passed": 113,
+      "failed": 1,
+      "exit_code": 1,
+      "failure": "ZA-008 test setup assumes overlay scrollbar in default browser",
+      "duration_ms": 270529.976322
+    },
     "deployment_performed": false
   }
 }
