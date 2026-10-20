@@ -456,3 +456,7 @@ test('the smoke test tells a preview from production by its noindex header', asy
     await rm(preview, { recursive: true, force: true });
   }
 });
+
+test('terms name India as the governing law', async () => {
+  assert.match(await read('terms/index.html'), /governed by the laws of India/);
+});

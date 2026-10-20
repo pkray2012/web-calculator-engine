@@ -104,6 +104,11 @@ export function termsPage() {
     <p>The text, design and code of this site belong to ${SITE.name} unless stated otherwise. Links to other websites, such as government
     sources, are provided for reference. We do not control or endorse those sites.</p>
   </section>
+  <section class="content-section" aria-labelledby="terms-law-heading">
+    <h2 id="terms-law-heading">Governing law</h2>
+    <p>${SITE.name} is operated from India. These terms are governed by the laws of India, and disputes about them will be handled by the
+    courts of India. This does not take away any rights you have under the consumer protection laws of the place where you live.</p>
+  </section>
   <section class="content-section" aria-labelledby="terms-changes-heading">
     <h2 id="terms-changes-heading">Changes and questions</h2>
     <p>We may update these terms and will revise the date at the top when we do. Questions about these terms can be sent through the
