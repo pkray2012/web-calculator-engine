@@ -456,3 +456,9 @@ test('the smoke test tells a preview from production by its noindex header', asy
     await rm(preview, { recursive: true, force: true });
   }
 });
+
+test('privacy policy discloses the host performance script and makes no blanket no-analytics claim', async () => {
+  const doc = await read('privacy/index.html');
+  assert.match(doc, /Netlify adds a\s+small script to each page that measures how quickly pages load/);
+  assert.doesNotMatch(doc, /does not currently use cookies, analytics/);
+});

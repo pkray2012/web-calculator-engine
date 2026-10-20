@@ -42,9 +42,10 @@ export function privacyPage() {
     as we need them to deal with your request.</p>
   </section>
   <section class="content-section" aria-labelledby="privacy-cookies-heading">
-    <h2 id="privacy-cookies-heading">Cookies, analytics and advertising</h2>
-    <p>${SITE.name} does not currently use cookies, analytics or advertising. If that changes, we will update this policy before it
-    happens and explain what is collected and how to opt out.</p>
+    <h2 id="privacy-cookies-heading">Cookies, performance monitoring and advertising</h2>
+    <p>${SITE.name} does not set its own cookies and does not show advertising or use third-party analytics trackers. Netlify adds a
+    small script to each page that measures how quickly pages load and respond, so we can monitor site performance. If we add advertising
+    or analytics, we will update this policy before it happens and explain what is collected and how to opt out.</p>
   </section>
   <section class="content-section" aria-labelledby="privacy-rights-heading">
     <h2 id="privacy-rights-heading">Your choices</h2>
