@@ -3,7 +3,7 @@
   "repository": "https://github.com/pkray2012/web-calculator-engine",
   "baseline_commit": "de965bd1e6e35c1efa6cb0df73021e111f11ac88",
   "audit_branch": "audit/codex-review-20261020",
-  "generated_at": "2026-10-20T02:56:56.226957+00:00",
+  "generated_at": "2026-10-20T04:38:32.436525+00:00",
   "findings": [
     {
       "id": "ZA-001",
@@ -100,7 +100,16 @@
         ]
       },
       "recommendation": "Model credit/tax adjustments or require accurate adjusted worksheet tax inputs; add refundable-credit and prior-year regressions.",
-      "status": "open"
+      "status": "resolved_on_reviewed_development_commit",
+      "resolution": {
+        "commit": "7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d",
+        "verified_at": "2026-10-20T04:38:32.436525+00:00",
+        "focused_tests_passed": 42,
+        "full_unit_tests_passed": 674,
+        "full_code_build_site_checks": "passed",
+        "browser": "not independently rerun in this targeted recheck",
+        "scope": "specific reproduced defect; source/publication gates remain"
+      }
     },
     {
       "id": "ZA-007",
@@ -121,26 +130,29 @@
         ]
       },
       "recommendation": "Validate thickness on every alternative; suppress or label invalid options, test zero/negative bottom cuts.",
-      "status": "open"
+      "status": "resolved_on_reviewed_development_commit",
+      "resolution": {
+        "commit": "7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d",
+        "verified_at": "2026-10-20T04:38:32.436525+00:00",
+        "focused_tests_passed": 42,
+        "full_unit_tests_passed": 674,
+        "full_code_build_site_checks": "passed",
+        "browser": "not independently rerun in this targeted recheck",
+        "scope": "specific reproduced defect; source/publication gates remain"
+      }
     }
   ],
-  "reviewed_commit": "39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e",
+  "reviewed_commit": "7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d",
   "validation": {
-    "audited_commit": "39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e",
+    "audited_commit": "7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d",
     "unit_tests": {
-      "passed": 666,
+      "passed": 674,
       "failed": 0
     },
-    "lint_typecheck_build_site_audit": "pass; 44 pages",
-    "browser": {
-      "total": 110,
-      "passed": 108,
-      "failed": 2,
-      "exit_code": 1,
-      "failures": "ZA-005 baseline-responsive cases",
-      "duration_ms": 273280.575686
-    },
-    "new_drafts": 5,
+    "lint_typecheck_build_site_audit": "pass;49 pages (five added legal/contact pages, not calculators)",
+    "focused_tests_passed": 42,
+    "browser": "prior audited head108/110; current full browser not rerun",
+    "new_calculator_drafts": 5,
     "deployment_performed": false
   }
 }

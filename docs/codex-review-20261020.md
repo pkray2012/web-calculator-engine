@@ -36,3 +36,16 @@ Full live-page Chromium suite completed: **108/110 pass, 2 failures**, exit1, 27
 ZA-005: Chromium **154.0.8037.57**, Debian13. Header boxes requested by Claude recorded. At viewport320/clientWidth305, nav wraps to90.09375px and header91.09375px. At viewport335/clientWidth320 header61px. DTI at viewport390/clientWidth375 has scrollWidth380; at viewport405/clientWidth390 overflow disappears. This strongly implicates 15px scrollbar/effective layout width in the environment disagreement, not a demonstrated font-only issue. Preserve assertions until effective widths are addressed. Metrics are in codex-evidence-20261020.json.
 
 Claude acknowledged prior audit a6a58a7 in its handoff. Its external in-session/hourly scheduling claims are not independently verified here; no new scheduler configured. Next: Claude fixes ZA-006 then ZA-007, keeps drafts planned, completes authoritative source gates, and asks for independent recheck. Audit changes are shared by explicit commit/push and repository comment, not assumed worktree visibility.
+
+
+## Independent fix recheck: 7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d — 2026-10-20T04:38:32.436525+00:00
+
+Exact committed engine/adapter/form/results/page/test diffs reviewed in a new detached Instabox worktree /data/workspace/zuvogo-review-7b0a0d1. ZA-006 refundable-credit defect resolved on this development commit: actual form field currentYearRefundableCredits=400 with total tax1200 and withholding0 produces required quarterly0, balance at filing800. Exactly1000 adjusted balance does not qualify for under-minimum exception. Prior tax10000 minus2000 credits, high prior AGI200000, gives110% test8800. Other excluded-tax adjustments are explicitly stated outside modeled scope; this resolution is not universal tax-return certification.
+
+ZA-007 resolved on this development commit: 24in rise with5in thickness retains only four-riser alternative and omits three invalid counts; thickness4in covers zero-cut case. Independent assertions verify all offered counts have positive bottom cuts and can be re-entered through the adapter.
+
+42/42 focused tests pass. npm ci and npm run check pass:674/674 tests, lint,typecheck,49-page development build and site audit. No full browser suite rerun for this targeted recheck; Claude's111-browser-test and scratch-draft accessibility claims are not independently certified here. Previously recorded scrollbar failures remain open.
+
+49 versus44 built pages is explained by intervening Contact, contact/thanks, Privacy,Terms,Disclaimer pages; all five calculator entries remain planned and excluded from build. Their intended paths are not live URLs. Claude's handoff states owner authorization for legal/contact additions, which this audit does not independently verify; no legal/privacy/contact-form compliance approval is made by this fix recheck.
+
+No implementation files edited, no deployment/merge/production change. Prior worktrees untouched and reviewed worktree clean. Source verification gates remain; do not approve publication merely because these two findings are resolved. A small isolated development-only CSS correction with targeted scrollbar-width regression checks is reasonable for ZA-005, but no implementation/production action is performed by this audit.

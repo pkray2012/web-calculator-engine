@@ -220,3 +220,16 @@ Full VM Chromium runner completed with **110 tests: 108 pass, 2 fail, 0 cancelle
 
 ## Independent follow-up 2026-10-20T02:56:56.226957+00:00
 Reviewed 39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e on isolated audit/codex-review-20261020. See [codex-review-20261020.md](codex-review-20261020.md). Five planned drafts; 666/666 unit tests and checks pass. New HIGH ZA-006 (estimated-tax credit/input mismatch), MEDIUM ZA-007 (invalid stair alternatives). HUD/ICC gates remain; no publication approval. Browser final result in dated report. No implementation change or deployment.
+
+
+## Independent fix recheck: 7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d — 2026-10-20T04:38:32.436525+00:00
+
+Exact committed engine/adapter/form/results/page/test diffs reviewed in a new detached Instabox worktree /data/workspace/zuvogo-review-7b0a0d1. ZA-006 refundable-credit defect resolved on this development commit: actual form field currentYearRefundableCredits=400 with total tax1200 and withholding0 produces required quarterly0, balance at filing800. Exactly1000 adjusted balance does not qualify for under-minimum exception. Prior tax10000 minus2000 credits, high prior AGI200000, gives110% test8800. Other excluded-tax adjustments are explicitly stated outside modeled scope; this resolution is not universal tax-return certification.
+
+ZA-007 resolved on this development commit: 24in rise with5in thickness retains only four-riser alternative and omits three invalid counts; thickness4in covers zero-cut case. Independent assertions verify all offered counts have positive bottom cuts and can be re-entered through the adapter.
+
+42/42 focused tests pass. npm ci and npm run check pass:674/674 tests, lint,typecheck,49-page development build and site audit. No full browser suite rerun for this targeted recheck; Claude's111-browser-test and scratch-draft accessibility claims are not independently certified here. Previously recorded scrollbar failures remain open.
+
+49 versus44 built pages is explained by intervening Contact, contact/thanks, Privacy,Terms,Disclaimer pages; all five calculator entries remain planned and excluded from build. Their intended paths are not live URLs. Claude's handoff states owner authorization for legal/contact additions, which this audit does not independently verify; no legal/privacy/contact-form compliance approval is made by this fix recheck.
+
+No implementation files edited, no deployment/merge/production change. Prior worktrees untouched and reviewed worktree clean. Source verification gates remain; do not approve publication merely because these two findings are resolved. A small isolated development-only CSS correction with targeted scrollbar-width regression checks is reasonable for ZA-005, but no implementation/production action is performed by this audit.

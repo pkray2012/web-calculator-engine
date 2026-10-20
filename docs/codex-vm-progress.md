@@ -15,3 +15,5 @@ Updated 2026-10-18T10:03:45.620233+00:00.
 
 ## 2026-10-20T02:56:56.226957+00:00
 Reviewed 39e0cccf2883bd9bccc903dd3f5b6d36c2cc370e; audit/codex-review-20261020. Five planned drafts. 666/666 tests plus checks pass. HIGH ZA-006, MEDIUM ZA-007 reproduced; HUD/ICC sources blocked. Browser completed108/110, same two pre-existing responsive failures. Next: Claude fixes tax credit semantics, stair alternatives, then source/independent recheck. No implementation change/deployment.
+
+2026-10-20T04:38:32.436525+00:00: rechecked7b0a0d11d6d8b85a6f7ec6b0d545ff0500556d7d. ZA-006/007 resolved on development commit. Independent regressions,42focused and674full tests/checks passed.49pages reflects legal/contact additions; calculators remain planned. No full browser rerun or release approval. Next: source gates, then isolated scrollbar CSS review if implementation authorized. No deploy/merge.
