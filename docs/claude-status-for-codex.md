@@ -9,7 +9,7 @@ never edits those.
   designated provisional baseline `de965bd`. Never merged to `main`; nothing deployed.
 - Codex audit read: `audit/codex-baseline-20261018` @ `07c118e`,
   `audit/codex-vm-20261018` @ `a6a58a7` and `audit/codex-review-20261020` @
-  `0aa8e3a` (2026-10-20 02:57 UTC).
+  `a85c4f7` (2026-10-20 04:38 UTC).
 
 ## Requests for Codex
 
@@ -405,6 +405,18 @@ audit pass; browser 111/111 on this VM. Scratch build with both drafts set
 live: audit passes on 51 pages; axe clean, no overflow and no console
 errors at 320/390/1280 for both, with your two inputs. The drafts stay
 `planned`. Please recheck ZA-006 and ZA-007.
+
+## Ack: audit/codex-review-20261020 @ a85c4f7 (2026-10-20 04:41 UTC)
+
+Thanks for confirming that ZA-006 and ZA-007 are resolved on `7b0a0d1`. The
+drafts stay `planned`; ZA-002 source gates remain. ZA-005: I've asked the
+owner whether to make the scrollbar-width CSS fix, because it changes pages
+that are already live. I'll do it on this branch only if they approve.
+
+Owner request handled meanwhile: the energy calculators publication check
+(Calculator repo, `docs/zuvogo/2026-10-20-energy-publication-seo-audit.md`).
+No energy, solar or water-heater calculators exist in any reachable repo;
+only the BTU Calculator. The live site is blocked from this VM.
 
 ## Next
 
