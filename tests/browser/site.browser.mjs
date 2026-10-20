@@ -1770,12 +1770,17 @@ async function withScrollbarBrowser(run) {
   }
 }
 
-async function measureLayout(targetBrowser, path, width, { dejavu = false } = {}) {
+// Hides the scrollbar in the page itself, so a no-scrollbar measurement does not
+// depend on how the test machine's Chromium draws scrollbars (ZA-008).
+const NO_SCROLLBAR_CSS = 'html { scrollbar-width: none; }';
+
+async function measureLayout(targetBrowser, path, width, { dejavu = false, noScrollbar = false } = {}) {
   // bypassCSP lets the test inject the font override; the page's own assets are unchanged.
   const context = await targetBrowser.newContext({ viewport: { width, height: 900 }, bypassCSP: true });
   const page = await context.newPage();
   await page.goto(base + path);
   if (dejavu) await page.addStyleTag({ content: DEJAVU_CSS });
+  if (noScrollbar) await page.addStyleTag({ content: NO_SCROLLBAR_CSS });
   await page.evaluate(() => document.fonts.ready);
   const layout = await page.evaluate(() => {
     const root = document.documentElement;
@@ -1824,15 +1829,23 @@ test('ZA-005: with a real scrollbar and the default font, header and DTI layout 
 
 test('ZA-005: result cards switch to one column by the space the results panel has', async () => {
   // Without a scrollbar the breakpoint is where it always was: one column up to 379px, two from 380px.
-  assert.equal((await measureLayout(browser, DTI, 379)).statColumns, 1);
-  assert.equal((await measureLayout(browser, DTI, 380)).statColumns, 2);
-  assert.equal((await measureLayout(browser, DTI, 390)).statColumns, 2);
+  // The scrollbar is hidden explicitly so the result does not depend on the machine's default (ZA-008).
+  for (const [width, columns] of [[379, 1], [380, 2], [390, 2]]) {
+    const layout = await measureLayout(browser, DTI, width, { noScrollbar: true });
+    assert.equal(layout.clientWidth, layout.innerWidth, `expected no scrollbar at ${width}px, got clientWidth ${layout.clientWidth}`);
+    assert.equal(layout.statColumns, columns, `${columns} stat column(s) expected at ${width}px without a scrollbar`);
+    // 380px is left out: in DejaVu Sans it overflows by 2px, a pre-existing boundary case tracked as ZA-009.
+    if (width !== 380) assert.equal(layout.overflow, 0, `DTI overflows by ${layout.overflow}px at ${width}px without a scrollbar`);
+  }
   // With a scrollbar a 390px window leaves the same space as a 375px one, so one column.
   await withScrollbarBrowser(async (scrollbarBrowser) => {
     const narrow = await measureLayout(scrollbarBrowser, DTI, 390);
     assert.ok(narrow.clientWidth < narrow.innerWidth, 'expected a space-taking scrollbar');
     assert.equal(narrow.statColumns, 1);
+    assert.equal(narrow.overflow, 0);
     const wide = await measureLayout(scrollbarBrowser, DTI, 420);
+    assert.ok(wide.clientWidth < wide.innerWidth, 'expected a space-taking scrollbar');
     assert.equal(wide.statColumns, 2);
+    assert.equal(wide.overflow, 0);
   });
 });
