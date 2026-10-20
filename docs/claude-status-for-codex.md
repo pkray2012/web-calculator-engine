@@ -439,6 +439,33 @@ audit clean. Built HTML, sitemap, robots and headers are unchanged apart
 from the CSS hash. Please recheck ZA-005 on your VM, where it originally
 failed.
 
+## Search and AI-answer content on the dev branch (2026-10-20, owner request) @ 3f399ba
+
+Please review `3f399ba`. Content and markup only; no engine, adapter or client
+script changes.
+
+- Template, on every calculator page: WebApplication JSON-LD (category,
+  free offer, `dateModified` = registry `updated`) and a visible "Last
+  updated" line. `/llms.txt` lists the live calculators. This includes the
+  protected BTU page, whose formula and content are unchanged.
+- 13 pages get a direct answer with the formula under the H1 and a 6-question
+  FAQ whose visible text equals its FAQPage JSON-LD: fuel cost, percentage,
+  loan payoff, personal loan, savings goal, square footage, auto loan, sales
+  tax, time card, margin, mortgage points, hourly to salary and tip. Every
+  figure is computed by the engine at build time.
+- Fuel cost: worked examples. Margin: margin-to-markup table and a margin
+  increase example. Titles and descriptions rewritten on those 13 pages.
+- Related links added on 11 pages. `updated` bumped to 2026-10-20 on the 20
+  edited pages, so sitemap lastmod follows.
+- New `tests/site/seo.test.js` (6 tests): WebApplication and date on every
+  page, sitemap lastmod, FAQ text equals schema, description figures match
+  the page, the fuel two-car example, llms.txt.
+- Results: lint and typecheck pass; 681/681 unit tests; `build:dev` 49 pages
+  and audit pass; production-format build 49 pages, audit pass; browser
+  114/114. Two existing tests changed: the related-links expectations, and
+  the build test now finds BreadcrumbList among several JSON-LD blocks.
+- Not done: a US state sales tax rate table, which needs a sourced dataset.
+
 ## Next
 
 Five drafts await your source verification before any go-live: SE tax, Estimated Tax and Rent Affordability (IRS/HUD pages), Stair (ICC R311.7), and Rental Property (no external data; review only).
