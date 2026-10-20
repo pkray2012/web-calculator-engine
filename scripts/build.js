@@ -130,7 +130,7 @@ function hash(content) {
 export function buildPages(origin, brand = {}) {
   const calculators = liveCalculators();
   const latest = calculators.map((calc) => calc.updated).sort().at(-1);
-  return [
+  return withCalculatorMetadata([
     { ...homePage(origin, brand), updated: latest },
     { ...mortgagePaymentPage(), updated: calculators.find((calc) => calc.slug === 'mortgage-calculator').updated },
     { ...homeAffordabilityPage(), updated: calculators.find((calc) => calc.slug === 'home-affordability-calculator').updated },
@@ -180,7 +180,54 @@ export function buildPages(origin, brand = {}) {
     { ...disclaimerPage(), updated: LEGAL_UPDATED },
     contactThanksPage(),
     notFoundPage()
-  ];
+  ], origin);
+}
+
+/** Calculator categories that are money tools; the rest are everyday or home utilities. */
+const FINANCE_CATEGORIES = new Set(['loans', 'credit', 'savings', 'work', 'business']);
+
+/**
+ * Every live calculator page gets WebApplication structured data and a
+ * visible "Last updated" line, both from its registry entry, so the date shown
+ * and the dateModified in the data cannot disagree.
+ */
+export function withCalculatorMetadata(pages, origin) {
+  return pages.map((page) => {
+    const calculator = liveCalculators().find((calc) => calc.path === page.path);
+    if (!calculator) return page;
+    return {
+      ...page,
+      showUpdated: true,
+      structuredData: [...(page.structuredData ?? []), {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: calculator.name,
+        url: new URL(calculator.path, origin).href,
+        description: calculator.description,
+        applicationCategory: FINANCE_CATEGORIES.has(calculator.category) ? 'FinanceApplication' : 'UtilitiesApplication',
+        operatingSystem: 'Any',
+        browserRequirements: 'Requires JavaScript to recalculate; example results are in the page',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        dateModified: calculator.updated,
+        publisher: { '@type': 'Organization', name: SITE.name, url: new URL('/', origin).href }
+      }]
+    };
+  });
+}
+
+/**
+ * A plain-text map of the site for AI crawlers (the llms.txt convention):
+ * every live calculator with its one-line summary, grouped by category.
+ */
+export function llmsTxt(origin) {
+  const live = liveCalculators();
+  const groups = Object.entries(CATEGORIES)
+    .map(([key, category]) => ({ category, calculators: live.filter((calc) => calc.category === key) }))
+    .filter((group) => group.calculators.length);
+  return `# ${SITE.name}\n\n> ${SITE.description}\n\nEvery calculator shows its formula, assumptions and a worked example, runs in the browser and is free. `
+    + `Results are estimates, not financial, tax or legal advice. How the calculators are built and tested: ${new URL('/about/', origin).href}\n\n`
+    + groups.map(({ category, calculators }) => `## ${category.name}\n\n${calculators.map((calc) => `- [${calc.name}](${new URL(calc.path, origin).href}): ${calc.summary}`).join('\n')}\n`).join('\n');
 }
 
 export function sitemapXml(pages, origin) {
@@ -340,6 +387,7 @@ export async function build({ outDir = join(ROOT, 'dist'), origin, noindex = fal
 
   await writeFile(join(outDir, 'sitemap.xml'), sitemapXml(pages, origin));
   await writeFile(join(outDir, 'robots.txt'), robotsTxt(origin));
+  await writeFile(join(outDir, 'llms.txt'), llmsTxt(origin));
   await writeFile(join(outDir, '_headers'), headersFile({ noindex }));
 
   return { outDir, origin, noindex, pages: pages.map((page) => page.path) };

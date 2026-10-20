@@ -69,9 +69,9 @@ test('calculator page has canonical, metadata, one h1 and breadcrumb data', asyn
   assert.match(doc, /<title>Loan Payment Calculator — Monthly Payment &amp; Amortization<\/title>/);
   assert.match(doc, /<meta name="description" content="Calculate the monthly payment/);
   assert.equal((doc.match(/<h1[\s>]/g) ?? []).length, 1);
-  const [, json] = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(doc);
-  const data = JSON.parse(json);
-  assert.equal(data['@type'], 'BreadcrumbList');
+  const blocks = [...doc.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, json]) => JSON.parse(json));
+  const data = blocks.find((block) => block['@type'] === 'BreadcrumbList');
+  assert.ok(data);
   assert.equal(data.itemListElement.at(-1).item, `${ORIGIN}/calculators/loan-payment-calculator/`);
   // Pre-rendered example results are in the HTML for crawlers and no-JS users.
   assert.match(doc, /\$506\.91/);

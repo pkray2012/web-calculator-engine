@@ -12,6 +12,7 @@ import { calculatorShell } from '../components/calculator-shell.js';
 import { SAVINGS_DEFAULTS, parseSavingsForm, buildSavingsView } from '../adapters/savings-goal.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 function exampleView(overrides = {}) {
   return buildSavingsView(parseSavingsForm({ ...SAVINGS_DEFAULTS, ...overrides }).input);
@@ -25,9 +26,23 @@ export function savingsGoalPage() {
   const fiveYears = exampleView({ timeValue: '5' });
   const emergency = exampleView({ goalType: 'emergency' });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const deposit = exampleView({ plan: 'deposit' });
+  const faqs = [
+    { question: 'How much do I need to save each month to reach my goal?', answer: `Without interest, divide what is left to save by the months you have. With interest, the monthly amount is (G − S × (1 + r)^n) × r ÷ ((1 + r)^n − 1). A ${formatCurrency(example.target)} goal with ${formatCurrency(input.currentSavings)} saved, ${formatPercent(input.apy)} APY and ${formatDuration(input.months)} needs ${formatCurrency(example.monthlyContribution)} a month.` },
+    { question: 'How much does interest help?', answer: `In the example, the balance earns ${formatCurrency(example.interest)} of interest, so you need ${formatCurrency(example.monthlyContribution)} a month instead of ${formatCurrency(noInterest.monthlyContribution)} with no interest.` },
+    { question: 'How long will it take to save with a set monthly deposit?', answer: `Choose the set-deposit option. Saving ${formatCurrency(deposit.monthlyContribution)} a month toward the ${formatCurrency(deposit.target)} goal from ${formatCurrency(deposit.input.currentSavings)} at ${formatPercent(deposit.input.apy)} APY takes ${formatDuration(deposit.months)}.` },
+    { question: 'How big should an emergency fund be?', answer: `Multiply your essential monthly expenses by the months you want covered. ${formatCurrency(emergency.input.monthlyExpenses)} a month for ${emergency.input.coverageMonths} months is ${formatCurrency(emergency.target)}. Three to six months is a common rule of thumb, not a requirement.` },
+    { question: 'What APY should I use?', answer: 'Use the APY your savings account or CD pays today. APY already includes compounding, so the calculator converts it to a monthly rate of (1 + APY)^(1/12) − 1. Rates can change, so recheck your plan if your rate moves.' },
+    { question: 'Does the calculator include taxes or inflation?', answer: 'No. Interest is usually taxable, and inflation lowers what a future amount will buy. Results are before tax and do not adjust your goal for inflation.' }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Monthly savings = (goal − savings so far) ÷ months</strong>, less a little when your balance earns interest.
+  A ${formatCurrency(example.target)} goal with ${formatCurrency(input.currentSavings)} saved needs ${formatCurrency(example.monthlyContribution)} a month for
+  ${formatDuration(input.months)} at ${formatPercent(input.apy)} APY.`)}
   <p class="lede">Find how much to save each month to reach a goal or build an emergency fund by a date, or how long a set monthly deposit
   takes, with interest at your account's APY. Your inputs stay in your browser.</p>
 </header>
@@ -88,6 +103,8 @@ ${calculatorShell({
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'savings-faq')}
+
   ${sourcesSection([SOURCES.emergencyFund, SOURCES.apyDefinition])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -100,6 +117,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/savings-goal.js']
   };
 }

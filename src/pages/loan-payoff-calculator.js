@@ -12,6 +12,7 @@ import { calculatorShell } from '../components/calculator-shell.js';
 import { PAYOFF_DEFAULTS, parsePayoffForm, buildPayoffView } from '../adapters/loan-payoff.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 function exampleView(overrides = {}) {
   return buildPayoffView(parsePayoffForm({ ...PAYOFF_DEFAULTS, ...overrides }).input);
@@ -26,9 +27,23 @@ export function loanPayoffPage() {
   const yearly = exampleView({ extraMonthly: '', extraYearly: String(input.extraMonthly * 12) });
   const target = exampleView({ mode: 'target', targetYears: '15' });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const small = exampleView({ balance: '20000', annualRate: '7', payment: '400', extraMonthly: '100' });
+  const faqs = [
+    { question: 'How much faster will I pay off my loan with extra payments?', answer: `It depends on the balance, rate and payment. On a ${formatCurrency(input.balance)} balance at ${formatPercent(input.annualRate)} with a ${formatCurrency(input.payment)} monthly payment, adding ${formatCurrency(input.extraMonthly)} a month pays the loan off ${formatDuration(example.monthsSaved)} sooner and saves ${formatCurrency(example.interestSaved)} of interest.` },
+    { question: 'How is the payoff time calculated?', answer: 'Each month, interest is the balance × annual rate ÷ 12. Your payment covers that interest first, and the rest, plus any extra payment, reduces the balance. This repeats until the balance reaches zero.' },
+    { question: 'How much extra do I need to pay to be debt-free by a set date?', answer: `Choose the payoff-time option and enter the number of years. To pay off the example loan in ${formatDuration(target.target.months)}, you would add ${formatCurrency(target.target.extraMonthly)} a month.` },
+    { question: 'Is it better to pay a lump sum early or later?', answer: `Earlier. A one-time ${formatCurrency(lumpEarly.input.lumpSum)} payment with your next payment saves ${formatCurrency(lumpEarly.interestSaved)} of interest on the example loan; the same amount paid ${formatDuration(lumpLate.input.lumpSumMonth - 1)} later saves ${formatCurrency(lumpLate.interestSaved)}.` },
+    { question: 'Does extra on a small loan make a difference?', answer: `Yes. A ${formatCurrency(small.input.balance)} loan at ${formatPercent(small.input.annualRate)} paid at ${formatCurrency(small.input.payment)} a month takes ${formatDuration(small.base.months)}. Adding ${formatCurrency(small.input.extraMonthly)} a month cuts that to ${formatDuration(small.plan.months)} and saves ${formatCurrency(small.interestSaved)} of interest.` },
+    { question: 'Do extra payments lower my monthly payment?', answer: 'No. Extra payments shorten the loan, but the required payment stays the same unless the lender recasts the loan. Ask your servicer to apply extra payments to principal, and check your contract for a prepayment penalty.' }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Each month, interest = balance × rate ÷ 12; the rest of your payment, plus any extra, pays down the balance.</strong> Example:
+  ${formatCurrency(input.extraMonthly)} extra a month on ${formatCurrency(input.balance)} at ${formatPercent(input.annualRate)} pays it off ${formatDuration(example.monthsSaved)} sooner
+  and saves ${formatCurrency(example.interestSaved)} of interest.`)}
   <p class="lede">Start from your loan as it is today and see how much sooner extra payments pay it off and how much interest they save, or find the extra
   you need each month to be debt-free by a set time. Works for mortgages, auto loans and other fixed-rate loans. Your inputs stay in your browser.</p>
 </header>
@@ -94,6 +109,8 @@ ${calculatorShell({
     and plans, and that the solved extra payment pays off on time while a cent less does not. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'payoff-faq')}
+
   ${sourcesSection([SOURCES.prepayment])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -106,6 +123,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/loan-payoff.js']
   };
 }

@@ -14,6 +14,8 @@ import { SQFT_DEFAULTS, parseSquareFootageForm, buildSquareFootageView } from '.
 import { calculateSquareFootage } from '../calculators/square-footage.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
+import { formatCurrency } from '../lib/format.js';
 
 const TABLE_SQFT = [100, 250, 500, 1000, 1500, 2000, 2500, 5000, 10_000, 43_560];
 
@@ -34,9 +36,22 @@ export function squareFootagePage() {
   const inches = sq('rect', { length: 144, width: 168 }, 'in');
   const metric = sq('rect', { length: 4, width: 5 }, 'm');
 
+  // Direct answer and FAQ figures, all from the engine.
+  const priced = calculateSquareFootage({ shape: 'rect', dims: { length: 12, width: 14 }, pricePerSquareFoot: 4.5 });
+  const faqs = [
+    { question: 'How do I calculate square footage?', answer: `Multiply the length by the width in feet. A 12 × 14 ft room is 12 × 14 = ${num(main.squareFeet)} sq ft.` },
+    { question: 'How do I find the square footage of an L-shaped room?', answer: `Split it into rectangles, work out each one and add them. A 12 × 14 ft area plus a 6 × 8 ft nook is ${num(main.squareFeet)} + ${num(nook.squareFeet)} = ${num(main.squareFeet + nook.squareFeet)} sq ft.` },
+    { question: 'How do I calculate the square footage of a circle?', answer: `Use π × (diameter ÷ 2)². A circle 10 ft across is ${num(circle.squareFeet)} sq ft.` },
+    { question: 'How do I convert square inches to square feet?', answer: `Divide by 144, because a square foot is 12 × 12 inches. A floor measured as 144 × 168 inches is ${num(inches.squareInches, 0)} sq in ÷ 144 = ${num(inches.squareFeet)} sq ft.` },
+    { question: 'How many square feet are in a square yard?', answer: `Nine, because a yard is 3 feet and 3 × 3 = 9. A ${num(main.squareFeet)} sq ft room is ${num(main.squareYards)} square yards.` },
+    { question: 'How do I estimate cost per square foot?', answer: `Multiply the square footage by the price per square foot. ${num(priced.squareFeet)} sq ft at $4.50 per sq ft is ${formatCurrency(priced.cost)}. Add extra material for waste and cuts when you order.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Square feet = length (ft) × width (ft).</strong> A 12 × 14 ft room is ${num(main.squareFeet)} sq ft
+  (${num(main.squareYards)} sq yd). For a circle use π × (diameter ÷ 2)², and for a triangle base × height ÷ 2.`)}
   <p class="lede">Find the square footage of a rectangle, circle, triangle or trapezoid from measurements in feet, inches, yards, meters or
   centimeters, see it in square yards, square meters and acres, and price it by the square foot. Your inputs stay in your browser.</p>
 </header>
@@ -103,6 +118,8 @@ ${calculatorShell({
     same square footage, and the conversions. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'sqft-faq')}
+
   ${sourcesSection([SOURCES.nistUnits])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -115,6 +132,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/square-footage.js']
   };
 }

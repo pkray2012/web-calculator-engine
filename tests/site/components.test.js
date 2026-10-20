@@ -87,16 +87,16 @@ test('loan results show every headline figure and both schedules', () => {
 
 test('related links render only live calculators', () => {
   // Planned calculators never produce links; live ones do (the registry case below).
-  assert.deepEqual(relatedCalculators('loan-payment-calculator').map((calc) => calc.slug), ['auto-loan-calculator', 'personal-loan-calculator', 'mortgage-refinance-calculator', 'heloc-payment-calculator', 'loan-payoff-calculator']);
+  assert.deepEqual(relatedCalculators('loan-payment-calculator').map((calc) => calc.slug), ['auto-loan-calculator', 'personal-loan-calculator', 'mortgage-refinance-calculator', 'heloc-payment-calculator', 'loan-payoff-calculator', 'car-lease-calculator']);
   assert.deepEqual(relatedCalculators('mortgage-refinance-calculator').map((calc) => calc.slug), ['mortgage-calculator', 'mortgage-points-calculator', 'loan-payment-calculator', 'heloc-payment-calculator', 'home-equity-loan-calculator']);
-  assert.deepEqual(relatedCalculators('home-equity-loan-calculator').map((calc) => calc.slug), ['heloc-payment-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']);
+  assert.deepEqual(relatedCalculators('home-equity-loan-calculator').map((calc) => calc.slug), ['heloc-payment-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator', 'mortgage-calculator']);
   assert.deepEqual(relatedCalculators('home-affordability-calculator').map((calc) => calc.slug), ['mortgage-calculator', 'debt-to-income-calculator', 'rent-vs-buy-calculator', 'loan-payoff-calculator', 'mortgage-points-calculator']);
-  assert.deepEqual(relatedCalculators('heloc-payment-calculator').map((calc) => calc.slug), ['home-equity-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']);
+  assert.deepEqual(relatedCalculators('heloc-payment-calculator').map((calc) => calc.slug), ['home-equity-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator', 'mortgage-calculator']);
   assert.deepEqual(relatedCalculators('mortgage-calculator').map((calc) => calc.slug), ['home-affordability-calculator', 'mortgage-refinance-calculator', 'mortgage-points-calculator', 'loan-payoff-calculator']);
-  assert.deepEqual(relatedCalculators('mortgage-points-calculator').map((calc) => calc.slug), ['mortgage-refinance-calculator', 'loan-payment-calculator']);
+  assert.deepEqual(relatedCalculators('mortgage-points-calculator').map((calc) => calc.slug), ['mortgage-refinance-calculator', 'loan-payment-calculator', 'mortgage-calculator', 'home-affordability-calculator']);
   assert.deepEqual(relatedCalculators('auto-loan-calculator').map((calc) => calc.slug), ['car-lease-calculator', 'auto-loan-refinance-calculator', 'loan-payment-calculator', 'personal-loan-calculator', 'loan-payoff-calculator']);
-  assert.deepEqual(relatedCalculators('auto-loan-refinance-calculator').map((calc) => calc.slug), ['auto-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']);
-  assert.deepEqual(relatedCalculators('loan-payoff-calculator').map((calc) => calc.slug), ['loan-payment-calculator', 'mortgage-refinance-calculator', 'auto-loan-calculator']);
+  assert.deepEqual(relatedCalculators('auto-loan-refinance-calculator').map((calc) => calc.slug), ['auto-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator', 'car-lease-calculator']);
+  assert.deepEqual(relatedCalculators('loan-payoff-calculator').map((calc) => calc.slug), ['loan-payment-calculator', 'mortgage-refinance-calculator', 'auto-loan-calculator', 'mortgage-calculator', 'credit-card-payoff-calculator']);
   assert.deepEqual(relatedCalculators('personal-loan-calculator').map((calc) => calc.slug), ['loan-payment-calculator', 'auto-loan-calculator', 'credit-card-payoff-calculator', 'student-loan-refinance-calculator']);
   assert.deepEqual(relatedCalculators('student-loan-refinance-calculator').map((calc) => calc.slug), ['loan-payment-calculator', 'personal-loan-calculator']);
   assert.deepEqual(relatedCalculators('credit-card-payoff-calculator').map((calc) => calc.slug), ['balance-transfer-calculator', 'personal-loan-calculator', 'loan-payment-calculator']);

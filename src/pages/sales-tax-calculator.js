@@ -15,6 +15,7 @@ import { SALES_TAX_DEFAULTS, parseSalesTaxForm, buildSalesTaxView } from '../ada
 import { addSalesTax, removeSalesTax, findSalesTaxRate, roundCents } from '../calculators/sales-tax.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 const TABLE_AMOUNTS = [10, 20, 50, 100, 250, 500, 1000];
 const TABLE_RATES = [5, 6, 7, 8, 9, 10];
@@ -32,9 +33,24 @@ export function salesTaxPage() {
   const wrongTax = roundCents(add.total * rate / 100);
   const found = findSalesTaxRate({ price: add.price, total: add.total });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const faq220 = addSalesTax({ price: 220, ratePercent: 7.25 });
+  const faqOut = removeSalesTax({ total: faq220.total, ratePercent: 7.25 });
+  const faq100 = addSalesTax({ price: 100, ratePercent: 8 });
+  const faqs = [
+    { question: 'How do I add sales tax to a price?', answer: `Multiply the price by the rate as a decimal and add the result. 7.25% of $220 is $220 × 0.0725 = ${formatCurrency(faq220.tax)}, so the price plus tax is ${formatCurrency(faq220.total)}. In one step: total = price × (1 + rate ÷ 100).` },
+    { question: 'What is 7.25% sales tax on $220?', answer: `${formatCurrency(faq220.tax)} of tax, for a total of ${formatCurrency(faq220.total)}.` },
+    { question: 'How do I remove sales tax from a total?', answer: `Divide the total by 1 plus the rate as a decimal. ${formatCurrency(faq220.total)} ÷ 1.0725 = ${formatCurrency(faqOut.price)} before tax, so ${formatCurrency(faqOut.tax)} was tax. Taking 7.25% of the total instead overstates the tax.` },
+    { question: 'How do I find the sales tax rate from a receipt?', answer: 'Divide the tax by the price before tax and multiply by 100. Because the tax on a receipt is rounded to the cent, the answer is exact only to within that rounding.' },
+    { question: 'How much is 8% sales tax on $100?', answer: `${formatCurrency(faq100.tax)}, for a total of ${formatCurrency(faq100.total)}. Every $100 at a rate of R% adds $R of tax.` },
+    { question: 'What sales tax rate should I use?', answer: 'Use the combined rate where you buy or take delivery: the state rate plus any county, city or district rates. Your state’s department of revenue publishes its rates and rules, and a receipt shows the rate a store charged.' }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Sales tax = price × rate ÷ 100, and price with tax = price × (1 + rate ÷ 100).</strong> For example, 7.25% of $220
+  is ${formatCurrency(faq220.tax)}, so the total is ${formatCurrency(faq220.total)}. To remove tax, divide the total by (1 + rate ÷ 100).`)}
   <p class="lede">Add sales tax to a price, take the tax back out of a total you paid, or work out the tax rate from a receipt. Enter the
   combined rate for where you buy. Your inputs stay in your browser.</p>
 </header>
@@ -118,6 +134,8 @@ ${calculatorShell({
     contains the true rate. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'tax-faq')}
+
   ${sourcesSection([SOURCES.irsSalesTaxDeduction])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -130,6 +148,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/sales-tax.js']
   };
 }

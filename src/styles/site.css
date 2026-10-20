@@ -125,6 +125,10 @@ main:focus { outline: none; }
 
 /* Page header & content */
 .page-header { padding: 12px 0 4px; max-width: 780px; }
+.page-updated { margin: 6px auto 0; font-size: 0.85rem; color: var(--muted); }
+.direct-answer { margin: 0 0 0.9em; max-width: 780px; }
+.faq h3 { font-size: 1.05rem; margin: 1.4em 0 0.3em; }
+.faq p { margin-top: 0; }
 .lede { font-size: 1rem; color: var(--muted); margin-bottom: 0.75em; }
 @media (min-width: 600px) { .lede { font-size: 1.06rem; } .page-header { padding-top: 16px; } }
 .note { color: var(--muted); font-size: 0.95rem; }

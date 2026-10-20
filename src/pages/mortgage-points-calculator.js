@@ -12,6 +12,7 @@ import { calculatorShell } from '../components/calculator-shell.js';
 import { POINTS_DEFAULTS, parsePointsForm, buildPointsView } from '../adapters/mortgage-points.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 function exampleView(overrides = {}) {
   return buildPointsView(parsePointsForm({ ...POINTS_DEFAULTS, ...overrides }).input);
@@ -26,10 +27,23 @@ export function mortgagePointsPage() {
   const weakPoints = exampleView({ points: '2', pointsRate: '6.85' });
   const sources = [SOURCES.pointsAndCredits, SOURCES.discountPointsResearch, SOURCES.loanEstimate];
 
+  // Direct answer and FAQ figures, all from the engine.
+  const faqs = [
+    { question: 'How do I calculate mortgage points break-even?', answer: `Divide the cost of the points by the monthly payment savings. One point on ${formatCurrency(input.loanAmount)} costs ${formatCurrency(example.pointsCost)}; lowering the rate from ${formatPercent(input.baseRate)} to ${formatPercent(input.pointsRate)} saves ${formatCurrency(example.monthlySavings)} a month, so the simple break-even is ${example.simpleBreakEvenMonths.toFixed(1)} months. Counting the faster drop in your balance, the points break even in month ${example.breakEvenMonth}.` },
+    { question: 'How much does one mortgage point cost?', answer: `One point is 1% of the loan amount, paid at closing. On a ${formatCurrency(input.loanAmount)} loan that is ${formatCurrency(example.pointsCost)}.` },
+    { question: 'How much does a point lower the rate?', answer: 'It is not fixed: it depends on the lender and the market. Ask lenders for quotes with and without points and enter the rate each one offers.' },
+    { question: 'Are mortgage points worth it?', answer: `Only if you keep the loan past the break-even point. In the example, keeping the loan ${formatDuration(example.stay.months)} saves ${formatCurrency(example.stay.netSavings)}, but refinancing after ${formatDuration(shortStay.stay.months)} leaves you ${formatCurrency(-shortStay.stay.netSavings)} worse off.` },
+    { question: 'How does a mortgage calculator with points compare two quotes?', answer: `It works out the principal and interest payment for each rate, then compares the total cost, including the points and the balance still owed, month by month. In the example the payment drops from ${formatCurrency(example.basePayment)} to ${formatCurrency(example.pointsPayment)}.` },
+    { question: 'Is buying two points better than one?', answer: `Only if the second point lowers the rate enough. Two points that bring the rate from ${formatPercent(twoPoints.input.baseRate)} to ${formatPercent(twoPoints.input.pointsRate)} cost ${formatCurrency(twoPoints.pointsCost)} and break even in month ${twoPoints.breakEvenMonth}. Compare the rate each quote offers, not the number of points.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
-  <p class="lede">Compare a mortgage quote with discount points against the same loan without them. See what the points cost, how much they lower the payment,
+  ${directAnswer(html`<strong>Break-even months = cost of points ÷ monthly payment savings.</strong> One point on ${formatCurrency(input.loanAmount)} costs
+  ${formatCurrency(example.pointsCost)}; dropping the rate from ${formatPercent(input.baseRate)} to ${formatPercent(input.pointsRate)} saves ${formatCurrency(example.monthlySavings)}
+  a month, so it pays for itself in about ${Math.ceil(example.simpleBreakEvenMonths)} months (month ${example.breakEvenMonth} counting the faster payoff).`)}
+  <p class="lede">This mortgage points calculator works as a mortgage calculator with points: compare a quote with discount points against the same loan without them. See what the points cost, how much they lower the payment,
   the month they pay for themselves, and whether you come out ahead if you sell or refinance after a few years. Principal and interest only; your inputs stay in your browser.</p>
 </header>
 
@@ -111,6 +125,8 @@ ${calculatorShell({
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'points-faq')}
+
   ${sourcesSection(sources)}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -123,6 +139,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/mortgage-points.js']
   };
 }

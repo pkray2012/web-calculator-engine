@@ -15,6 +15,7 @@ import { PERCENT_DEFAULTS, parsePercentForm, buildPercentView } from '../adapter
 import { percentOf, whatPercent, percentChange, percentOff } from '../calculators/percentage.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 const TABLE_PERCENTS = [5, 10, 15, 20, 25, 30, 50, 75];
 const TABLE_VALUES = [20, 50, 80, 100, 250, 1000];
@@ -34,9 +35,26 @@ export function percentagePage() {
   const off = percentOff({ price: Number(d.offPrice), percent: Number(d.offPercent) });
   const stacked = percentOff({ price: Number(d.offPrice), percent: Number(d.offPercent), extraPercent: 10 });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const faqOf = percentOf({ percent: 20, of: 150 });
+  const faqIs = whatPercent({ part: 30, whole: 120 });
+  const faqUp = percentChange({ from: 80, to: 100 });
+  const faqDown = percentChange({ from: 100, to: 80 });
+  const faqOff = percentOff({ price: 80, percent: 25 });
+  const faqs = [
+    { question: 'How do I calculate a percentage of a number?', answer: `Multiply the number by the percentage and divide by 100. 20% of 150 is 150 × 20 ÷ 100 = ${fmt(faqOf.result)}.` },
+    { question: 'How do I find what percent one number is of another?', answer: `Divide the part by the whole and multiply by 100. 30 out of 120 is 30 ÷ 120 × 100 = ${fmt(faqIs.percent)}%.` },
+    { question: 'How do I calculate a percent increase?', answer: `Subtract the old value from the new one, divide by the old value and multiply by 100. Going from 80 to 100 is (100 − 80) ÷ 80 × 100 = ${fmt(faqUp.percent)}%.` },
+    { question: 'How do I calculate a percent decrease?', answer: `Use the same formula; the result is negative. Going from 100 to 80 is (80 − 100) ÷ 100 × 100 = −${fmt(Math.abs(faqDown.percent))}%, a ${fmt(Math.abs(faqDown.percent))}% decrease.` },
+    { question: 'Why does a 25% increase not cancel a 25% decrease?', answer: `Each percentage is taken of a different starting value. After rising from 80 to 100 (+${fmt(faqUp.percent)}%), it takes a ${fmt(Math.abs(faqUp.reversePercent))}% decrease, not 25%, to get back to 80.` },
+    { question: 'How do I work out a price after a percent-off discount?', answer: `Multiply the price by (1 − the discount ÷ 100). $80 at 25% off is $80 × 0.75 = $${fmt(faqOff.salePrice)}, a saving of $${fmt(faqOff.saving)}.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>X% of Y = Y × X ÷ 100, and percent change = (new − old) ÷ old × 100.</strong> For example, 20% of 150 is ${fmt(faqOf.result)},
+  and going from 80 to 100 is a ${fmt(faqUp.percent)}% increase.`)}
   <p class="lede">Find a percentage of a number, what percent one number is of another, the percent increase or decrease between two numbers,
   or the price after a percent-off discount, with the formula for each. Your inputs stay in your browser.</p>
 </header>
@@ -101,6 +119,8 @@ ${calculatorShell({
     discounts multiply. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'pct-faq')}
+
   ${sourcesSection([SOURCES.nistPercent])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -113,6 +133,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/percentage.js']
   };
 }

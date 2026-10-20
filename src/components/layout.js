@@ -50,6 +50,7 @@ ${structured.map((data) => jsonLd(data))}
 ${siteHeader(page, ctx)}
 <main id="main" tabindex="-1">
 ${page.breadcrumbs?.length ? breadcrumbNav(page.breadcrumbs) : ''}
+${page.showUpdated && page.updated ? updatedLine(page.updated) : ''}
 ${page.body}
 ${ctx.site.ads ? adSlot('page-end') : ''}
 </main>
@@ -115,6 +116,13 @@ function siteFooter(ctx, page) {
  */
 export function adSlot(name) {
   return html`<aside class="ad-slot ad-slot--${name}" aria-label="Advertisement" data-ad-slot="${name}"></aside>`;
+}
+
+/** "Last updated" line for calculator pages, linking to how the calculators are made. */
+function updatedLine(isoDate) {
+  const label = new Date(`${isoDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  return html`<p class="page-updated container">Last updated <time datetime="${isoDate}">${label}</time> ·
+  <a href="/about/">How we build and test calculators</a></p>`;
 }
 
 function breadcrumbNav(crumbs) {

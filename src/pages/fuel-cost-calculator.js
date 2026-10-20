@@ -15,6 +15,7 @@ import { FUEL_DEFAULTS, parseFuelForm, buildFuelView } from '../adapters/fuel-co
 import { calculateTripFuelCost, calculateMpg } from '../calculators/fuel-cost.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 const TABLE_MPG = [15, 20, 25, 30, 35, 40, 50];
 const TABLE_PRICES = [3, 3.5, 4, 4.5, 5];
@@ -33,9 +34,45 @@ export function fuelCostPage() {
   const thirty = thousand(30);
   const forty = thousand(40);
 
+  // Direct answer and worked examples. Every figure comes from the engine.
+  const quick = calculateTripFuelCost({ distanceMiles: 300, mpg: 25, pricePerGallon: 3.5 });
+  const twoCars = calculateTripFuelCost({ distanceMiles: 720, mpg: 24, pricePerGallon: 4.09, compareMpg: 36 });
+  const twoCarsGap = -twoCars.compare.difference;
+  const roundTrip = calculateTripFuelCost({ distanceMiles: 150, mpg: 30, pricePerGallon: 3.5, roundTrip: true, people: 3 });
+  const commute = calculateTripFuelCost({ distanceMiles: 20, mpg: 28, pricePerGallon: 3.5, roundTrip: true });
+  const workdays = 250;
+  const faqs = [
+    {
+      question: 'How do I calculate the gas cost of a trip?',
+      answer: `Divide the distance by your car's MPG to get gallons, then multiply by the price per gallon. For example, 300 miles at 25 MPG uses ${quick.gallons.toFixed(0)} gallons, and at $3.50 a gallon that costs ${formatCurrency(quick.cost)}.`
+    },
+    {
+      question: 'How do I calculate my car\'s MPG?',
+      answer: `Fill the tank, reset the trip meter, drive until you need gas, then divide the miles driven by the gallons it takes to refill. For example, ${FUEL_DEFAULTS.milesDriven} miles on ${FUEL_DEFAULTS.gallonsUsed} gallons is ${fill.mpg.toFixed(1)} MPG.`
+    },
+    {
+      question: 'How do I work out the fuel cost per mile?',
+      answer: `Divide the price per gallon by the MPG. At $3.50 a gallon and 25 MPG, gas costs ${(quick.costPerMile * 100).toFixed(0)} cents a mile.`
+    },
+    {
+      question: 'How much does a round trip cost in gas?',
+      answer: `Double the one-way distance before you divide by MPG. A 150-mile drive each way at 30 MPG and $3.50 a gallon is ${roundTrip.miles} miles, ${roundTrip.gallons.toFixed(0)} gallons and ${formatCurrency(roundTrip.cost)}, or ${formatCurrency(roundTrip.costPerPerson)} each for three people.`
+    },
+    {
+      question: 'How much more does a less efficient car spend on gas?',
+      answer: `Work out the cost for each car over the same distance and subtract. Over 720 miles with gas at $4.09, a 24 MPG car spends ${formatCurrency(twoCars.cost)} and a 36 MPG car ${formatCurrency(twoCars.compare.cost)}, so the 24 MPG car spends ${formatCurrency(twoCarsGap)} more.`
+    },
+    {
+      question: 'Does the calculator include tolls, parking or electric cars?',
+      answer: 'No. It covers gasoline or diesel priced per gallon. Tolls, parking, wear and depreciation are not included, and electric vehicles, which use kilowatt-hours, are not covered.'
+    }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Fuel cost = miles ÷ MPG × price per gallon.</strong> For example, 300 miles at 25 MPG with gas at $3.50 a gallon uses
+  ${quick.gallons.toFixed(0)} gallons and costs ${formatCurrency(quick.cost)}.`)}
   <p class="lede">Work out what a drive will cost in gas from the distance, your car's MPG and the price per gallon, split it between passengers
   and compare two vehicles, or find your real MPG from a fill-up. Your inputs stay in your browser.</p>
 </header>
@@ -82,6 +119,20 @@ ${calculatorShell({
     the difference for your own trip.</p>
   </section>
 
+  <section class="content-section" aria-labelledby="fuel-examples-heading">
+    <h2 id="fuel-examples-heading">Worked examples</h2>
+    <h3>Two cars, same distance</h3>
+    <p>Two students each drive 720 miles. Car A gets 24 MPG and car B gets 36 MPG, and gas is $4.09 a gallon. Car A uses
+    720 ÷ 24 = ${twoCars.gallons.toFixed(0)} gallons, costing ${formatCurrency(twoCars.cost)}; car B uses 720 ÷ 36 = ${twoCars.compare.gallons.toFixed(0)} gallons, costing
+    ${formatCurrency(twoCars.compare.cost)}. Car A spends <strong>${formatCurrency(twoCarsGap)} more</strong> on gas.</p>
+    <h3>A round trip split three ways</h3>
+    <p>A 150-mile drive each way is ${roundTrip.miles} miles in total. At 30 MPG that is ${roundTrip.gallons.toFixed(0)} gallons, and at $3.50 a gallon
+    ${formatCurrency(roundTrip.cost)}, or ${formatCurrency(roundTrip.costPerPerson)} each for three people.</p>
+    <h3>A year of commuting</h3>
+    <p>A 20-mile commute each way is ${commute.miles} miles a day. At 28 MPG and $3.50 a gallon that is ${formatCurrency(commute.cost)} a day, or about
+    ${formatCurrency(commute.cost * workdays)} over ${workdays} working days.</p>
+  </section>
+
   <section class="content-section" aria-labelledby="fuel-mpg-heading">
     <h2 id="fuel-mpg-heading">How to work out your real MPG</h2>
     <ol>
@@ -111,6 +162,8 @@ ${calculatorShell({
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'fuel-faq')}
+
   ${sourcesSection([SOURCES.fuelEconomyVaries])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -123,6 +176,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/fuel-cost.js']
   };
 }

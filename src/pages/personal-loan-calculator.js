@@ -12,6 +12,7 @@ import { calculatorShell } from '../components/calculator-shell.js';
 import { PERSONAL_DEFAULTS, parsePersonalForm, buildPersonalView } from '../adapters/personal-loan.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 function exampleView(overrides = {}) {
   return buildPersonalView(parsePersonalForm({ ...PERSONAL_DEFAULTS, ...overrides }).input);
@@ -31,9 +32,22 @@ export function personalLoanPage() {
   const shortTerm = example.termComparison[0];
   const longTerm = example.termComparison.at(-1);
 
+  // Direct answer and FAQ figures, all from the engine.
+  const faqs = [
+    { question: 'How is a personal loan payment calculated?', answer: `Payment = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the loan amount, r is the annual rate ÷ 12 and n is the number of monthly payments. ${formatCurrency(input.principal)} at ${formatPercent(input.annualRate)} for ${years} years is ${formatCurrency(example.monthlyPayment)} a month.` },
+    { question: 'How much will I receive after an origination fee?', answer: `The fee is withheld from the loan, so you receive the loan amount minus the fee. A ${formatPercent(fee.rate)} fee on ${formatCurrency(input.principal)} withholds ${formatCurrency(fee.amount)}, so you receive ${formatCurrency(fee.amountReceived)} but repay the full ${formatCurrency(input.principal)} with interest.` },
+    { question: 'What is the total cost of a personal loan?', answer: `Interest plus fees. In the example you pay ${formatCurrency(example.totalInterest)} of interest and a ${formatCurrency(fee.amount)} fee, a cost of borrowing of ${formatCurrency(fee.costOfBorrowing)}.` },
+    { question: 'Why is the APR higher than the interest rate?', answer: `The APR counts fees as well as interest. Because you receive only ${formatCurrency(fee.amountReceived)}, the example's fee-adjusted APR is ${formatPercent(fee.effectiveAPR, 2)} against a ${formatPercent(input.annualRate)} rate. With no fee the two are equal.` },
+    { question: 'Is a lower rate with a fee better than a higher rate with none?', answer: `Not always. For ${formatCurrency(input.principal)} over ${years} years, 11% with a 6% fee costs ${formatCurrency(offerA.fee.costOfBorrowing)} and 13% with no fee costs ${formatCurrency(offerB.fee.costOfBorrowing)} (illustrative rates). Compare the cash you receive, the APR and the total cost, not the rate alone.` },
+    { question: 'Does a longer term lower the cost?', answer: `It lowers the payment but usually raises total interest. At the example rate, a ${shortTerm.termMonths}-month loan costs ${formatCurrency(shortTerm.monthlyPayment)} a month and ${formatCurrency(shortTerm.totalInterest)} of interest; an ${longTerm.termMonths}-month loan costs ${formatCurrency(longTerm.monthlyPayment)} a month and ${formatCurrency(longTerm.totalInterest)} of interest.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Payment = P × r × (1 + r)<sup>n</sup> ÷ ((1 + r)<sup>n</sup> − 1)</strong>, with r = annual rate ÷ 12 and n = months.
+  ${formatCurrency(input.principal)} at ${formatPercent(input.annualRate)} for ${years} years is ${formatCurrency(example.monthlyPayment)} a month; after a
+  ${formatPercent(fee.rate)} origination fee you receive ${formatCurrency(fee.amountReceived)}.`)}
   <p class="lede">See the monthly payment on a personal loan, how much cash you actually receive after an origination fee,
   and what the loan really costs once that fee is counted, with a fee-adjusted APR, term comparison and full schedule.</p>
 </header>
@@ -119,6 +133,8 @@ ${calculatorShell({
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'personal-faq')}
+
   ${sourcesSection([SOURCES.aprVsRate])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -131,6 +147,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/personal-loan.js']
   };
 }

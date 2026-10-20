@@ -12,6 +12,7 @@ import { calculatorShell } from '../components/calculator-shell.js';
 import { AUTO_DEFAULTS, parseAutoForm, buildAutoView } from '../adapters/auto-loan.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 function exampleView(overrides = {}) {
   return buildAutoView(parseAutoForm({ ...AUTO_DEFAULTS, ...overrides }).input);
@@ -33,9 +34,22 @@ export function autoLoanPage() {
   const shortest = example.termComparison[0];
   const longest = example.termComparison.at(-1);
 
+  // Direct answer and FAQ figures, all from the engine.
+  const faqs = [
+    { question: 'How is a car payment calculated?', answer: `First find the amount financed: price + sales tax + fees − down payment − trade-in equity. Then apply the fixed-rate loan payment formula P × r × (1 + r)^n ÷ ((1 + r)^n − 1), with r = APR ÷ 12. A ${formatCurrency(purchase.vehiclePrice)} car with ${formatCurrency(purchase.downPayment)} down and ${formatPercent(purchase.salesTaxRate)} tax finances ${formatCurrency(purchase.amountFinanced)}, which is ${formatCurrency(example.monthlyPayment)} a month at ${formatPercent(example.input.annualRate)} APR for ${example.input.termMonths} months.` },
+    { question: 'How much car can I afford?', answer: `Work backwards from your monthly budget. ${formatCurrency(budget.budget.monthlyBudget)} a month with ${formatCurrency(purchase.downPayment)} down, ${formatPercent(purchase.salesTaxRate)} tax and ${formatPercent(example.input.annualRate)} APR over ${example.input.termMonths} months covers a car of about ${formatCurrencyWhole(budget.budget.vehiclePrice)}. Insurance, fuel and maintenance come on top.` },
+    { question: 'How much interest will I pay on a car loan?', answer: `In the example, ${formatCurrency(example.totalInterest)} over ${example.input.termMonths} months. A ${shortest.termMonths}-month term costs ${formatCurrency(shortest.totalInterest)} of interest and a ${longest.termMonths}-month term costs ${formatCurrency(longest.totalInterest)} at the same APR.` },
+    { question: 'Is a 72-month car loan a good idea?', answer: `It lowers the payment but raises the interest, and for longer you may owe more than the car is worth. The same ${formatCurrency(budget.budget.monthlyBudget)} payment covers about ${formatCurrencyWhole(budget72.budget.vehiclePrice)} over 72 months but adds ${formatCurrency(budget72.totalInterest - budget.totalInterest)} of interest.` },
+    { question: 'Is sales tax included in a car loan?', answer: 'It is usually added to the amount financed unless you pay it in cash. Rates and trade-in rules depend on your state and locality; check your state revenue or motor vehicle agency and the dealer’s buyer’s order.' },
+    { question: 'What happens if I owe more on my trade-in than it is worth?', answer: `The difference is usually added to the new loan. Trading in a car worth $5,000 with $9,000 owed adds ${formatCurrency(withNegative.purchase.amountFinanced - purchase.amountFinanced)} to the example loan, raising the payment to ${formatCurrency(withNegative.monthlyPayment)} and adding ${formatCurrency(negativeInterest)} of interest.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Amount financed = price + sales tax + fees − down payment − trade-in equity</strong>; the payment is the fixed-rate loan
+  payment on that amount. A ${formatCurrency(purchase.vehiclePrice)} car with ${formatCurrency(purchase.downPayment)} down and ${formatPercent(purchase.salesTaxRate)}
+  tax is ${formatCurrency(example.monthlyPayment)} a month at ${formatPercent(example.input.annualRate)} APR for ${example.input.termMonths} months.`)}
   <p class="lede">Estimate your car payment with sales tax, fees and a trade-in included, or start from a monthly budget to see how much car
   you can afford. See exactly how the amount you borrow is built, what the loan costs in interest, and how a different term or extra payments change it.</p>
 </header>
@@ -125,6 +139,8 @@ ${calculatorShell({
     Your inputs stay in your browser. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'auto-faq')}
+
   ${sourcesSection([SOURCES.tradeInNegativeEquity, SOURCES.prepayment])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -137,6 +153,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/auto-loan.js']
   };
 }

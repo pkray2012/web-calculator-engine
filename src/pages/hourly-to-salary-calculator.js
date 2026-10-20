@@ -15,6 +15,7 @@ import { HOURLY_SALARY_DEFAULTS, parseHourlySalaryForm, buildHourlySalaryView } 
 import { convertPay } from '../calculators/hourly-salary.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 const HOURLY_RATES = [15, 16, 17, 18, 20, 22, 25, 28, 30, 35, 40, 45, 50, 60, 75];
 const SALARIES = [30_000, 40_000, 45_000, 50_000, 55_000, 60_000, 65_000, 70_000, 75_000, 80_000, 90_000, 100_000, 120_000, 150_000, 200_000];
@@ -34,9 +35,23 @@ export function hourlyToSalaryPage() {
   const overtime = convertPay({ amount: 20, period: 'hour', overtimeHours: 5 });
   const plain = convertPay({ amount: 20, period: 'hour' });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const faq15 = convertPay({ amount: 15, period: 'hour' });
+  const faq50 = convertPay({ amount: 50, period: 'hour' });
+  const faqs = [
+    { question: 'How do I convert an hourly wage to a yearly salary?', answer: `Multiply the hourly rate by hours a week and by paid weeks a year. Full time is 40 × 52 = 2,080 hours, so ${formatCurrency(input.amount)} an hour is ${formatCurrencyWhole(example.pay.year)} a year.` },
+    { question: 'How much is $15 an hour per year?', answer: `${formatCurrencyWhole(faq15.pay.year)} a year at 40 hours a week for 52 weeks, or ${formatCurrency(faq15.pay.month)} a month.` },
+    { question: 'How much is $50 an hour per year?', answer: `${formatCurrencyWhole(faq50.pay.year)} a year full time, or ${formatCurrency(faq50.pay.biweek)} every two weeks.` },
+    { question: 'How do I convert a salary to an hourly rate?', answer: `Divide the salary by the hours you are paid for in a year. ${formatCurrencyWhole(salary.pay.year)} ÷ 2,080 = ${formatCurrency(salary.pay.hour)} an hour.` },
+    { question: 'How does unpaid time off change my annual pay?', answer: `Use only the weeks you are paid. At ${formatCurrency(input.amount)} an hour, 50 paid weeks instead of 52 is ${formatCurrencyWhole(unpaid.pay.year)} a year.` },
+    { question: 'How does overtime change my yearly pay?', answer: `Overtime hours are paid at 1.5 times the rate here. At $20 an hour, 5 overtime hours a week raise yearly pay from ${formatCurrencyWhole(plain.pay.year)} to ${formatCurrencyWhole(overtime.pay.year)}.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Annual salary = hourly rate × hours a week × paid weeks a year</strong>, and hourly rate = salary ÷ hours a year.
+  ${formatCurrency(input.amount)} an hour at 40 hours a week for 52 weeks (2,080 hours) is ${formatCurrencyWhole(example.pay.year)} a year.`)}
   <p class="lede">Convert an hourly wage to an annual salary, or a salary to an hourly rate, and see the same pay per day, week, biweekly and
   semimonthly paycheck, and month. Set your own hours, paid weeks, overtime and paid days off. Your inputs stay in your browser.</p>
 </header>
@@ -156,6 +171,8 @@ ${calculatorShell({
     every pay period to every other, paid days off and overtime. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'hs-faq')}
+
   ${sourcesSection([SOURCES.flsaOvertime])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -168,6 +185,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/hourly-salary.js']
   };
 }

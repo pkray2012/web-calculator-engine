@@ -108,11 +108,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Loan payment',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-27',
+    updated: '2026-10-20',
     title: 'Loan Payment Calculator — Monthly Payment & Amortization',
     description: 'Calculate the monthly payment, total interest and amortization schedule for a fixed-rate loan, compare terms, and see how extra payments shorten payoff.',
     summary: 'Monthly payment, total interest, term comparison, extra-payment savings and a full amortization schedule.',
-    related: ['auto-loan-calculator', 'personal-loan-calculator', 'mortgage-refinance-calculator', 'heloc-payment-calculator', 'loan-payoff-calculator']
+    related: ['auto-loan-calculator', 'personal-loan-calculator', 'mortgage-refinance-calculator', 'heloc-payment-calculator', 'loan-payoff-calculator', 'car-lease-calculator']
   },
   {
     slug: 'auto-loan-calculator',
@@ -121,9 +121,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Auto loan',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-28',
-    title: 'Auto Loan Calculator — Car Payment with Tax, Trade-In & Fees',
-    description: 'Estimate a car payment with sales tax, fees and trade-in, or how much car you can afford on a monthly budget. See the amount financed, interest and schedule.',
+    updated: '2026-10-20',
+    title: 'Auto Loan Calculator: Car Payment with Tax, Trade-In & Fees',
+    description: 'A $35,000 car with $5,000 down and 6% tax is $635.62 a month at 7% APR for 60 months. Include trade-in and fees, or see how much car you can afford.',
     summary: 'Car payment with tax, fees and trade-in, or the car price a monthly budget affords; amount financed, term comparison and amortization.',
     related: ['car-lease-calculator', 'auto-loan-refinance-calculator', 'loan-payment-calculator', 'personal-loan-calculator', 'loan-payoff-calculator']
   },
@@ -147,11 +147,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Auto refinance',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-28',
+    updated: '2026-10-20',
     title: 'Auto Loan Refinance Calculator — Savings After Fees',
     description: 'Compare keeping your car loan with refinancing: new payment, total savings after fees, when refinancing comes out ahead, and what a longer term costs.',
     summary: 'New car payment, total savings after fees and penalties, true break-even counting the balance owed, and the cost of a longer term.',
-    related: ['auto-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']
+    related: ['auto-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator', 'car-lease-calculator']
   },
   {
     slug: 'personal-loan-calculator',
@@ -160,9 +160,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Personal loan',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-27',
-    title: 'Personal Loan Calculator — Payment, Origination Fee & APR',
-    description: 'Calculate a personal loan payment, the cash you receive after an origination fee, the fee-adjusted APR and the total cost of borrowing, with a full schedule.',
+    updated: '2026-10-20',
+    title: 'Personal Loan Calculator: Monthly Payment, Origination Fee & APR',
+    description: 'A $15,000 loan at 12% for 3 years is $498.21 a month. See the cash you get after an origination fee, the fee-adjusted APR and the total cost.',
     summary: 'Payment, cash received after an origination fee, fee-adjusted APR, cost of borrowing, term comparison and amortization.',
     related: ['loan-payment-calculator', 'auto-loan-calculator', 'credit-card-payoff-calculator', 'student-loan-refinance-calculator']
   },
@@ -199,11 +199,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Home equity loan',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-28',
+    updated: '2026-10-20',
     title: 'Home Equity Loan Calculator — Payment & Borrowing Limit',
     description: 'Estimate a home equity loan payment, how much you might borrow at 80%, 85% or 90% CLTV, the cash you receive after closing costs and total interest.',
     summary: 'Monthly payment, borrowing limit at common CLTV caps, cash received after closing costs, term comparison and amortization.',
-    related: ['heloc-payment-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']
+    related: ['heloc-payment-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator', 'mortgage-calculator']
   },
   {
     slug: 'mortgage-points-calculator',
@@ -212,11 +212,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Mortgage points',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-28',
-    title: 'Mortgage Points Calculator — Is Buying Points Worth It?',
-    description: 'Compare a mortgage with and without discount points: cost of the points, monthly savings, the month they pay for themselves, and savings if you sell early.',
+    updated: '2026-10-20',
+    title: 'Mortgage Points Calculator: Break-Even & Is It Worth It?',
+    description: 'Mortgage calculator with points: 1 point on $300,000 costs $3,000 and cuts 7% to 6.75%, saving $50.11 a month. See the break-even month and savings if you sell early.',
     summary: 'Cost of discount points, monthly savings, true break-even month, and net savings if you sell or refinance after N years.',
-    related: ['mortgage-refinance-calculator', 'loan-payment-calculator']
+    related: ['mortgage-refinance-calculator', 'loan-payment-calculator', 'mortgage-calculator', 'home-affordability-calculator']
   },
   {
     slug: 'heloc-payment-calculator',
@@ -225,11 +225,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'HELOC',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-28',
+    updated: '2026-10-20',
     title: 'HELOC Payment Calculator — Draw vs. Repayment Payment',
     description: 'Estimate your HELOC payment during the draw period, the higher payment when repayment starts, and how much a rate rise would add, with a year-by-year schedule.',
     summary: 'Draw-period and repayment payments, the payment jump when repayment starts, rate what-ifs and a yearly schedule.',
-    related: ['home-equity-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator']
+    related: ['home-equity-loan-calculator', 'mortgage-refinance-calculator', 'loan-payment-calculator', 'mortgage-calculator']
   },
   {
     slug: 'credit-card-payoff-calculator',
@@ -264,11 +264,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Loan payoff',
     category: 'loans',
     status: 'live',
-    updated: '2026-09-28',
-    title: 'Loan Payoff Calculator — Extra Payments & Payoff Date',
-    description: 'See how much sooner extra monthly, yearly or one-time payments pay off a mortgage or loan, the interest saved, and the extra needed to be debt-free by a date.',
+    updated: '2026-10-20',
+    title: 'Loan Payoff Calculator: Extra Payments & Interest Saved',
+    description: '$200 extra a month on a $250,000 loan at 6.5% pays it off 7 years, 4 months sooner and saves $89,761. See your payoff date or the extra needed to finish early.',
     summary: 'Payoff date and interest saved with monthly, yearly or lump-sum extras, and the extra needed to be debt-free by a set time.',
-    related: ['loan-payment-calculator', 'mortgage-refinance-calculator', 'auto-loan-calculator']
+    related: ['loan-payment-calculator', 'mortgage-refinance-calculator', 'auto-loan-calculator', 'mortgage-calculator', 'credit-card-payoff-calculator']
   },
   {
     slug: 'savings-goal-calculator',
@@ -277,11 +277,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Savings goal',
     category: 'savings',
     status: 'live',
-    updated: '2026-09-28',
-    title: 'Savings Goal Calculator — How Much to Save Each Month',
-    description: 'Find how much to save each month to reach a goal or emergency fund by a date, or how long a set monthly deposit takes, with interest at your APY.',
+    updated: '2026-10-20',
+    title: 'Savings Goal Calculator: How Much to Save Each Month',
+    description: 'To reach $20,000 in 3 years from $2,000 at 4% APY, save $465.38 a month. Plan a goal or emergency fund, or see how long a set deposit takes.',
     summary: 'Monthly amount to reach a goal or emergency fund by a date, or time to reach it with a set deposit, with APY growth by year.',
-    related: ['cd-calculator', 'credit-card-payoff-calculator', 'loan-payoff-calculator', 'home-affordability-calculator']
+    related: ['cd-calculator', 'credit-card-payoff-calculator', 'loan-payoff-calculator', 'home-affordability-calculator', 'dividend-calculator']
   },
   {
     slug: 'hourly-to-salary-calculator',
@@ -290,9 +290,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Hourly to salary',
     category: 'work',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Hourly to Salary Calculator — Hourly, Weekly & Monthly Pay',
-    description: 'Convert an hourly wage to an annual salary or a salary to an hourly rate, with weekly, biweekly and monthly pay, overtime, and paid or unpaid time off.',
+    updated: '2026-10-20',
+    title: 'Hourly to Salary Calculator: Hourly Wage to Annual Pay',
+    description: '$25 an hour is $52,000 a year at 40 hours a week. Convert hourly pay to salary or back, with weekly, biweekly and monthly pay, overtime and time off.',
     summary: 'Hourly wage to salary and back, with pay per day, week, paycheck and month, overtime, and paid or unpaid time off.',
     related: ['time-card-calculator', 'debt-to-income-calculator', 'savings-goal-calculator', 'home-affordability-calculator']
   },
@@ -424,11 +424,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Fence',
     category: 'homeImprovement',
     status: 'live',
-    updated: '2026-09-29',
+    updated: '2026-10-20',
     title: 'Fence Calculator — Posts, Rails and Pickets for a Wood Fence',
     description: 'Calculate how many posts, rails and pickets a wood or picket fence needs from its length, post spacing and board width, with extra for waste and cost.',
     summary: 'Sections, posts, rails and pickets from fence length, post spacing and board width, with waste and cost.',
-    related: ['board-foot-calculator', 'deck-calculator', 'home-equity-loan-calculator']
+    related: ['board-foot-calculator', 'deck-calculator', 'home-equity-loan-calculator', 'concrete-calculator']
   },
   {
     slug: 'cd-calculator',
@@ -437,11 +437,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'CD',
     category: 'savings',
     status: 'live',
-    updated: '2026-09-29',
+    updated: '2026-10-20',
     title: 'CD Calculator — CD Interest Earned and Maturity Value',
     description: 'Calculate what a CD is worth at maturity from its APY or interest rate, compare compounding, see interest after tax, and check the cost of early withdrawal.',
     summary: 'Maturity value and interest from APY or rate, compounding comparison, after-tax interest and the early-withdrawal penalty.',
-    related: ['compound-interest-calculator', 'savings-goal-calculator', 'credit-card-payoff-calculator']
+    related: ['compound-interest-calculator', 'savings-goal-calculator', 'credit-card-payoff-calculator', 'dividend-calculator']
   },
   {
     slug: 'compound-interest-calculator',
@@ -463,9 +463,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Time card',
     category: 'work',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Time Card Calculator — Hours Worked, Breaks and Overtime',
-    description: 'Add up hours worked from start and end times with lunch breaks for each day, in hours:minutes and decimal hours, with weekly overtime and gross pay.',
+    updated: '2026-10-20',
+    title: 'Time Card Calculator with Pay: Hours, Lunch Breaks & Overtime',
+    description: 'Add up hours worked from start and end times minus lunch, in hours:minutes and decimal hours, with overtime past 40 hours and gross pay at your rate.',
     summary: 'Hours worked per day and week from start and end times less breaks, decimal hours, overtime past 40 hours and gross pay.',
     related: ['hourly-to-salary-calculator', 'debt-to-income-calculator', 'savings-goal-calculator']
   },
@@ -489,11 +489,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Deck',
     category: 'homeImprovement',
     status: 'live',
-    updated: '2026-09-29',
+    updated: '2026-10-20',
     title: 'Deck Calculator — Deck Boards, Joists and Screws',
     description: 'Calculate how many deck boards, joists and screws a rectangular deck needs from its size, board width and length, gap and joist spacing, with waste and cost.',
     summary: 'Deck boards, joists and screws from deck size, board size, gap and joist spacing, with waste and cost.',
-    related: ['board-foot-calculator', 'fence-calculator', 'square-footage-calculator', 'home-equity-loan-calculator']
+    related: ['board-foot-calculator', 'fence-calculator', 'square-footage-calculator', 'home-equity-loan-calculator', 'concrete-calculator']
   },
   {
     // Draft: page module, engine and tests exist, but it is not built until the
@@ -517,9 +517,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Fuel cost',
     category: 'everyday',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Fuel Cost Calculator — Gas Cost of a Trip and Your Real MPG',
-    description: 'Calculate the gas cost of a trip from distance, MPG and price per gallon, split it between passengers, compare two cars, or work out your MPG.',
+    updated: '2026-10-20',
+    title: 'Fuel Cost Calculator: Trip Gas Cost, MPG & Car Comparison',
+    description: 'Gas cost = miles ÷ MPG × price. 300 miles at 25 MPG and $3.50 a gallon costs $42. Compare two cars, split a round trip or find your real MPG.',
     summary: 'Gas cost of a trip from distance, MPG and gas price, cost per mile, split and compare cars, or your MPG from a fill-up.',
     related: ['auto-loan-calculator', 'car-lease-calculator', 'auto-loan-refinance-calculator']
   },
@@ -530,9 +530,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Sales tax',
     category: 'everyday',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Sales Tax Calculator — Add Tax, Remove Tax or Find the Rate',
-    description: 'Add sales tax to a price, work out the price before tax from a total, or find the tax rate from a receipt, with the formula and rounding shown.',
+    updated: '2026-10-20',
+    title: 'Sales Tax Calculator: Add Tax, Remove Tax or Find the Rate',
+    description: 'Add sales tax to a price or take it out of a total: 7.25% of $220 is $15.95, so the price plus tax is $235.95. Find the rate from a receipt, too.',
     summary: 'Add sales tax to a price, take it out of a total, or find the rate from a receipt.',
     related: ['percentage-calculator', 'tip-calculator', 'margin-calculator', 'auto-loan-calculator']
   },
@@ -543,9 +543,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Profit margin',
     category: 'business',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Profit Margin Calculator — Margin, Markup and Selling Price',
-    description: 'Calculate profit margin and markup from cost and price, or the selling price for a target margin or markup, with a break-even point for fixed costs.',
+    updated: '2026-10-20',
+    title: 'Margin Calculator: Profit Margin, Markup & Selling Price',
+    description: 'Margin = profit ÷ price. A $30 item selling for $50 has a 40% margin and a 66.7% markup. Find the price for a target margin, compare markup, and break even.',
     summary: 'Margin and markup from cost and price, the price for a target margin or markup, and break-even units.',
     related: ['sales-tax-calculator', 'percentage-calculator', 'personal-loan-calculator']
   },
@@ -556,9 +556,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Percentage',
     category: 'everyday',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Percentage Calculator — Percent Of, Change and Percent Off',
-    description: 'Find a percentage of a number, what percent one number is of another, the percent increase or decrease, or a sale price after percent off.',
+    updated: '2026-10-20',
+    title: 'Percentage Calculator: Percent Of, Increase, Decrease & % Off',
+    description: 'Find X% of Y, what percent one number is of another, percent increase or decrease, or a sale price. 20% of 150 is 30; 80 to 100 is a 25% increase.',
     summary: 'Percent of a number, what percent X is of Y, percent increase or decrease, and percent off a price.',
     related: ['sales-tax-calculator', 'tip-calculator', 'margin-calculator', 'savings-goal-calculator']
   },
@@ -569,9 +569,9 @@ export const CALCULATORS = Object.freeze([
     navName: 'Tip',
     category: 'everyday',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Tip Calculator — Tip, Total and Split the Bill',
-    description: 'Calculate the tip and total for a bill at any percentage, split it between any number of people, tip before tax, and round each share up.',
+    updated: '2026-10-20',
+    title: 'Tip Calculator: Tip, Total & Split the Bill',
+    description: 'A 20% tip on $86.40 is $17.28, for a $103.68 total. Find the tip at any percentage, split the bill between any number of people, and tip before tax.',
     summary: 'Tip and total at any percentage, split evenly, tip before tax, and round each share up to a dollar.',
     related: ['percentage-calculator', 'sales-tax-calculator', 'hourly-to-salary-calculator']
   },
@@ -582,11 +582,11 @@ export const CALCULATORS = Object.freeze([
     navName: 'Square footage',
     category: 'homeImprovement',
     status: 'live',
-    updated: '2026-09-29',
-    title: 'Square Footage Calculator — Sq Ft, Sq Yd, m² and Acres',
-    description: 'Calculate square footage for rectangles, circles, triangles and trapezoids from feet, inches, yards or meters, with square yards, square meters, acres and cost.',
+    updated: '2026-10-20',
+    title: 'Square Footage Calculator: Sq Ft of a Room, Area & Cost',
+    description: 'Square feet = length × width: a 12 × 14 ft room is 168 sq ft. Find the area of rectangles, circles, triangles and L-shaped rooms, in sq yd, m² and acres.',
     summary: 'Square feet of a rectangle, circle, triangle or trapezoid in any unit, with square yards, square meters, acres and cost.',
-    related: ['flooring-calculator', 'drywall-calculator', 'concrete-calculator', 'home-affordability-calculator', 'btu-calculator']
+    related: ['flooring-calculator', 'drywall-calculator', 'concrete-calculator', 'home-affordability-calculator', 'btu-calculator', 'cubic-yard-calculator']
   },
   {
     slug: 'asphalt-calculator',

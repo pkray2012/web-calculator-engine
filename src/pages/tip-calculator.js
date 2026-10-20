@@ -14,6 +14,7 @@ import { TIP_DEFAULTS, parseTipForm, buildTipView } from '../adapters/tip.js';
 import { calculateTip } from '../calculators/tip.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 const TABLE_BILLS = [20, 40, 50, 75, 100, 150, 200];
 const TABLE_PERCENTS = [15, 18, 20, 22, 25];
@@ -32,9 +33,23 @@ export function tipPage() {
   const preTax = calculateTip({ bill, tipPercent: 20, tax: 6.4, tipOnPreTax: true });
   const rounded = calculateTip({ bill, tipPercent: 20, people: 3, roundUp: true });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const split = calculateTip({ bill, tipPercent: 20, people: 3 });
+  const fifty18 = calculateTip({ bill: 50, tipPercent: 18 });
+  const faqs = [
+    { question: 'How do I calculate a tip?', answer: `Multiply the bill by the tip percentage and divide by 100. A 20% tip on ${formatCurrency(bill)} is ${formatCurrency(twenty.tip)}, for a total of ${formatCurrency(twenty.total)}.` },
+    { question: 'How do I work out 15% or 20% in my head?', answer: `Find 10% by moving the decimal point one place left (${formatCurrency(ten.tip)} on ${formatCurrency(bill)}). Double it for 20% (${formatCurrency(twenty.tip)}), or add half of it for 15% (about ${formatCurrency(fifteen.tip)}).` },
+    { question: 'What is an 18% tip on $50?', answer: `${formatCurrency(fifty18.tip)}, for a total of ${formatCurrency(fifty18.total)}.` },
+    { question: 'How do I split the bill and tip?', answer: `Divide the total with tip by the number of people. ${formatCurrency(bill)} with a 20% tip is ${formatCurrency(split.total)}, or ${formatCurrency(split.perPerson)} each for three people.` },
+    { question: 'Should I tip before or after tax?', answer: `Either is common. On the ${formatCurrency(bill)} example check that includes ${formatCurrency(preTax.tax)} of tax, 20% is ${formatCurrency(twenty.tip)} on the total or ${formatCurrency(preTax.tip)} on the amount before tax.` },
+    { question: 'What happens if I round each share up?', answer: `The tip grows a little. Split three ways and rounded up to whole dollars, ${formatCurrency(bill)} with a 20% tip becomes ${formatCurrency(rounded.perPerson)} each, a ${rounded.effectiveTipPercent.toFixed(1)}% tip.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Tip = bill × tip % ÷ 100, and total = bill + tip.</strong> A 20% tip on ${formatCurrency(bill)} is
+  ${formatCurrency(twenty.tip)}, so the total is ${formatCurrency(twenty.total)}, or ${formatCurrency(split.perPerson)} each split three ways.`)}
   <p class="lede">Work out the tip and total for a bill at any percentage, split it evenly between any number of people, tip on the amount
   before tax, and round each share up to a whole dollar. Your inputs stay in your browser.</p>
 </header>
@@ -99,6 +114,8 @@ ${calculatorShell({
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'tip-faq')}
+
   ${sourcesSection([SOURCES.dolTippedEmployees])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -111,6 +128,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/tip.js']
   };
 }

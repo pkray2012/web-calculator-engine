@@ -14,6 +14,7 @@ import { TIME_CARD_DEFAULTS, parseTimeCardForm, buildTimeCardView } from '../ada
 import { hoursAndMinutes, decimalHours, shiftMinutes } from '../calculators/time-card.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 function exampleView(overrides = {}) {
   return buildTimeCardView(parseTimeCardForm({ ...TIME_CARD_DEFAULTS, ...overrides }).input);
@@ -28,9 +29,23 @@ export function timeCardPage() {
   const night = shiftMinutes({ start: 22 * 60, end: 6 * 60 + 30, breakMinutes: 30 });
   const minutes = [5, 6, 10, 12, 15, 20, 30, 45];
 
+  // Direct answer and FAQ figures, all from the engine.
+  const fourDays = exampleView({ friStart: '', friEnd: '', friBreak: '' });
+  const faqs = [
+    { question: 'How do I calculate hours worked with a lunch break?', answer: `Subtract the start time from the end time, then subtract the unpaid break. 8:00 AM to 5:30 PM is 9 hours 30 minutes; minus a ${day.breakMinutes}-minute lunch it is ${decimalHours(dayWorked)} hours (${hoursAndMinutes(dayWorked)} in hours and minutes).` },
+    { question: 'How do I calculate pay from a time card?', answer: `Multiply decimal hours by your hourly rate, and pay overtime hours at the overtime rate. Four of those days are ${decimalHours(fourDays.totalMinutes)} hours; at ${formatCurrency(input.hourlyRate)} an hour that is ${formatCurrency(fourDays.pay.total)}.` },
+    { question: 'How is overtime calculated on a time card?', answer: `Under the federal FLSA, covered non-exempt employees get at least 1.5 times their regular rate for hours over 40 in a workweek. Five 9-hour days are ${decimalHours(example.totalMinutes)} hours: ${input.overtimeAfterHours} regular hours pay ${formatCurrency(example.pay.regular)} and ${decimalHours(example.overtimeMinutes)} overtime hours at ${formatCurrency(input.hourlyRate * input.overtimeMultiplier)} pay ${formatCurrency(example.pay.overtime)}, for ${formatCurrency(example.pay.total)} gross.` },
+    { question: 'How do I convert minutes to decimal hours?', answer: 'Divide the minutes by 60. 45 minutes is 0.75 hours, so 7 hours 45 minutes is 7.75 hours, not 7.45.' },
+    { question: 'How do I count a shift that goes past midnight?', answer: `Count to the end time the next morning. 10:00 PM to 6:30 AM with a 30-minute break is ${hoursAndMinutes(night.worked)} hours.` },
+    { question: 'Are breaks paid?', answer: 'Enter only unpaid breaks, such as an unpaid meal period. Whether a break is paid depends on federal and state rules and your employer’s policy.' }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
+  ${directAnswer(html`<strong>Hours worked = end time − start time − unpaid breaks; pay = decimal hours × hourly rate, with hours over 40 at 1.5×.</strong>
+  Five days of 8:00 AM to 5:30 PM with a ${day.breakMinutes}-minute lunch is ${decimalHours(example.totalMinutes)} hours: ${formatCurrency(example.pay.total)}
+  at ${formatCurrency(input.hourlyRate)} an hour, including ${decimalHours(example.overtimeMinutes)} hours of overtime.`)}
   <p class="lede">Add up the hours on your time card: enter start and end times and unpaid breaks for each day to get hours worked per day and for
   the week, in hours and minutes and in decimal hours for payroll, with overtime past 40 hours and gross pay at your hourly rate. Your inputs stay
   in your browser.</p>
@@ -93,6 +108,8 @@ ${calculatorShell({
     an independent calculation using calendar date arithmetic. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'tc-faq')}
+
   ${sourcesSection([SOURCES.flsaOvertime])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -105,6 +122,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/time-card.js']
   };
 }

@@ -15,8 +15,10 @@ import { MARGIN_DEFAULTS, parseMarginForm, buildMarginView } from '../adapters/m
 import { analyzeSale, priceForMargin, priceForMarkup, marginFromMarkup, markupFromMargin } from '../calculators/margin.js';
 import { findCalculator, relatedCalculators } from '../content/site.js';
 import { SOURCES } from '../content/sources.js';
+import { faqSection, faqStructuredData, directAnswer } from '../components/faq.js';
 
 const TABLE_MARKUPS = [10, 20, 25, 30, 40, 50, 60, 75, 100, 150, 200];
+const TABLE_MARGINS = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70];
 const pct = (value) => `${Number(value.toFixed(1)).toLocaleString('en-US', { maximumFractionDigits: 1 })}%`;
 
 function exampleView(overrides = {}) {
@@ -31,11 +33,25 @@ export function marginPage() {
   const wrong = priceForMarkup({ cost: sale.cost, markupPercent: 40 });
   const breakEven = analyzeSale({ cost: sale.cost, price: sale.price, fixedCosts: 5000 });
 
+  // Direct answer and FAQ figures, all from the engine.
+  const raised = analyzeSale({ cost: sale.cost, price: 55 });
+  const fifty = priceForMargin({ cost: sale.cost, marginPercent: 50 });
+  const faqs = [
+    { question: 'How do I calculate profit margin?', answer: `Margin = (price − cost) ÷ price × 100. An item that costs ${formatCurrency(sale.cost)} and sells for ${formatCurrency(sale.price)} makes ${formatCurrency(sale.profit)} of profit, a ${pct(sale.marginPercent)} margin.` },
+    { question: 'What is the difference between margin and markup?', answer: `Margin divides the profit by the selling price; markup divides it by the cost. The same ${formatCurrency(sale.profit)} profit is a ${pct(sale.marginPercent)} margin but a ${pct(sale.markupPercent)} markup.` },
+    { question: 'How do I find the selling price for a target margin?', answer: `Price = cost ÷ (1 − margin). For a 40% margin on a ${formatCurrency(target.cost)} cost, the price is ${formatCurrency(target.cost)} ÷ 0.60 = ${formatCurrency(target.price)}. Adding 40% to the cost gives ${formatCurrency(wrong.price)}, only a ${pct(wrong.marginPercent)} margin.` },
+    { question: 'How much does a price increase raise my margin?', answer: `Raising the price from ${formatCurrency(sale.price)} to ${formatCurrency(raised.price)} on a ${formatCurrency(sale.cost)} cost lifts the margin from ${pct(sale.marginPercent)} to ${pct(raised.marginPercent)}. To reach a 50% margin, the price must rise to ${formatCurrency(fifty.price)}.` },
+    { question: 'What markup gives a 50% margin?', answer: `A ${pct(markupFromMargin(50))} markup: the price is double the cost. A 40% margin needs a ${pct(markupFromMargin(40))} markup.` },
+    { question: 'How many units do I need to sell to break even?', answer: `Divide your fixed costs by the profit on each unit. ${formatCurrency(breakEven.fixedCosts)} of fixed costs ÷ ${formatCurrency(breakEven.profit)} per unit = ${formatCount(breakEven.breakEvenUnits)} units.` }
+  ];
+
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
-  <p class="lede">Work out the profit margin and markup on a sale from its cost and selling price, or find the price that gives the margin or
-  markup you want, with an optional break-even point for your fixed costs. Your inputs stay in your browser.</p>
+  ${directAnswer(html`<strong>Margin = (price − cost) ÷ price × 100; markup = (price − cost) ÷ cost × 100.</strong> An item that costs
+  ${formatCurrency(sale.cost)} and sells for ${formatCurrency(sale.price)} has a ${pct(sale.marginPercent)} margin and a ${pct(sale.markupPercent)} markup.`)}
+  <p class="lede">Use this margin calculator to work out the profit margin and markup on a sale from its cost and selling price, or find the price that
+  gives the margin or markup you want, with an optional break-even point for your fixed costs. Your inputs stay in your browser.</p>
 </header>
 
 ${calculatorShell({
@@ -81,6 +97,28 @@ ${calculatorShell({
     <p>A 50% margin needs a ${pct(markupFromMargin(50))} markup: the price is double the cost.</p>
   </section>
 
+  <section class="content-section" aria-labelledby="margin-vs-markup-heading">
+    <h2 id="margin-vs-markup-heading">Margin vs. markup table</h2>
+    <p>Going the other way, from the margin you want to the markup that gives it:</p>
+    ${dataTable({
+      id: 'margin-markup-table',
+      title: 'Target margin and the markup it needs',
+      columns: [{ key: 'margin', label: 'Margin' }, { key: 'markup', label: 'Markup', numeric: true }, { key: 'price', label: 'Price for a $100 cost', numeric: true }],
+      rows: TABLE_MARGINS.map((margin) => ({
+        margin: `${margin}%`,
+        markup: pct(markupFromMargin(margin)),
+        price: formatCurrency(priceForMargin({ cost: 100, marginPercent: margin }).price)
+      }))
+    })}
+  </section>
+
+  <section class="content-section" aria-labelledby="margin-increase-heading">
+    <h2 id="margin-increase-heading">Margin increase example</h2>
+    <p>A small price rise moves the margin a lot. On the example's ${formatCurrency(sale.cost)} cost, raising the price from ${formatCurrency(sale.price)} to
+    ${formatCurrency(raised.price)} lifts the profit from ${formatCurrency(sale.profit)} to ${formatCurrency(raised.profit)} and the margin from
+    ${pct(sale.marginPercent)} to ${pct(raised.marginPercent)}. To reach a 50% margin, the price has to rise to ${formatCurrency(fifty.price)}.</p>
+  </section>
+
   <section class="content-section" aria-labelledby="margin-breakeven-heading">
     <h2 id="margin-breakeven-heading">Break-even point</h2>
     <p>Your fixed costs, such as rent and salaries, have to be covered before any sale earns a profit. Divide them by the profit on each unit:
@@ -105,6 +143,8 @@ ${calculatorShell({
     margin conversions invert each other, and break-even rounding. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
+  ${faqSection(faqs, 'margin-faq')}
+
   ${sourcesSection([SOURCES.sbaBreakEven])}
 
   ${relatedLinks(relatedCalculators(calculator.slug))}
@@ -117,6 +157,7 @@ ${calculatorShell({
     description: calculator.description,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: calculator.name, path: calculator.path }],
     body,
+    structuredData: [faqStructuredData(faqs)],
     scripts: ['client/margin.js']
   };
 }
