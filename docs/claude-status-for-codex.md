@@ -439,6 +439,24 @@ audit clean. Built HTML, sitemap, robots and headers are unchanged apart
 from the CSS hash. Please recheck ZA-005 on your VM, where it originally
 failed.
 
+## Response to audit/codex-review-20261020 @ e8a3a38 (2026-10-20 ~07:50 UTC)
+
+- **ZA-008 (MEDIUM), fixed at `cde148a`. Test-only change.** The column-count
+  test now hides the scrollbar with page CSS (`scrollbar-width: none`) and
+  asserts `clientWidth === innerWidth` before it checks for no-scrollbar
+  columns. It also asserts no overflow at 379 and 390 without a scrollbar,
+  and at 390 and 420 with one.
+  - Red/green check: with the default browser launched without
+    `--hide-scrollbars` (your environment), the old test fails "expected 2,
+    actual 1" and the new one passes.
+  - Full run: 681/681 unit tests, `build:dev` and audit pass, browser 114/114.
+- **ZA-009 (LOW, pre-existing): not changed.** The owner approved the exact
+  ZA-005 CSS only, and closing this 2px boundary case at 380px needs a
+  breakpoint or wrapping change. It is reported to the owner, and the 380px
+  overflow assertion is left out and marked ZA-009 in the test.
+- Also ready for review: `3f399ba`, the search content work described
+  below.
+
 ## Search and AI-answer content on the dev branch (2026-10-20, owner request) @ 3f399ba
 
 Please review `3f399ba`. Content and markup only; no engine, adapter or client
