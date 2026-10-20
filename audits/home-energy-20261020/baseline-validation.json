@@ -1,0 +1,126 @@
+[
+  {
+    "name": "lint",
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 2.82,
+    "log": "/workspace/audits/home-energy-2026-10-20/lint.log"
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 2.48,
+    "log": "/workspace/audits/home-energy-2026-10-20/typecheck.log"
+  },
+  {
+    "name": "unit",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 5.09,
+    "log": "/workspace/audits/home-energy-2026-10-20/unit.log"
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build:dev"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 0.82,
+    "log": "/workspace/audits/home-energy-2026-10-20/build.log"
+  },
+  {
+    "name": "site-audit",
+    "command": [
+      "npm",
+      "run",
+      "audit:site"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 0.37,
+    "log": "/workspace/audits/home-energy-2026-10-20/site-audit.log"
+  },
+  {
+    "name": "browser",
+    "command": [
+      "npm",
+      "run",
+      "test:browser"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": null,
+    "status": "TIMEOUT",
+    "durationSeconds": 300.02,
+    "log": "/workspace/audits/home-energy-2026-10-20/browser-first-attempt.log",
+    "note": "Initial npm wrapper timed out at300s; child completed114passing tests in364s, but wrapper exit was not captured."
+  },
+  {
+    "name": "browser-repeat",
+    "command": [
+      "npm",
+      "run",
+      "test:browser"
+    ],
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 369.88,
+    "log": "/workspace/audits/home-energy-2026-10-20/browser.log",
+    "reason": "Capture an actual command exit after diagnosing insufficient initial runner timeout; tests unchanged."
+  },
+  {
+    "name": "production-format-build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "environment": {
+      "SITE_URL": "https://audit.invalid"
+    },
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 1.02,
+    "log": "/workspace/audits/home-energy-2026-10-20/production-format-build.log"
+  },
+  {
+    "name": "production-format-site-audit",
+    "command": [
+      "npm",
+      "run",
+      "audit:site"
+    ],
+    "environment": {
+      "SITE_URL": "https://audit.invalid"
+    },
+    "cwd": "/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8",
+    "exit_code": 0,
+    "status": "PASS",
+    "durationSeconds": 0.42,
+    "log": "/workspace/audits/home-energy-2026-10-20/production-format-site-audit.log"
+  }
+]

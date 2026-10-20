@@ -1,0 +1,46 @@
+{
+  "checkedAtUTC": "2026-10-20T14:42:28.728253+00:00",
+  "requestSHA256": "5efc547ccf65610633ace45ca2c5e3f08935fd4a215c95aad98471e92f1d4419",
+  "expectedFiles": [
+    {
+      "path": "/home/user/zuvogo-home-energy-proposal.md",
+      "exists": false
+    },
+    {
+      "path": "/home/user/zuvogo-home-energy-decision-sheet.md",
+      "exists": false
+    },
+    {
+      "path": "/home/user/zuvogo-home-energy-approval-package.md",
+      "exists": false
+    },
+    {
+      "path": "/home/user/zuvogo-home-energy-implementation-plan.md",
+      "exists": false
+    },
+    {
+      "path": "/home/user/zuvogo-home-energy-content-spec.md",
+      "exists": false
+    },
+    {
+      "path": "/home/user/zuvogo-home-energy-codex-review-request.md",
+      "exists": false
+    },
+    {
+      "path": "/home/user/zuvogo-home-energy-session-report-20261020.md",
+      "exists": false
+    },
+    {
+      "path": "/tmp/claude-0/-home-user/0eb0960d-32a8-560e-86a2-5f50c83d47e1/scratchpad/energy-audit/batch1_reference.py",
+      "exists": false
+    },
+    {
+      "path": "/tmp/claude-0/-home-user/0eb0960d-32a8-560e-86a2-5f50c83d47e1/scratchpad/energy-audit/batch1_vectors.json",
+      "exists": false
+    }
+  ],
+  "localRepository": "/workspace/mydeisgn",
+  "targetRepository": "web-calculator-engine",
+  "targetBranch": "claude/compassionate-dirac-cv1ipd",
+  "targetCommit": "098571906afd98b0fdf04ad6a57f784cd8ea8db8"
+}

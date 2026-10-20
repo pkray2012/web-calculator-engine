@@ -1,0 +1,387 @@
+{
+  "illustrationCount": 25,
+  "passed": 25,
+  "candidateCount": 8,
+  "notClaudeVectors": true,
+  "candidateReadiness": "BLOCKED: exact candidate contracts and original vectors unavailable",
+  "cases": [
+    {
+      "name": "Utility Cost: supplied charge ledger",
+      "inputs": {
+        "energyKWh": "100",
+        "rateUSDperKWh": "0.20",
+        "fixedUSD": "5"
+      },
+      "actual": "25.0",
+      "expected": "25",
+      "result": "PASS",
+      "assumptions": "Single supplied energy charge and separate fixed charge; not a universal tariff",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Utility Cost: zero energy effective rate",
+      "inputs": {
+        "energyKWh": "0",
+        "fixedUSD": "5"
+      },
+      "actual": null,
+      "expected": null,
+      "result": "PASS",
+      "assumptions": "No total/energy division at zero energy",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Price Per Watt: gross",
+      "inputs": {
+        "grossUSD": "20000",
+        "capacityKW": "5"
+      },
+      "actual": "4",
+      "expected": "4",
+      "result": "PASS",
+      "assumptions": "DC rated watts; explicit unit normalization",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Price Per Watt: entered receipt scenario",
+      "inputs": {
+        "grossUSD": "20000",
+        "enteredReceiptUSD": "2000",
+        "capacityW": "5000"
+      },
+      "actual": "3.6",
+      "expected": "3.6",
+      "result": "PASS",
+      "assumptions": "Entered scenario only; not incentive eligibility",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Financing: principal ledger",
+      "inputs": {
+        "purchaseUSD": "12000",
+        "purchaseRebateUSD": "500",
+        "downPaymentUSD": "1000",
+        "financedFeeUSD": "500"
+      },
+      "actual": "11000",
+      "expected": "11000",
+      "result": "PASS",
+      "assumptions": "Purchase rebate reduces cash price once; financed fee adds once; later receipts do not reduce initial principal",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Financing: zero-rate payment",
+      "inputs": {
+        "principalUSD": "11000",
+        "months": "11",
+        "noteRatePercent": "0"
+      },
+      "actual": "1000",
+      "expected": "1000",
+      "result": "PASS",
+      "assumptions": "Positive integer term; nominal note rate, not fee-inclusive APR",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Financing: cash paid after later receipt",
+      "inputs": {
+        "downPaymentUSD": "1000",
+        "loanPaymentsUSD": "11000",
+        "upfrontFeeUSD": "100",
+        "laterReceiptUSD": "1000"
+      },
+      "actual": "11100",
+      "expected": "11100",
+      "result": "PASS",
+      "assumptions": "Cash-flow ledger, no present-value or ROI model; receipt counted once",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Payback: simple maintenance model",
+      "inputs": {
+        "upfrontUSD": "10000",
+        "purchaseReceiptUSD": "2000",
+        "annualSavingUSD": "1200",
+        "annualMaintenanceUSD": "200"
+      },
+      "actual": "8",
+      "expected": "8",
+      "result": "PASS",
+      "assumptions": "Constant net annual saving, simple undiscounted model only",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Payback: nonpositive net savings 1200",
+      "inputs": {
+        "annualSavingUSD": "1200",
+        "annualMaintenanceUSD": "1200"
+      },
+      "actual": null,
+      "expected": null,
+      "result": "PASS",
+      "assumptions": "Undefined simple payback, not a prediction that recovery never occurs",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Payback: nonpositive net savings 1500",
+      "inputs": {
+        "annualSavingUSD": "1200",
+        "annualMaintenanceUSD": "1500"
+      },
+      "actual": null,
+      "expected": null,
+      "result": "PASS",
+      "assumptions": "Undefined simple payback, not a prediction that recovery never occurs",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Payback: fractional simple model",
+      "inputs": {
+        "netUpfrontUSD": "8000",
+        "netAnnualSavingUSD": "1200"
+      },
+      "actual": "6.66666666666666666666666666666666666666666666666666666666667",
+      "expected": "6.66666666666666666666666666666666666666666666666666666666667",
+      "result": "PASS",
+      "assumptions": "Fractional years assume uniform accrual; not equivalent to a year-end cash-flow crossing",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Battery Charging Time: battery energy",
+      "inputs": {
+        "usableKWh": "60",
+        "startSOC": "20",
+        "targetSOC": "80"
+      },
+      "actual": "36",
+      "expected": "36",
+      "result": "PASS",
+      "assumptions": "Usable capacity, percentage-point SOC interval",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Battery Charging Time: source-side power",
+      "inputs": {
+        "batteryEnergyKWh": "36",
+        "sourceKW": "8",
+        "efficiencyFraction": "0.9"
+      },
+      "actual": "5",
+      "expected": "5",
+      "result": "PASS",
+      "assumptions": "Constant power; efficiency once; no taper/auxiliaries",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Battery Charging Time: battery-side power",
+      "inputs": {
+        "batteryEnergyKWh": "36",
+        "batteryKW": "7.2"
+      },
+      "actual": "5",
+      "expected": "5",
+      "result": "PASS",
+      "assumptions": "Already battery-side: do not apply charging efficiency a second time",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Solar Battery Charging Time: equal SOC and zero power",
+      "inputs": {
+        "startSOC": "20",
+        "targetSOC": "20",
+        "powerKW": "0"
+      },
+      "actual": "0",
+      "expected": "0",
+      "result": "PASS",
+      "assumptions": "No energy transfer required; positive need at zero power would be undefined",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Time: battery energy",
+      "inputs": {
+        "usableKWh": "60",
+        "startSOC": "20",
+        "targetSOC": "80"
+      },
+      "actual": "36",
+      "expected": "36",
+      "result": "PASS",
+      "assumptions": "Usable capacity, percentage-point SOC interval",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Time: source-side power",
+      "inputs": {
+        "batteryEnergyKWh": "36",
+        "sourceKW": "8",
+        "efficiencyFraction": "0.9"
+      },
+      "actual": "5",
+      "expected": "5",
+      "result": "PASS",
+      "assumptions": "Constant power; efficiency once; no taper/auxiliaries",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Time: battery-side power",
+      "inputs": {
+        "batteryEnergyKWh": "36",
+        "batteryKW": "7.2"
+      },
+      "actual": "5",
+      "expected": "5",
+      "result": "PASS",
+      "assumptions": "Already battery-side: do not apply charging efficiency a second time",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Time: equal SOC and zero power",
+      "inputs": {
+        "startSOC": "20",
+        "targetSOC": "20",
+        "powerKW": "0"
+      },
+      "actual": "0",
+      "expected": "0",
+      "result": "PASS",
+      "assumptions": "No energy transfer required; positive need at zero power would be undefined",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Time: explicit power caps",
+      "inputs": {
+        "sourceKW": "11",
+        "chargerLimitKW": "7",
+        "vehicleLimitKW": "6",
+        "efficiency": "0.9",
+        "needKWh": "36"
+      },
+      "actual": "6.66666666666666666666666666666666666666666666666666666666667",
+      "expected": "6.66666666666666666666666666666666666666666666666666666666667",
+      "result": "PASS",
+      "assumptions": "All supplied power caps use the same source-side boundary; do not mix battery and wall ratings",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Cost: battery-energy mode",
+      "inputs": {
+        "needBatteryKWh": "36",
+        "efficiency": "0.9",
+        "USDperKWh": "0.2"
+      },
+      "actual": "8",
+      "expected": "8",
+      "result": "PASS",
+      "assumptions": "Source energy40kWh; efficiency applied once",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "EV Charging Cost: EPA-style label scenario",
+      "inputs": {
+        "wallKWhPer100mi": "30",
+        "miles": "100",
+        "USDperKWh": "0.2"
+      },
+      "actual": "6.0",
+      "expected": "6",
+      "result": "PASS",
+      "assumptions": "Only if the verified metric already includes charging losses; no further loss adjustment",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Electric Bill: period",
+      "inputs": {
+        "periodKWh": "300",
+        "rate": "0.2",
+        "periodFixedUSD": "10"
+      },
+      "actual": "70.0",
+      "expected": "70",
+      "result": "PASS",
+      "assumptions": "Supplied period tariff subset only",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Electric Bill: explicit daily energy charge",
+      "inputs": {
+        "periodKWh": "300",
+        "rate": "0.2",
+        "billingDays": "30"
+      },
+      "actual": "2.0",
+      "expected": "2",
+      "result": "PASS",
+      "assumptions": "Energy-only daily charge; fixed fees remain separately labeled",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    },
+    {
+      "name": "Electric Bill: explicit annual operating days",
+      "inputs": {
+        "dailyKWh": "10",
+        "annualOperatingDays": "200"
+      },
+      "actual": "2000",
+      "expected": "2000",
+      "result": "PASS",
+      "assumptions": "Explicit supplied schedule, not automatic month-times12",
+      "scope": "Synthetic audit illustration; not a proposed-tool validation"
+    }
+  ],
+  "financeIndependentOracle": {
+    "principal": "10000",
+    "noteRatePercent": "12",
+    "months": 12,
+    "monthlyPayment": "888.487886783417073399878312278865289804486116263367759572541",
+    "totalInterest": "661.854641401004880798539747346383477653833395160413114870450",
+    "finalBalance": "-3.1E-56",
+    "result": "PASS",
+    "method": "60-digit Decimal closed form independently reconciled with balance recurrence"
+  },
+  "requiredInvalidClassifications": [
+    {
+      "case": "negative energy/price/capacity",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "NaN/Infinity",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "SOC outside0..100",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "targetSOC below startSOC",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "nonpositive efficiency or efficiency above1",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "negative/unknown charge power",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "positive required energy at zero power",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "zero/noninteger loan term",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "down payment/rebate exceeding eligible purchase basis",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "zero/nonfinite DC capacity",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    },
+    {
+      "case": "billing days zero when computing a daily rate",
+      "result": "Audit-domain rejection required; proposed implementation untested"
+    }
+  ]
+}

@@ -1,0 +1,563 @@
+{
+  "entries": [
+    {
+      "batch": "1",
+      "order": 1,
+      "type": "Calculator",
+      "title": "Solar Financing Calculator",
+      "route": "/energy/solar/solar-financing-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 2,
+      "type": "Calculator",
+      "title": "Water Heater Size Calculator",
+      "route": "/energy/water-heating/water-heater-size-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 3,
+      "type": "Calculator",
+      "title": "Electric Bill Calculator",
+      "route": "/energy/electricity/electric-bill-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 4,
+      "type": "Calculator",
+      "title": "Solar Payback Period Calculator",
+      "route": "/energy/solar/solar-payback-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 5,
+      "type": "Calculator",
+      "title": "Solar Price Per Watt Calculator",
+      "route": "/energy/solar/solar-price-per-watt-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 6,
+      "type": "Calculator",
+      "title": "AC Electricity Usage Calculator",
+      "route": "/energy/hvac/ac-electricity-usage-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 7,
+      "type": "Calculator",
+      "title": "HVAC Cost Calculator",
+      "route": "/energy/hvac/hvac-cost-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 8,
+      "type": "Calculator",
+      "title": "Heat Pump Cost Calculator",
+      "route": "/energy/heat-pump/heat-pump-cost-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 9,
+      "type": "Calculator",
+      "title": "Solar Battery Charging Time Calculator",
+      "route": "/energy/solar/solar-battery-charge-time-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 10,
+      "type": "Calculator",
+      "title": "Utility Cost Calculator",
+      "route": "/energy/electricity/utility-cost-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 11,
+      "type": "Calculator",
+      "title": "Solar ROI Calculator",
+      "route": "/energy/solar/solar-roi-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 12,
+      "type": "Calculator",
+      "title": "Solar Battery Calculator",
+      "route": "/energy/solar/solar-battery-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 13,
+      "type": "Calculator",
+      "title": "Heat Pump Electricity Usage Calculator",
+      "route": "/energy/heat-pump/heat-pump-electricity-usage-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 14,
+      "type": "Calculator",
+      "title": "Heating Oil Usage Calculator",
+      "route": "/energy/heating/heating-oil-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 15,
+      "type": "Blog",
+      "title": "Emergency Heat Cost Guide",
+      "route": "/energy/heating/emergency-heat-cost/"
+    },
+    {
+      "batch": "1",
+      "order": 16,
+      "type": "Calculator",
+      "title": "Tankless Water Heater Size Calculator",
+      "route": "/energy/water-heating/tankless-water-heater-size-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 17,
+      "type": "Calculator",
+      "title": "EV Charging Time Calculator",
+      "route": "/energy/ev/ev-charging-time-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 18,
+      "type": "Calculator",
+      "title": "EV Charger Calculator",
+      "route": "/energy/ev/ev-charger-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 19,
+      "type": "Calculator",
+      "title": "Solar Panel Size Calculator",
+      "route": "/energy/solar/solar-panel-size-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 20,
+      "type": "Calculator",
+      "title": "Solar Panel Output Calculator",
+      "route": "/energy/solar/solar-panel-output-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 21,
+      "type": "Calculator",
+      "title": "AC Running Cost Calculator",
+      "route": "/energy/hvac/ac-running-cost-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 22,
+      "type": "Calculator",
+      "title": "Portable AC Running Cost Calculator",
+      "route": "/energy/hvac/portable-ac-running-cost-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 23,
+      "type": "Calculator",
+      "title": "Gas vs Electric Water Heater Cost Calculator",
+      "route": "/energy/water-heating/gas-vs-electric-water-heater-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 24,
+      "type": "Calculator",
+      "title": "Propane vs Electric Heat Cost Calculator",
+      "route": "/energy/heating/propane-vs-electric-heat-calculator/"
+    },
+    {
+      "batch": "1",
+      "order": 25,
+      "type": "Calculator",
+      "title": "EV Charging Cost Calculator",
+      "route": "/energy/ev/ev-charging-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 1,
+      "type": "Calculator",
+      "title": "Electricity Cost Calculator",
+      "route": "/energy/electricity/electricity-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 2,
+      "type": "Calculator",
+      "title": "kWh Cost Calculator",
+      "route": "/energy/electricity/kwh-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 3,
+      "type": "Calculator",
+      "title": "AC Cost Calculator",
+      "route": "/energy/hvac/ac-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 4,
+      "type": "Calculator",
+      "title": "Heat Pump Running Cost Calculator",
+      "route": "/energy/heat-pump/heat-pump-running-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 5,
+      "type": "Calculator",
+      "title": "Home Heating Cost Calculator",
+      "route": "/energy/heating/heating-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 6,
+      "type": "Calculator",
+      "title": "Solar Savings Calculator",
+      "route": "/energy/solar/solar-savings-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 7,
+      "type": "Calculator",
+      "title": "Home Solar Calculator",
+      "route": "/energy/solar/home-solar-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 8,
+      "type": "Calculator",
+      "title": "Solar Battery Bank Calculator",
+      "route": "/energy/solar/solar-battery-bank-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 9,
+      "type": "Calculator",
+      "title": "HVAC Repair Cost Calculator",
+      "route": "/energy/hvac/hvac-repair-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 10,
+      "type": "Calculator",
+      "title": "HVAC Replacement Cost Calculator",
+      "route": "/energy/hvac/hvac-replacement-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 11,
+      "type": "Calculator",
+      "title": "HVAC Operating Cost Calculator",
+      "route": "/energy/hvac/hvac-operating-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 12,
+      "type": "Calculator",
+      "title": "HVAC Installation Cost Calculator",
+      "route": "/energy/hvac/hvac-installation-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 13,
+      "type": "Calculator",
+      "title": "Furnace Installation Cost Calculator",
+      "route": "/energy/heating/furnace-installation-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 14,
+      "type": "Calculator",
+      "title": "Water Heater Operating Cost Calculator",
+      "route": "/energy/water-heating/water-heater-operating-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 15,
+      "type": "Calculator",
+      "title": "Propane vs Electric Water Heater Calculator",
+      "route": "/energy/water-heating/propane-vs-electric-water-heater-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 16,
+      "type": "Calculator",
+      "title": "Tankless Water Heater Savings Calculator",
+      "route": "/energy/water-heating/tankless-water-heater-savings-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 17,
+      "type": "Calculator",
+      "title": "Heat Pump Water Heater Savings Calculator",
+      "route": "/energy/water-heating/heat-pump-water-heater-savings-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 18,
+      "type": "Calculator",
+      "title": "Water Heating Wattage Calculator",
+      "route": "/energy/water-heating/water-heater-wattage-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 19,
+      "type": "Calculator",
+      "title": "EV Gas Savings Calculator",
+      "route": "/energy/ev/ev-gas-savings-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 20,
+      "type": "Calculator",
+      "title": "EV Cost Per Mile Calculator",
+      "route": "/energy/ev/ev-cost-per-mile-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 21,
+      "type": "Blog",
+      "title": "Best Time to Charge an EV at Home",
+      "route": "/energy/ev/best-time-to-charge-ev-at-home/"
+    },
+    {
+      "batch": "2",
+      "order": 22,
+      "type": "Calculator",
+      "title": "Electricity Rate Calculator",
+      "route": "/energy/electricity/electricity-rate-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 23,
+      "type": "Calculator",
+      "title": "Electrical Wiring Cost Calculator",
+      "route": "/energy/electricity/electrical-wiring-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 24,
+      "type": "Calculator",
+      "title": "Hot Tub Electricity Cost Calculator",
+      "route": "/energy/electricity/hot-tub-electricity-cost-calculator/"
+    },
+    {
+      "batch": "2",
+      "order": 25,
+      "type": "Blog",
+      "title": "Solar Installation Tax Credit Guide",
+      "route": "/energy/solar/solar-installation-tax-credit/"
+    },
+    {
+      "batch": "3",
+      "order": 1,
+      "type": "Blog",
+      "title": "Average Solar Installation Cost",
+      "route": "/energy/solar/average-solar-installation-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 2,
+      "type": "Blog",
+      "title": "Solar Financing Guide",
+      "route": "/energy/solar/solar-financing/"
+    },
+    {
+      "batch": "3",
+      "order": 3,
+      "type": "Calculator",
+      "title": "Solar Water Heater Cost Calculator",
+      "route": "/energy/water-heating/solar-water-heater-cost-calculator/"
+    },
+    {
+      "batch": "3",
+      "order": 4,
+      "type": "Blog",
+      "title": "How to Calculate Solar Panel Output",
+      "route": "/energy/solar/how-to-calculate-solar-panel-output/"
+    },
+    {
+      "batch": "3",
+      "order": 5,
+      "type": "Calculator",
+      "title": "Solar Panel Wire Size Calculator",
+      "route": "/energy/solar/solar-wire-size-calculator/"
+    },
+    {
+      "batch": "3",
+      "order": 6,
+      "type": "Calculator",
+      "title": "Water Heater Replacement Cost Calculator",
+      "route": "/energy/water-heating/water-heater-replacement-cost-calculator/"
+    },
+    {
+      "batch": "3",
+      "order": 7,
+      "type": "Blog",
+      "title": "Gas vs Electric Water Heater Cost",
+      "route": "/energy/water-heating/gas-vs-electric-water-heater-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 8,
+      "type": "Blog",
+      "title": "Water Heater Installation Cost",
+      "route": "/energy/water-heating/water-heater-installation-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 9,
+      "type": "Blog",
+      "title": "Gas Water Heater Replacement Cost",
+      "route": "/energy/water-heating/gas-water-heater-replacement-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 10,
+      "type": "Blog",
+      "title": "New AC Unit Cost Guide",
+      "route": "/energy/hvac/new-ac-unit-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 11,
+      "type": "Blog",
+      "title": "5-Ton AC Installation Cost",
+      "route": "/energy/hvac/5-ton-ac-installation-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 12,
+      "type": "Blog",
+      "title": "5-Ton AC Replacement Cost",
+      "route": "/energy/hvac/5-ton-ac-replacement-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 13,
+      "type": "Calculator",
+      "title": "AC Energy Cost Calculator",
+      "route": "/energy/hvac/ac-energy-cost-calculator/"
+    },
+    {
+      "batch": "3",
+      "order": 14,
+      "type": "Calculator",
+      "title": "Energy Calculator",
+      "route": "/energy/electricity/energy-calculator/"
+    },
+    {
+      "batch": "3",
+      "order": 15,
+      "type": "Blog",
+      "title": "How to Calculate Electricity Cost",
+      "route": "/energy/electricity/how-to-calculate-electricity-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 16,
+      "type": "Blog",
+      "title": "Insulation Installation Cost",
+      "route": "/energy/insulation/insulation-installation-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 17,
+      "type": "Blog",
+      "title": "Add Insulation to Attic",
+      "route": "/energy/insulation/add-insulation-to-attic/"
+    },
+    {
+      "batch": "3",
+      "order": 18,
+      "type": "Blog",
+      "title": "Spray Foam Attic Insulation Cost",
+      "route": "/energy/insulation/spray-foam-attic-insulation-cost/"
+    },
+    {
+      "batch": "3",
+      "order": 19,
+      "type": "Blog",
+      "title": "Crawl Space Floor Insulation Guide",
+      "route": "/energy/insulation/crawl-space-floor-insulation/"
+    },
+    {
+      "batch": "3",
+      "order": 20,
+      "type": "Blog",
+      "title": "Continuous Insulation Guide",
+      "route": "/energy/insulation/continuous-insulation/"
+    },
+    {
+      "batch": "3",
+      "order": 21,
+      "type": "Blog",
+      "title": "Whole House Dehumidifier Guide",
+      "route": "/energy/hvac/whole-house-dehumidifier/"
+    },
+    {
+      "batch": "3",
+      "order": 22,
+      "type": "Blog",
+      "title": "Basement Dehumidifier System Guide",
+      "route": "/energy/hvac/basement-dehumidifier-system/"
+    },
+    {
+      "batch": "3",
+      "order": 23,
+      "type": "Blog",
+      "title": "Best Dehumidifier for Garage Guide",
+      "route": "/energy/hvac/best-dehumidifier-for-garage/"
+    },
+    {
+      "batch": "3",
+      "order": 24,
+      "type": "Blog",
+      "title": "Appliance Wattage & Electricity Usage Chart",
+      "route": "/energy/electricity/appliance-wattage-chart/"
+    },
+    {
+      "batch": "3",
+      "order": 25,
+      "type": "Blog",
+      "title": "What Is a Dehumidifier?",
+      "route": "/energy/hvac/what-is-a-dehumidifier/"
+    }
+  ],
+  "batch3OverviewScopeRows": [
+    {
+      "A": "Batch",
+      "B": "Pages",
+      "C": "Calculators",
+      "D": "Blogs",
+      "E": "Approx. Avg KD",
+      "F": "Role"
+    },
+    {
+      "A": "Batch 1",
+      "B": "25",
+      "C": "24",
+      "D": "1",
+      "E": "10.1",
+      "F": "Fastest calculator-led foundation"
+    },
+    {
+      "A": "Batch 2",
+      "B": "25",
+      "C": "23",
+      "D": "2",
+      "E": "20.2",
+      "F": "Deepen core commercial/energy calculator clusters"
+    },
+    {
+      "A": "Batch 3",
+      "B": "25",
+      "C": "7",
+      "D": "18",
+      "E": "15.8",
+      "F": "Complete support/content layer and remaining distinct tools"
+    }
+  ]
+}

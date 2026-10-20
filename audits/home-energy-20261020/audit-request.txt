@@ -1,0 +1,219 @@
+# Zuvogo Home Energy: Autonomous Independent Audit and Validation of All Claude Work
+
+## Objective
+
+Act as an independent technical auditor, formula reviewer, source verifier, QA engineer, and implementation reviewer for the Zuvogo Home Energy project.
+
+Claude has generated multiple planning and validation documents. Audit all of them independently, verify their claims against the actual repository and original sources, reproduce calculations, run permitted tests, identify defects, and produce actionable corrections.
+
+Continue autonomously through all safe phases. Do not stop after merely writing a report or finding the first issue. Work until all permitted checks are complete, or until a genuine access, authorization, safety, or time blocker prevents progress.
+
+Do not simply agree with Claude. Challenge assumptions and independently verify important claims.
+
+## 1. Discover and inventory Claude's outputs
+
+Start with read-only inspection of the actual development repository and the available workspace.
+
+Known development baseline:
+- Repository: `web-calculator-engine`
+- Branch: `claude/compassionate-dirac-cv1ipd`
+- Development HEAD: `098571906afd98b0fdf04ad6a57f784cd8ea8db8`
+- Production baseline ancestor: `de965bd1e6e35c1efa6cb0df73021e111f11ac88`
+- Existing calculator count: 41
+
+Known Claude-generated documents, expected under `/home/user/`:
+- `zuvogo-home-energy-proposal.md`
+- `zuvogo-home-energy-decision-sheet.md`
+- `zuvogo-home-energy-approval-package.md`
+- `zuvogo-home-energy-implementation-plan.md`
+- `zuvogo-home-energy-content-spec.md`
+- `zuvogo-home-energy-codex-review-request.md`
+- `zuvogo-home-energy-session-report-20261020.md`
+
+Known reference artifacts:
+- `/tmp/claude-0/-home-user/0eb0960d-32a8-560e-86a2-5f50c83d47e1/scratchpad/energy-audit/batch1_reference.py`
+- `/tmp/claude-0/-home-user/0eb0960d-32a8-560e-86a2-5f50c83d47e1/scratchpad/energy-audit/batch1_vectors.json`
+
+Search for any additional Home Energy documents, test vectors, scripts, generated specifications, or reports. Do not assume these paths exist. Report missing files explicitly. Do not read credentials, secrets, unrelated personal files, or unrelated projects.
+
+## 2. Audit all documentation
+
+Read every relevant Home Energy document and compare them against one another.
+
+Check:
+- Revision history and stale statements.
+- Formula consistency between proposal, approval package, decision sheet, implementation plan, content specification, and test vectors.
+- Whether source-verification statuses match Codex's actual evidence.
+- Whether historical test results are clearly distinguished from freshly executed results.
+- Whether recommendations are incorrectly presented as owner-approved decisions.
+- Whether any proposed scope exceeds the eight candidate Batch 1 calculators.
+- Whether the four hubs, navigation changes, Batch 2, merges, frozen pages, tax-credit guide, and ZA-009 are incorrectly included.
+- Whether the 75-entry inventory and Batch 3's conflicting counts are preserved.
+- Whether the release gates and implementation authorization gates are unambiguous.
+
+Produce a finding-by-finding table with severity, evidence, exact file/section, correction, and status.
+
+## 3. Independently verify formulas and test vectors
+
+Inspect `batch1_reference.py` and `batch1_vectors.json` if available. Do not treat Claude's reference calculations as authoritative simply because they pass.
+
+Independently recompute all eight candidate calculators:
+
+1. Utility Cost
+2. Solar Price Per Watt
+3. Solar Financing
+4. Solar Payback, simple model only
+5. Solar Battery Charging Time
+6. EV Charging Time
+7. EV Charging Cost
+8. Electric Bill
+
+For each calculator, verify:
+- Formula and dimensional consistency.
+- Units and measurement boundaries.
+- Input constraints and validation messages.
+- Zero, negative, boundary, missing, and extreme values.
+- Rounding and display precision.
+- All stated expected values.
+- Every listed test vector.
+- Whether a mathematically correct formula is supported by appropriate evidence and assumptions.
+
+Use an independent calculation method where practical. Report exact mismatches and reproducible inputs.
+
+### Specific mandatory checks
+
+**Solar Financing**
+- Verify nominal annual interest versus APR.
+- Verify monthly payment, total interest, total payment, purchase rebate, later rebate, down payment, fees, and principal constraints.
+- Check zero-interest floating-point behavior and ensure interest is not accidentally negative due to precision.
+- Compare against the existing loan engine without modifying it.
+
+**Solar Payback**
+- Verify simple payback with and without user-entered annual maintenance.
+- Check zero and negative net annual savings.
+- Check that undefined payback is not described as “never.”
+- Confirm that adjusted payback remains out of scope.
+- Check all counterexamples and fractional-year interpolation assumptions.
+
+**Charging calculations**
+- Distinguish wall-side/source power from battery-side power.
+- Apply efficiency exactly once.
+- Confirm the meaning of usable battery capacity and state-of-charge percentages.
+- Verify equal start and target SOC returns zero; target below start is invalid.
+- Test charging-power caps and document that constant-power calculations do not model taper or auxiliary loads.
+- Verify the EPA kWh/100-mile metric is not adjusted for charging losses a second time.
+
+**Electric Bill and Utility Cost**
+- Check units, annualization assumptions, fixed-charge treatment, zero totals, and the labels used for effective or residual rates.
+- Do not claim the entered charges represent a universal tariff structure.
+
+## 4. Verify sources against original documents
+
+Inspect the original source bodies, PDFs, tables, figures, publication dates, and effective dates where available.
+
+Preserve the original audit's individual source statuses:
+- Confirmed
+- Partial
+- Conditional
+- Failed
+- Unresolved
+
+Do not upgrade a source based only on a search snippet or a title. Do not mark all sources unresolved merely because a previous network request failed.
+
+Prioritize:
+- NIST conversion factors.
+- Virginia Cooperative Extension appliance-energy example.
+- EIA electricity prices and tariff evidence.
+- CFPB interest rate versus APR.
+- DOE simple-payback source.
+- NREL price-per-watt convention.
+- AFDC charging guidance.
+- EPA 2024 Automotive Trends Report, Appendix E.
+- IRS Form 5695 instructions and the residential clean energy credit cutoff.
+- Unresolved eCFR efficiency definitions and other failed source links.
+
+If a source cannot be reached, document the exact URL, date checked, error, and claim that remains unverified. Never invent source content, dates, quotations, or page numbers.
+
+## 5. Verify repository and build compatibility
+
+Read the actual repository at the stated development HEAD. Confirm the current branch, HEAD, working-tree state, baseline relationship, calculator registry, build rules, existing engines, tests, and project documentation.
+
+Inspect the implementation plan's proposed folder layout. Verify whether the existing build's module-graph rules support it. Identify the minimum necessary architectural adjustment without modifying existing production code.
+
+Inspect the loan-payment and Fuel Cost engines read-only. Do not claim compatibility until the relevant contracts and tests have been checked.
+
+If a repository or path is unavailable, record that limitation. Do not reconstruct missing code or infer its behavior from the proposal.
+
+## 6. Execute permitted validation
+
+Run independent calculation scripts and safe, read-only tests where appropriate.
+
+You may run non-destructive lint, typecheck, unit tests, build audits, or browser tests against an isolated export or scratch copy of the verified development HEAD if the tools and environment permit.
+
+Rules:
+- Do not modify the actual development checkout.
+- Do not edit source code, tests, package files, workbooks, or generated application assets.
+- Do not run commands that write generated files into the actual repository.
+- Do not create branches or worktrees during this audit.
+- Do not claim a test passed unless you executed it and captured the result.
+- Distinguish checks run against the existing baseline from checks of proposed, not-yet-implemented code.
+
+## 7. Autonomous correction and feedback loop
+
+You are authorized to correct your own audit report, reference scripts, test vectors, and audit findings in a dedicated non-repository audit output directory.
+
+You are not authorized to modify Claude's source documents or application code. Instead, give Claude precise correction instructions with file names, section names, and proposed wording or formulas.
+
+For each issue:
+1. Identify the defect.
+2. Reproduce it.
+3. Establish the correct result from reliable evidence or independent calculation.
+4. Explain the consequence.
+5. Specify the exact correction.
+6. Recheck the corrected audit artifacts where applicable.
+
+Continue to the next independent task when one source or tool is blocked. Do not stop early merely because some checks are unavailable.
+
+## 8. Required deliverables
+
+Create a report directory outside the repository containing:
+
+- `codex-full-audit.md` — overall findings and evidence.
+- `document-reconciliation.md` — file-by-file and revision-by-revision inconsistencies.
+- `formula-validation.md` — formulas, input bounds, test vectors, expected results, and actual results for all eight candidates.
+- `source-evidence.md` — source URLs, exact evidence, dates, status, and unresolved claims.
+- `repository-compatibility.md` — verified repository facts and architecture constraints.
+- `claude-correction-instructions.md` — precise instructions for Claude to revise its documents.
+- `validation-log.md` — commands actually run, environment, exit codes, and outcomes.
+
+Include a prioritized severity list:
+- P0: safety, unauthorized changes, or a fundamental calculation defect.
+- P1: incorrect financial output, materially misleading claims, or a build-breaking plan.
+- P2: missing evidence, validation gaps, or incomplete regression coverage.
+- P3: editorial and non-blocking improvements.
+
+Finish with a concise owner summary:
+- What was verified.
+- What failed.
+- What remains unknown.
+- Which eight candidates, if any, are ready to be considered for implementation.
+- What owner decisions remain.
+- Whether a read-only Codex review of the proposal and repository is complete.
+
+## 9. Hard authorization boundaries
+
+This is an audit and validation task, not implementation authorization.
+
+Do not:
+- Write or modify application source code.
+- Create or switch branches or worktrees.
+- Commit, push, merge, or deploy.
+- Change Netlify, DNS, Google Search Console, production settings, or live configuration.
+- Modify the original workbooks.
+- Change scheduled jobs, wake or suspend Instabox machines, or fix ZA-009.
+- Unfreeze restricted pages or change the tax-credit restrictions.
+- Approve formulas, scope changes, merges, hubs, or releases on the owner's behalf.
+
+Use only the repository and resources needed for this audit. Do not expose secrets or unrelated private data.
+
+Start now. Work autonomously through every permitted phase, report blockers accurately, and stop only when the audit deliverables are complete or a genuine blocker prevents further progress. Wait for explicit owner approval before any implementation work.

@@ -1,0 +1,5 @@
+
+> build
+> node scripts/build.js
+
+Built 49 pages for https://audit.invalid into /workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8/dist

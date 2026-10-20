@@ -1,0 +1,15 @@
+# Repository compatibility
+
+Verified advertised branch: claude/compassionate-dirac-cv1ipd → 098571906afd98b0fdf04ad6a57f784cd8ea8db8. Source retrieved by immutable codeload URL, SHA256 in source-retrievals.json. Exact export: `/workspace/audits/home-energy-2026-10-20/verified-development-export/web-calculator-engine-098571906afd98b0fdf04ad6a57f784cd8ea8db8`. It is an isolated audit export, not the original checkout or a restored October7implementation. The actual Claude development checkout and its working-tree state are inaccessible; an archive does not expose its uncommitted files or prove that checkout clean. No Git fetch/clone/branch/worktree was performed.
+
+Production baseline ancestor requested:de965bd1e6e35c1efa6cb0df73021e111f11ac88. Its named branch tip is advertised, but **ancestry is not verified**: the export has no Git graph. No inference from similar source or names.
+
+Actual registry:src/content/site.js,CALCULATORS;41live calculators, no HomeEnergy candidates. Build produces49audited baseline pages. Layout is src/calculators(pure),adapters,components,lib,client plus server-only content/pages. npmcheck/test results apply only to this baseline.
+
+scripts/build.js:70browser directory allowlist is calculators/adapters/components/lib/client; components/layout.js explicitly server-only. moduleGraph follows static relative imports and rejects anything outside the allowlist. Existing loan graph is recorded in repository-probes.json. Audit-only client→energy fixture reproducibly throws “client/probe.js imports energy/probe.js, which is not a browser module”. **If** Claude proposes src/energy/, minimum options are preserve pure engines under allowed calculators/, or propose a separately reviewed narrow allowlist extension. Missing plan prevents a final compatibility verdict. No production code changed.
+
+Loan engine src/calculators/loan-payment.js:monthlyPayment uses nominal annualPercent/100/12 and stable log1p/expm1; requires positive principal/integer positive term. Zero-principal new scenarios need a defined adapter/engine branch; do not call this positive-principal API blindly. Subcent schedule threshold and APR comment findings are documented separately. No existing-loan engine modification authorized.
+
+Fuel Cost src/calculators/fuel-cost.js computes trip distance/MPG×USDpergallon, supports explicit round trip/comparison and exact constants in source. It is not an EV wall-energy API. Existing input guard and overflow boundary were inspected; do not claim automatic EV compatibility or use a fuel metric as battery input without the approved boundary.
+
+Original file integrity: 425 archived original files byte-identical after safe validation (export-integrity.json). Generateddist and node_modules exist only in the export. Actual mydeisgn stays initial/clean. No application source, tests, package manifests, original workbooks or actual checkout modified. No branch/worktree, commit, push, merge, deployment, production change, job change, machine wake/suspend, ZA-009 repair or owner approval. All audit artifacts and generated test output are outside the actual repository.

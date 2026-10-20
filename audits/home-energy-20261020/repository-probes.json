@@ -1,0 +1,252 @@
+{
+  "liveCalculators": 41,
+  "plannedEnergy": [],
+  "smallLoan": {
+    "monthlyPayment": 0.00008333333333333333,
+    "totalInterest": 0,
+    "totalRepayment": 0,
+    "scheduledPayments": 0,
+    "schedule": [],
+    "extraPayment": 0,
+    "accelerated": {
+      "monthlyPayment": 0.00008333333333333333,
+      "payments": 0,
+      "totalInterest": 0,
+      "totalRepayment": 0,
+      "interestSaved": 0,
+      "paymentsSaved": 0,
+      "schedule": []
+    }
+  },
+  "normalLoan": {
+    "monthlyPayment": 888.487886783417,
+    "totalInterest": 661.8546414010048,
+    "totalRepayment": 10661.854641401003,
+    "scheduledPayments": 12,
+    "schedule": [
+      {
+        "month": 1,
+        "payment": 888.487886783417,
+        "principal": 788.487886783417,
+        "interest": 100,
+        "balance": 9211.512113216582
+      },
+      {
+        "month": 2,
+        "payment": 888.487886783417,
+        "principal": 796.3727656512513,
+        "interest": 92.11512113216583,
+        "balance": 8415.139347565331
+      },
+      {
+        "month": 3,
+        "payment": 888.487886783417,
+        "principal": 804.3364933077637,
+        "interest": 84.15139347565331,
+        "balance": 7610.802854257568
+      },
+      {
+        "month": 4,
+        "payment": 888.487886783417,
+        "principal": 812.3798582408414,
+        "interest": 76.10802854257568,
+        "balance": 6798.422996016726
+      },
+      {
+        "month": 5,
+        "payment": 888.487886783417,
+        "principal": 820.5036568232498,
+        "interest": 67.98422996016726,
+        "balance": 5977.919339193476
+      },
+      {
+        "month": 6,
+        "payment": 888.487886783417,
+        "principal": 828.7086933914823,
+        "interest": 59.77919339193476,
+        "balance": 5149.210645801993
+      },
+      {
+        "month": 7,
+        "payment": 888.487886783417,
+        "principal": 836.995780325397,
+        "interest": 51.49210645801993,
+        "balance": 4312.214865476596
+      },
+      {
+        "month": 8,
+        "payment": 888.487886783417,
+        "principal": 845.3657381286511,
+        "interest": 43.12214865476596,
+        "balance": 3466.849127347945
+      },
+      {
+        "month": 9,
+        "payment": 888.487886783417,
+        "principal": 853.8193955099375,
+        "interest": 34.66849127347945,
+        "balance": 2613.029731838007
+      },
+      {
+        "month": 10,
+        "payment": 888.487886783417,
+        "principal": 862.357589465037,
+        "interest": 26.130297318380073,
+        "balance": 1750.67214237297
+      },
+      {
+        "month": 11,
+        "payment": 888.487886783417,
+        "principal": 870.9811653596873,
+        "interest": 17.5067214237297,
+        "balance": 879.6909770132827
+      },
+      {
+        "month": 12,
+        "payment": 888.4878867834155,
+        "principal": 879.6909770132827,
+        "interest": 8.796909770132826,
+        "balance": 0
+      }
+    ],
+    "extraPayment": 0,
+    "accelerated": {
+      "monthlyPayment": 888.487886783417,
+      "payments": 12,
+      "totalInterest": 661.8546414010048,
+      "totalRepayment": 10661.854641401003,
+      "interestSaved": 0,
+      "paymentsSaved": 0,
+      "schedule": [
+        {
+          "month": 1,
+          "payment": 888.487886783417,
+          "principal": 788.487886783417,
+          "interest": 100,
+          "balance": 9211.512113216582
+        },
+        {
+          "month": 2,
+          "payment": 888.487886783417,
+          "principal": 796.3727656512513,
+          "interest": 92.11512113216583,
+          "balance": 8415.139347565331
+        },
+        {
+          "month": 3,
+          "payment": 888.487886783417,
+          "principal": 804.3364933077637,
+          "interest": 84.15139347565331,
+          "balance": 7610.802854257568
+        },
+        {
+          "month": 4,
+          "payment": 888.487886783417,
+          "principal": 812.3798582408414,
+          "interest": 76.10802854257568,
+          "balance": 6798.422996016726
+        },
+        {
+          "month": 5,
+          "payment": 888.487886783417,
+          "principal": 820.5036568232498,
+          "interest": 67.98422996016726,
+          "balance": 5977.919339193476
+        },
+        {
+          "month": 6,
+          "payment": 888.487886783417,
+          "principal": 828.7086933914823,
+          "interest": 59.77919339193476,
+          "balance": 5149.210645801993
+        },
+        {
+          "month": 7,
+          "payment": 888.487886783417,
+          "principal": 836.995780325397,
+          "interest": 51.49210645801993,
+          "balance": 4312.214865476596
+        },
+        {
+          "month": 8,
+          "payment": 888.487886783417,
+          "principal": 845.3657381286511,
+          "interest": 43.12214865476596,
+          "balance": 3466.849127347945
+        },
+        {
+          "month": 9,
+          "payment": 888.487886783417,
+          "principal": 853.8193955099375,
+          "interest": 34.66849127347945,
+          "balance": 2613.029731838007
+        },
+        {
+          "month": 10,
+          "payment": 888.487886783417,
+          "principal": 862.357589465037,
+          "interest": 26.130297318380073,
+          "balance": 1750.67214237297
+        },
+        {
+          "month": 11,
+          "payment": 888.487886783417,
+          "principal": 870.9811653596873,
+          "interest": 17.5067214237297,
+          "balance": 879.6909770132827
+        },
+        {
+          "month": 12,
+          "payment": 888.4878867834155,
+          "principal": 879.6909770132827,
+          "interest": 8.796909770132826,
+          "balance": 0
+        }
+      ]
+    }
+  },
+  "overflowFuel": {
+    "miles": "Infinity",
+    "mpg": 1,
+    "gallons": "Infinity",
+    "cost": "Infinity",
+    "costPerMile": 1,
+    "costPerPerson": "Infinity",
+    "compare": null
+  },
+  "graph": [
+    "client/loan-payment.js",
+    "client/calculator.js",
+    "components/fields.js",
+    "lib/html.js",
+    "adapters/loan-payment.js",
+    "calculators/loan-payment.js",
+    "lib/validation.js",
+    "adapters/amortized-view.js",
+    "lib/format.js",
+    "components/loan-results.js",
+    "components/amortized-results.js",
+    "components/results.js",
+    "components/loan-form.js"
+  ],
+  "floatCounterexample": {
+    "principal": 1,
+    "termMonths": 49,
+    "naiveInterest": -1.1102230246251565e-16,
+    "actualEngineInterest": 0
+  },
+  "smallPrincipalAdapter": {
+    "ok": true,
+    "input": {
+      "principal": 0.001,
+      "annualRate": 8,
+      "termMonths": 60,
+      "extraMonthly": 0,
+      "startMonth": null
+    }
+  },
+  "energyFolderProbe": {
+    "error": "client/probe.js imports energy/probe.js, which is not a browser module",
+    "scope": "Audit-only scratch files, existing application source untouched"
+  }
+}
