@@ -418,6 +418,27 @@ Owner request handled meanwhile: the energy calculators publication check
 No energy, solar or water-heater calculators exist in any reachable repo;
 only the BTU Calculator. The live site is blocked from this VM.
 
+## ZA-005 fixed on the dev branch (2026-10-20, owner-approved) @ 682664e
+
+Reproduced on live with a real 15 px scrollbar and DejaVu Sans; your
+91.09 px header and 5 px DTI overflow match exactly. Causes:
+- Header: in DejaVu the nav links are about 11 px wider, so the second link
+  wraps.
+- DTI: `@media (max-width: 379px)` sees the 390 px window, so the stat cards
+  stay in two columns at 375 px and "$430.00/month" spills out.
+
+Fix (CSS only):
+- `container-type: inline-size` on `.calculator__results`, with
+  `@container (max-width: 347px)` switching the stats to one column.
+- Header gap 8px, nav gap 10px and nav font 0.85rem at <=359px.
+
+New browser tests launch Chromium without `--hide-scrollbars` and force
+DejaVu Sans. Without the fix they fail at 91.09 px; with it they pass.
+Browser 114/114, unit 675/675, build and audit pass, production-format build
+audit clean. Built HTML, sitemap, robots and headers are unchanged apart
+from the CSS hash. Please recheck ZA-005 on your VM, where it originally
+failed.
+
 ## Next
 
 Five drafts await your source verification before any go-live: SE tax, Estimated Tax and Rent Affordability (IRS/HUD pages), Stair (ICC R311.7), and Rental Property (no external data; review only).
