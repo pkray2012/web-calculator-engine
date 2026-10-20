@@ -1748,3 +1748,91 @@ test('contact form needs a message, hides the spam trap and reaches every field 
   assert.deepEqual(errors, []);
   await close();
 });
+
+/*
+ * ZA-005: a classic (space-taking) scrollbar makes the layout width smaller
+ * than the window width that media queries see. Headless Chromium hides
+ * scrollbars by default, so these tests launch a second browser that shows
+ * a real one, and force DejaVu Sans (the usual Linux system-ui font, wider
+ * than most) so the result does not depend on the fonts of the test machine.
+ */
+const DEJAVU_CSS = 'body, button, input, select, textarea { font-family: "DejaVu Sans", sans-serif !important; }';
+
+async function withScrollbarBrowser(run) {
+  const scrollbarBrowser = await chromium.launch({
+    ignoreDefaultArgs: ['--hide-scrollbars'],
+    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {})
+  });
+  try {
+    return await run(scrollbarBrowser);
+  } finally {
+    await scrollbarBrowser.close();
+  }
+}
+
+async function measureLayout(targetBrowser, path, width, { dejavu = false } = {}) {
+  // bypassCSP lets the test inject the font override; the page's own assets are unchanged.
+  const context = await targetBrowser.newContext({ viewport: { width, height: 900 }, bypassCSP: true });
+  const page = await context.newPage();
+  await page.goto(base + path);
+  if (dejavu) await page.addStyleTag({ content: DEJAVU_CSS });
+  await page.evaluate(() => document.fonts.ready);
+  const layout = await page.evaluate(() => {
+    const root = document.documentElement;
+    const stats = document.querySelector('.stats');
+    // A font is in use only if it renders differently from the generic fallback.
+    const canvas = document.createElement('canvas').getContext('2d');
+    const widthIn = (font) => { canvas.font = font; return canvas.measureText('Calculators About $430.00/month').width; };
+    return {
+      innerWidth: window.innerWidth,
+      clientWidth: root.clientWidth,
+      overflow: root.scrollWidth - root.clientWidth,
+      header: document.querySelector('.site-header').getBoundingClientRect().height,
+      statColumns: stats ? getComputedStyle(stats).gridTemplateColumns.split(' ').length : null,
+      dejavuInstalled: widthIn('16px "DejaVu Sans", monospace') !== widthIn('16px monospace')
+    };
+  });
+  await context.close();
+  return layout;
+}
+
+test('ZA-005: with a real scrollbar and DejaVu Sans, the header stays one row and the DTI page does not overflow', async () => {
+  await withScrollbarBrowser(async (scrollbarBrowser) => {
+    const home = await measureLayout(scrollbarBrowser, '/', 320, { dejavu: true });
+    assert.ok(home.dejavuInstalled, 'DejaVu Sans must be installed for this regression test');
+    assert.ok(home.clientWidth < home.innerWidth, `expected a space-taking scrollbar, got clientWidth ${home.clientWidth} of ${home.innerWidth}`);
+    assert.ok(home.header <= 72, `header is ${home.header}px tall at 320px with a scrollbar and DejaVu Sans`);
+    assert.equal(home.overflow, 0);
+    for (const width of [380, 390]) {
+      const dti = await measureLayout(scrollbarBrowser, DTI, width, { dejavu: true });
+      assert.equal(dti.overflow, 0, `DTI overflows by ${dti.overflow}px at ${width}px with a scrollbar and DejaVu Sans`);
+      assert.ok(dti.header <= 72, `DTI header is ${dti.header}px tall at ${width}px`);
+    }
+  });
+});
+
+test('ZA-005: with a real scrollbar and the default font, header and DTI layout stay correct', async () => {
+  await withScrollbarBrowser(async (scrollbarBrowser) => {
+    for (const [path, width] of [['/', 320], [DTI, 320], [DTI, 390], [CALC, 390]]) {
+      const layout = await measureLayout(scrollbarBrowser, path, width);
+      assert.ok(layout.clientWidth < layout.innerWidth, 'expected a space-taking scrollbar');
+      assert.ok(layout.header <= 72, `${path} header is ${layout.header}px tall at ${width}px with a scrollbar`);
+      assert.equal(layout.overflow, 0, `${path} overflows by ${layout.overflow}px at ${width}px with a scrollbar`);
+    }
+  });
+});
+
+test('ZA-005: result cards switch to one column by the space the results panel has', async () => {
+  // Without a scrollbar the breakpoint is where it always was: one column up to 379px, two from 380px.
+  assert.equal((await measureLayout(browser, DTI, 379)).statColumns, 1);
+  assert.equal((await measureLayout(browser, DTI, 380)).statColumns, 2);
+  assert.equal((await measureLayout(browser, DTI, 390)).statColumns, 2);
+  // With a scrollbar a 390px window leaves the same space as a 375px one, so one column.
+  await withScrollbarBrowser(async (scrollbarBrowser) => {
+    const narrow = await measureLayout(scrollbarBrowser, DTI, 390);
+    assert.ok(narrow.clientWidth < narrow.innerWidth, 'expected a space-taking scrollbar');
+    assert.equal(narrow.statColumns, 1);
+    const wide = await measureLayout(scrollbarBrowser, DTI, 420);
+    assert.equal(wide.statColumns, 2);
+  });
+});
