@@ -98,6 +98,8 @@ ${calculatorShell({
     <h2 id="est-assumptions-heading">Assumptions and limits</h2>
     <ul>
       <li>Federal estimated tax only. Most states with an income tax have their own estimated payments and rules.</li>
+      <li>Tax in every test means total tax minus refundable credits, as on IRS Publication 505 Worksheet 2-1. Other worksheet adjustments, such
+      as certain excluded taxes, are not modeled; check the worksheet if they apply to you.</li>
       <li>This year's tax is your own estimate; this calculator does not work out income tax. Last year's return and your year-to-date income are a
       good starting point.</li>
       <li>Payments are split into four equal installments. If your income arrives unevenly, the annualized income installment method on Form 2210
@@ -110,8 +112,8 @@ ${calculatorShell({
 
   <section class="content-section" aria-labelledby="est-method-heading">
     <h2 id="est-method-heading">Methodology and testing</h2>
-    <p>Required payment = the smaller of 90% of this year's tax and 100% or 110% of last year's tax; estimated payments = that amount minus
-    withholding, in four equal parts. Automated tests check hand-worked examples, the $150,000 and $75,000 AGI limits, the $1,000 threshold, a zero
+    <p>Tax = total tax − refundable credits, for each year. Required payment = the smaller of 90% of this year's tax and 100% or 110% of last year's tax; estimated payments = that amount minus
+    withholding, in four equal parts. Automated tests check hand-worked examples, the $150,000 and $75,000 AGI limits, the $1,000 threshold, refundable credits in both years, a zero
     tax year, and 2,000 random cases. <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 

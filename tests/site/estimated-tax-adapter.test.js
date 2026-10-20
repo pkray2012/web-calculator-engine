@@ -81,3 +81,14 @@ test('the calculator stays a draft: not live and never linked from live pages', 
     assert.ok(!relatedCalculators(calc.slug).some((related) => related.slug === entry.slug));
   }
 });
+
+test('the form reaches the refundable-credit fields (review ZA-006)', () => {
+  const run = runEstimatedTaxCalculator({ ...ESTIMATED_TAX_DEFAULTS, currentYearTax: '1200', currentYearRefundableCredits: '400', withholding: '', priorYearTax: '', priorYearAgi: '' });
+  assert.equal(run.ok, true);
+  assert.equal(run.view.result.paymentsRequired, false);
+  assert.equal(run.view.result.safeHarborInstallment, 0);
+  assert.match(String(estimatedTaxResults(run.view)), /after withholding and refundable credits, under \$1,000/);
+  const bad = parseEstimatedTaxForm({ ...ESTIMATED_TAX_DEFAULTS, currentYearRefundableCredits: '-5', priorYearRefundableCredits: 'x' });
+  assert.ok(bad.errors.currentYearRefundableCredits);
+  assert.ok(bad.errors.priorYearRefundableCredits);
+});

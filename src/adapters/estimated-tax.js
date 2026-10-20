@@ -10,8 +10,10 @@ import { numberField } from '../lib/validation.js';
 /** Illustrative example values, not a typical taxpayer. */
 export const ESTIMATED_TAX_DEFAULTS = Object.freeze({
   currentYearTax: '20000',
+  currentYearRefundableCredits: '',
   withholding: '2000',
   priorYearTax: '15000',
+  priorYearRefundableCredits: '',
   priorYearAgi: '90000',
   marriedFilingSeparately: ''
 });
@@ -27,8 +29,10 @@ export function parseEstimatedTaxForm(values) {
   const money = (field, label, required = false, fallback = 0) =>
     take(field, numberField(values[field], { label, required, fallback, min: 0, max: MAX_AMOUNT }));
   const currentYearTax = money('currentYearTax', 'Expected total tax this year', true);
+  const currentYearRefundableCredits = money('currentYearRefundableCredits', 'Refundable credits this year');
   const withholding = money('withholding', 'Withholding this year');
   const priorYearTax = money('priorYearTax', 'Last year’s total tax', false, null);
+  const priorYearRefundableCredits = money('priorYearRefundableCredits', 'Refundable credits last year');
   const priorYearAgi = money('priorYearAgi', 'Last year’s adjusted gross income', false, null);
   // Without last year's AGI the 100%/110% choice cannot be made, and assuming
   // 100% could tell a higher-income filer to pay too little (review A3-003).
@@ -41,8 +45,10 @@ export function parseEstimatedTaxForm(values) {
     input: {
       taxYear: ESTIMATED_TAX_YEARS.at(-1),
       currentYearTax,
+      currentYearRefundableCredits,
       withholding,
       priorYearTax,
+      priorYearRefundableCredits,
       priorYearAgi,
       marriedFilingSeparately: values.marriedFilingSeparately === 'on'
     }

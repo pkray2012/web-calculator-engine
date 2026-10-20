@@ -65,8 +65,16 @@ export function calculateStairs({
   const chosen = layout({ ...common, risers: chosenRisers });
   if (chosen.bottomStringerRiser <= 0) throw new RangeError('treadThickness must be less than the riser height');
 
+  // Alternatives must pass the same tread-thickness check as the chosen
+  // layout: a riser no taller than the tread would leave no bottom cut
+  // (review ZA-007), so those counts are left out and counted instead.
   const options = [];
-  for (let n = minimumRisers; n <= minimumRisers + 3; n += 1) options.push(layout({ ...common, risers: n }));
+  let optionsOmitted = 0;
+  for (let n = minimumRisers; n <= minimumRisers + 3; n += 1) {
+    const option = layout({ ...common, risers: n });
+    if (option.bottomStringerRiser > 0) options.push(option);
+    else optionsOmitted += 1;
+  }
 
-  return { totalRise, treadDepth, treadThickness, maxRiser, minTread, minimumRisers, ...chosen, options };
+  return { totalRise, treadDepth, treadThickness, maxRiser, minTread, minimumRisers, ...chosen, options, optionsOmitted };
 }

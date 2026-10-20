@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { parseStairForm, runStairCalculator, STAIR_DEFAULTS } from '../../src/adapters/stair.js';
 import { stairPage, STAIR_SOURCES } from '../../src/pages/stair-calculator.js';
 import { stairForm, STAIR_FIELD_IDS } from '../../src/components/stair-form.js';
-import { formatInches } from '../../src/components/stair-results.js';
+import { formatInches, stairResults } from '../../src/components/stair-results.js';
 import { findCalculator, liveCalculators, relatedCalculators, CALCULATORS } from '../../src/content/site.js';
 
 test('defaults calculate the 9 ft example', () => {
@@ -71,4 +71,12 @@ test('the calculator stays a draft: not live and never linked from live pages', 
   for (const calc of liveCalculators(CALCULATORS)) {
     assert.ok(!relatedCalculators(calc.slug).some((related) => related.slug === entry.slug));
   }
+});
+
+test('the results explain left-out riser counts (review ZA-007)', () => {
+  const run = runStairCalculator({ ...STAIR_DEFAULTS, totalRise: '24', treadThickness: '5' });
+  assert.equal(run.ok, true);
+  const markup = String(stairResults(run.view));
+  assert.match(markup, /3 more riser counts are left out/);
+  assert.doesNotMatch(markup, /−0\.2|-0\.2/);
 });

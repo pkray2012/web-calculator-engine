@@ -102,3 +102,23 @@ test('invalid inputs are rejected', () => {
   assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: 10, treadThickness: 9 }), RangeError);
   assert.throws(() => calculateStairs({ totalRise: 100, treadDepth: 10, treadThickness: -1 }), RangeError);
 });
+
+test('alternatives that leave no bottom cut are left out (review ZA-007)', () => {
+  // 24 in rise, 5 in treads: 4 risers of 6 in work; 5, 6 and 7 risers would cut -0.2, -1 and -1.57 in.
+  const s = calculateStairs({ totalRise: 24, treadDepth: 10, treadThickness: 5 });
+  assert.equal(s.risers, 4);
+  assert.ok(Math.abs(s.bottomStringerRiser - 1) < 1e-12);
+  assert.deepEqual(s.options.map((o) => o.risers), [4]);
+  assert.equal(s.optionsOmitted, 3);
+  for (const option of s.options) assert.ok(option.bottomStringerRiser > 0);
+  // A riser exactly as tall as the tread (zero cut) is also left out.
+  const zero = calculateStairs({ totalRise: 24, treadDepth: 10, treadThickness: 4 });
+  assert.deepEqual(zero.options.map((o) => o.risers), [4, 5]);
+  assert.equal(zero.optionsOmitted, 2);
+  // Every offered option can be chosen again without an error.
+  for (const option of s.options.concat(zero.options)) {
+    assert.doesNotThrow(() => calculateStairs({ totalRise: 24, treadDepth: 10, treadThickness: 4, risers: option.risers }));
+  }
+  // Thin treads keep all four alternatives.
+  assert.equal(calculateStairs({ totalRise: 108, treadDepth: 10, treadThickness: 1 }).optionsOmitted, 0);
+});

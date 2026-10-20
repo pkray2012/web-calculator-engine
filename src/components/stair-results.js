@@ -71,7 +71,7 @@ export function stairResults({ result: s }) {
   connection and the cuts.
   ${s.handrailExpected ? `With ${s.risers} risers, plan for a handrail; the IRC requires one on flights with four or more risers.` : ''}</p>
 </section>
-<section class="result-block" aria-labelledby="options-heading">
+${s.options.length ? html`<section class="result-block" aria-labelledby="options-heading">
   <h2 id="options-heading">Other riser counts</h2>
   ${dataTable({
     id: 'stair-options',
@@ -91,7 +91,9 @@ export function stairResults({ result: s }) {
       ok: check(option.riserOk)
     }))
   })}
-</section>`;
+  ${s.optionsOmitted ? html`<p class="note">${s.optionsOmitted === 1 ? 'One more riser count is' : `${s.optionsOmitted} more riser counts are`} left out
+  because the riser would be no taller than the ${formatInches(s.treadThickness)} tread, leaving no bottom cut on the stringer.</p>` : ''}
+</section>` : ''}`;
 }
 
 export function stairQuickResult({ result: s }) {

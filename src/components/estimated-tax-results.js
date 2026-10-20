@@ -18,7 +18,7 @@ export function formatDueDate(isoDate) {
 export function estimatedTaxResults({ result: r }) {
   let note;
   if (r.noPriorYearTax) note = 'You had no tax last year, so for a full-year U.S. citizen or resident no underpayment penalty applies this year. Paying during the year still avoids a large bill at filing.';
-  else if (r.underMinimum) note = `You expect to owe ${formatCurrency(r.balanceAfterWithholding)} after withholding, under $1,000, so estimated payments are not required.`;
+  else if (r.underMinimum) note = `You expect to owe ${formatCurrency(r.balanceAfterWithholding)} after withholding and refundable credits, under $1,000, so estimated payments are not required.`;
   else if (r.safeHarborTotal === 0) note = 'Your withholding already covers the safe-harbor amount, so no estimated payments are needed to avoid the penalty.';
   else note = `Paying ${formatCurrency(r.safeHarborInstallment)} by each due date meets the ${r.safeHarborUsed === 'priorYear' ? `${Math.round(r.priorYearShare * 100)}% of last year’s tax` : '90% of this year’s tax'} safe harbor.`;
   const stats = [
@@ -38,8 +38,8 @@ export function estimatedTaxResults({ result: r }) {
     title: 'Required annual payment',
     columns: [{ key: 'test', label: 'Test' }, { key: 'amount', label: 'Amount', numeric: true }],
     rows: [
-      { test: `90% of this year’s tax (${formatCurrency(r.currentYearTax)})`, amount: formatCurrency(r.currentYearTest) },
-      { test: r.priorYearTest === null ? 'Last year’s tax: not entered' : `${Math.round(r.priorYearShare * 100)}% of last year’s tax (${formatCurrency(r.priorYearTax)})${r.highIncome ? ', because last year’s AGI was over the limit' : ''}`, amount: r.priorYearTest === null ? '—' : formatCurrency(r.priorYearTest) },
+      { test: `90% of this year’s tax (${formatCurrency(r.currentYearTaxShown)}${r.currentYearRefundableCredits > 0 ? ' after refundable credits' : ''})`, amount: formatCurrency(r.currentYearTest) },
+      { test: r.priorYearTest === null ? 'Last year’s tax: not entered' : `${Math.round(r.priorYearShare * 100)}% of last year’s tax (${formatCurrency(r.priorYearTaxShown)}${r.priorYearRefundableCredits > 0 ? ' after refundable credits' : ''})${r.highIncome ? ', because last year’s AGI was over the limit' : ''}`, amount: r.priorYearTest === null ? '—' : formatCurrency(r.priorYearTest) },
       { test: 'Required annual payment (the smaller)', amount: formatCurrency(r.requiredAnnualPayment) },
       { test: 'Minus withholding', amount: formatCurrency(r.withholding) },
       { test: 'Estimated payments to make', amount: formatCurrency(r.safeHarborTotal) }
