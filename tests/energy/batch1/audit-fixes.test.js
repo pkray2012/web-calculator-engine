@@ -83,3 +83,9 @@ test('the E8 and E7 citations use the live EPA download page and the current AFD
   assert.equal(ENERGY_SOURCES.epaLabelLosses.url, 'https://www.epa.gov/automotive-trends/download-2024-automotive-trends-report');
   assert.equal(ENERGY_SOURCES.homeCharging.title, 'Charging Electric Vehicles at Home');
 });
+
+test('the Price Per Watt page cites E5 for the DC rating', () => {
+  const body = String(solarPricePerWattPage().body);
+  assert.ok(body.includes(ENERGY_SOURCES.dcRating.url));
+  assert.equal(ENERGY_SOURCES.dcRating.url, 'https://atb.nlr.gov/electricity/2024/residential_pv');
+});

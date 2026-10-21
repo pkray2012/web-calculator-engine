@@ -8,12 +8,13 @@ import { html } from '../../lib/html.js';
 import { formatCurrency } from '../../lib/format.js';
 import { ppwForm } from '../../components/energy/solar-price-per-watt-form.js';
 import { ppwResults, ppwQuickResult } from '../../components/energy/solar-price-per-watt-results.js';
-import { relatedLinks } from '../../components/layout.js';
+import { relatedLinks, sourcesSection } from '../../components/layout.js';
 import { calculatorShell } from '../../components/calculator-shell.js';
 import { faqSection, faqStructuredData, directAnswer } from '../../components/faq.js';
 import { PPW_DEFAULTS, parsePpwForm, buildPpwView, formatPerWatt } from '../../adapters/energy/solar-price-per-watt.js';
 import { calculatePricePerWatt } from '../../calculators/energy/solar-price-per-watt.js';
 import { findEnergyCalculator, relatedEnergyCalculators } from '../../content/energy-batch1.js';
+import { ENERGY_SOURCES } from '../../content/energy-sources.js';
 
 export function solarPricePerWattPage() {
   const calculator = findEnergyCalculator('solar-price-per-watt-calculator');
@@ -68,7 +69,7 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="ppw-assumptions-heading">
     <h2 id="ppw-assumptions-heading">Assumptions and limits</h2>
     <ul>
-      <li>Use the DC rating on the quote: the total of the panels' watt ratings. Some quotes also give an AC rating; compare every quote on the same rating.</li>
+      <li>Use the DC rating on the quote: the total of the panels' watt ratings. Residential solar prices and sizes are usually quoted this way (<a href="${ENERGY_SOURCES.dcRating.url}">Annual Technology Baseline</a>). Some quotes also give an AC rating; compare every quote on the same rating.</li>
       <li>Only the incentives you enter are subtracted.</li>
       <li>Price per watt compares quotes; it does not tell you how much electricity a system will produce or how long it takes to pay back.</li>
     </ul>
@@ -82,6 +83,8 @@ ${calculatorShell({
   </section>
 
   ${faqSection(faqs, 'ppw-faq')}
+
+  ${sourcesSection([ENERGY_SOURCES.dcRating])}
 
   ${relatedLinks(relatedEnergyCalculators(calculator.slug))}
 </article>

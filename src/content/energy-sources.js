@@ -24,6 +24,13 @@ export const ENERGY_SOURCES = Object.freeze({
     url: 'https://afdc.energy.gov/fuels/electricity-charging-home',
     supports: 'Charging time depends on how depleted the battery is, its capacity, the vehicle\'s onboard charger and the charging equipment.'
   },
+  // E5: CONFIRMED by Codex 2026-10-21 23:32 IST (X11). Cited only for residential prices and sizes being quoted on the DC rating.
+  dcRating: {
+    title: '2024 Electricity Annual Technology Baseline (ATB): Residential PV',
+    publisher: 'National Laboratory of the Rockies (formerly NREL), U.S. Department of Energy',
+    url: 'https://atb.nlr.gov/electricity/2024/residential_pv',
+    supports: 'Residential solar prices and capacities are quoted in kW DC, the panels\' rated capacity, which is the unit most of the residential industry uses.'
+  },
   // E8: CONFIRMED (EPA-420-R-24-022, Appendix E). Linked through EPA's download page for the report; the old direct PDF URL returns 404.
   epaLabelLosses: {
     title: 'The 2024 EPA Automotive Trends Report (EPA-420-R-24-022), Appendix E',
