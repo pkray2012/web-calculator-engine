@@ -32,6 +32,9 @@ function compareDigits(a, b) {
  * rules: { label, required, min, max } with min and max in dollars.
  * Returns { value: cents } (a safe integer), { value: fallback } for a blank
  * optional field, or { error }.
+ * @param {unknown} rawValue
+ * @param {{ label: string, required?: boolean, fallback?: number | null, min?: number, max?: number }} rules
+ * @returns {{ value?: number | null, error?: string }}
  */
 export function moneyField(rawValue, { label, required = true, fallback = 0, min = 0, max }) {
   if (rawValue === undefined || rawValue === null || String(rawValue).trim() === '') {

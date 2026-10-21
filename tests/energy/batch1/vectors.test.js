@@ -18,6 +18,18 @@ import { runPpwCalculator } from '../../../src/adapters/energy/solar-price-per-w
 import { runBillCalculator } from '../../../src/adapters/energy/electric-bill.js';
 import { runPaybackCalculator } from '../../../src/adapters/energy/solar-payback.js';
 import { formatCurrency } from '../../../src/lib/format.js';
+import { runEvTimeCalculator, runBatteryCalculator } from '../../../src/adapters/energy/charging-time.js';
+import { runEvCostCalculator } from '../../../src/adapters/energy/ev-charging-cost.js';
+import { runFinancingCalculator } from '../../../src/adapters/energy/solar-financing.js';
+import { scheduleInvariantFailures } from '../../../src/calculators/energy/solar-financing.js';
+import { calculateLoan } from '../../../src/calculators/loan-payment.js';
+
+const FIGURE_TYPES = { epa_kwh_per_100mi: 'epa', dashboard_mi_per_kwh: 'dashboard' };
+
+const CHARGE_FIELDS = { start_soc: 'startLevel', target_soc: 'targetLevel', vehicle_max_ac: 'vehicleMax' };
+const chargeValues = ({ capacity, s0, s1, power, basis, efficiency, vehicle_max_ac: vehicleMax }) => ({
+  capacity: text(capacity), startLevel: text(s0), targetLevel: text(s1), power: text(power), basis, efficiency: text(efficiency), vehicleMax: text(vehicleMax)
+});
 
 const VECTORS = JSON.parse(readFileSync(new URL('./fixtures/batch1_vectors_r6.json', import.meta.url), 'utf8'));
 
@@ -95,8 +107,85 @@ const RUNNERS = {
       assert.equal(formatCurrency(view.netCost), expected.net_cost_display, `${name} net cost text`);
       assert.equal(formatCurrency(view.netSavings), expected.net_savings_display, `${name} net savings text`);
     }
+  },
+  charge_time: {
+    run: (input) => {
+      const values = chargeValues(input);
+      const ev = runEvTimeCalculator(values);
+      // The solar battery page has no vehicle maximum; without one it must agree with the EV page.
+      if (input.vehicle_max_ac === undefined) assert.deepEqual(runBatteryCalculator(values), ev);
+      return ev;
+    },
+    fields: CHARGE_FIELDS,
+    check(view, expected, name) {
+      close(view.result.energyKwh, expected.energy_kwh, EXACT, `${name} energy`);
+      close(view.result.effectivePowerKw, expected.effective_power, EXACT, `${name} power`);
+      close(view.result.hours, expected.hours, EXACT, `${name} hours`);
+      if (expected.source_kwh === null) assert.equal(view.result.sourceKwh, null, `${name} source kWh`);
+      else close(view.result.sourceKwh, expected.source_kwh, EXACT, `${name} source kWh`);
+      assert.equal(view.result.vehicleCapIgnored, expected.vehicle_cap_ignored, `${name} cap ignored`);
+      assert.equal(view.message, expected.note === 'nothing to charge' ? 'Nothing to charge.' : null, `${name} message`);
+      assert.equal(view.energyText, expected.display.energy, `${name} energy text`);
+      assert.equal(view.timeText, expected.display.time, `${name} time text`);
+      assert.deepEqual(view.notes, expected.display.notes, `${name} notes`);
+    }
+  },
+  ev_charging_cost: {
+    run: ({ capacity, s0, s1, efficiency, rate, figure_type: type, figure, miles_per_month: miles }) => runEvCostCalculator({
+      capacity: text(capacity), startLevel: text(s0), targetLevel: text(s1), efficiency: text(efficiency), rate: text(rate),
+      figureType: type ? FIGURE_TYPES[type] : '', figure: text(figure), milesPerMonth: text(miles)
+    }),
+    fields: { ...CHARGE_FIELDS, figure_type: 'figureType', miles_per_month: 'milesPerMonth' },
+    check(view, expected, name) {
+      close(view.result.batteryKwh, expected.battery_kwh, EXACT, `${name} battery kWh`);
+      close(view.result.meteredKwh, expected.metered_kwh, EXACT, `${name} metered kWh`);
+      close(view.result.costPerCharge, expected.cost_per_charge, MONEY, `${name} per charge`);
+      assert.equal(view.result.highRate, expected.rate_note, `${name} rate note`);
+      assert.deepEqual(view.notes, expected.notes, `${name} notes`);
+      if (!('cost_per_mile' in expected)) {
+        assert.equal(view.result.perMile, null, `${name} per mile`);
+        return;
+      }
+      close(view.result.perMile.costPerMile, expected.cost_per_mile, EXACT, `${name} per mile`);
+      close(view.result.perMile.costPer100Miles, expected.cost_per_100mi, EXACT, `${name} per 100 mi`);
+      assert.equal(view.perMileText, expected.per_mile_display, `${name} per mile text`);
+      if ('monthly' in expected) close(view.result.perMile.monthly, expected.monthly, MONEY, `${name} monthly`);
+      else assert.equal(view.result.perMile.monthly, null, `${name} monthly`);
+    }
+  },
+  solar_financing: {
+    run: ({ price, down, purchase_rebates: purchaseRebates, later_rebates: laterRebates, rate, term_months: term = 120, term_unit: termUnit = 'months', fees }) => runFinancingCalculator({
+      price: text(price), down: text(down), purchaseRebates: text(purchaseRebates), laterRebates: text(laterRebates),
+      rate: text(rate), term: text(term), termUnit, fees: text(fees)
+    }),
+    fields: { purchase_rebates: 'purchaseRebates', later_rebates: 'laterRebates' },
+    check(view, expected, name) {
+      const { result } = view;
+      assert.equal(result.noLoanNeeded, expected.no_loan_needed, `${name} no loan`);
+      close(result.loan, expected.loan, MONEY, `${name} loan`);
+      if (expected.payment === null) assert.equal(result.payment, null, `${name} payment`);
+      else close(result.payment, expected.payment, EXACT, `${name} payment`);
+      close(result.totalOfPayments, expected.total_of_payments, MONEY, `${name} total of payments`);
+      close(result.interest, expected.interest_outlay, MONEY, `${name} interest`);
+      if (expected.interest_outlay === 0) assert.equal(result.interest, 0, `${name} interest is exactly 0 (R02)`);
+      close(result.financingOutlay, expected.financing_outlay, MONEY, `${name} financing outlay`);
+      close(result.netInstalledPrice, expected.net_installed_price, MONEY, `${name} net installed`);
+      close(result.netCostAfterLaterRebates, expected.net_cost_after_later_rebates, MONEY, `${name} after later rebates`);
+      if ('payments' in expected) assert.equal(result.payments, expected.payments, `${name} payments`);
+    }
   }
 };
+
+test('the invariants reject the live loan engine\'s failures outside the B1-1 domain (LD1–LD3)', () => {
+  const lifted = JSON.parse(readFileSync(new URL('./fixtures/batch1_lifted_domain_r6.json', import.meta.url), 'utf8'));
+  assert.equal(lifted.length, 3);
+  for (const { name, input: [loan, annualRate, termMonths], output } of lifted) {
+    const result = calculateLoan({ principal: loan, annualRate, termMonths });
+    assert.equal(result.schedule.length, output.rows, `${name} rows`);
+    const fails = scheduleInvariantFailures({ loan, payment: result.monthlyPayment, termMonths, schedule: result.schedule });
+    assert.deepEqual(fails, output.fails, name);
+  }
+});
 
 for (const fn of Object.keys(RUNNERS)) {
   const vectors = VECTORS.filter((vector) => vector.fn === fn);

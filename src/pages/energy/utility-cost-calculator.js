@@ -19,8 +19,8 @@ export function utilityCostPage() {
   const example = buildUtilityView(parseUtilityForm(UTILITY_DEFAULTS).input);
   const { result } = example;
   const sum = example.shares.map((row) => formatCurrency(row.amount).replace('.00', '')).join(' + ');
-  const total = formatCurrency(result.monthly);
-  const twelve = formatCurrency(result.twelveTimesMonthly);
+  const total = formatCurrency(result.monthly).replace('.00', '');
+  const twelve = formatCurrency(result.twelveTimesMonthly).replace('.00', '');
   const largest = example.shares.reduce((best, row) => (row.share > best.share ? row : best));
 
   const faqs = [
