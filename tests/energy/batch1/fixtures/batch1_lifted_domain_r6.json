@@ -1,0 +1,57 @@
+[
+ {
+  "name": "LD1 early termination (lifted domain)",
+  "input": [
+   97856308.29,
+   86,
+   499
+  ],
+  "output": {
+   "rows": 496,
+   "final_balance": 0.0,
+   "interest": 3376699109.4035773,
+   "fails": [
+    "1 rows = n",
+    "5 interest"
+   ]
+  }
+ },
+ {
+  "name": "LD2 Codex case D (lifted domain)",
+  "input": [
+   17312533.83,
+   89.48,
+   513
+  ],
+  "output": {
+   "rows": 513,
+   "final_balance": 17312533.83,
+   "interest": 662251162.8388482,
+   "fails": [
+    "2 balance",
+    "3 principal",
+    "4 totals",
+    "5 interest"
+   ]
+  }
+ },
+ {
+  "name": "LD3 Codex case B (lifted domain)",
+  "input": [
+   100000000,
+   100,
+   200
+  ],
+  "output": {
+   "rows": 200,
+   "final_balance": 0.03647764027118683,
+   "interest": 1566666852.6665738,
+   "fails": [
+    "2 balance",
+    "3 principal",
+    "4 totals",
+    "5 interest"
+   ]
+  }
+ }
+]
