@@ -19,16 +19,16 @@ export const ENERGY_SOURCES = Object.freeze({
   },
   // E7: PARTIAL. Cited only for the factors that affect charging time and for power varying with the charge level.
   homeCharging: {
-    title: 'Charging Plug-In Electric Vehicles at Home',
+    title: 'Charging Electric Vehicles at Home',
     publisher: 'U.S. Department of Energy, Alternative Fuels Data Center',
     url: 'https://afdc.energy.gov/fuels/electricity-charging-home',
     supports: 'Charging time depends on how depleted the battery is, its capacity, the vehicle\'s onboard charger and the charging equipment.'
   },
-  // E8: CONFIRMED (EPA-420-R-24-022, Appendix E).
+  // E8: CONFIRMED (EPA-420-R-24-022, Appendix E). Linked through EPA's download page for the report; the old direct PDF URL returns 404.
   epaLabelLosses: {
     title: 'The 2024 EPA Automotive Trends Report (EPA-420-R-24-022), Appendix E',
     publisher: 'U.S. Environmental Protection Agency',
-    url: 'https://www.epa.gov/system/files/documents/2024-11/420r24022.pdf',
+    url: 'https://www.epa.gov/automotive-trends/download-2024-automotive-trends-report',
     supports: 'The kWh per 100 miles on an electric vehicle\'s label is measured at the wall, so it already includes charging losses.'
   },
   // E1: CONFIRMED.

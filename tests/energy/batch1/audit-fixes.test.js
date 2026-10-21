@@ -78,3 +78,8 @@ test('the E6 citation names the actual document', () => {
   assert.match(ENERGY_SOURCES.simplePayback.title, /^Simple Photovoltaic Economic Calculations/);
   assert.match(ENERGY_SOURCES.simplePayback.publisher, /National Renewable Energy Laboratory/);
 });
+
+test('the E8 and E7 citations use the live EPA download page and the current AFDC title', () => {
+  assert.equal(ENERGY_SOURCES.epaLabelLosses.url, 'https://www.epa.gov/automotive-trends/download-2024-automotive-trends-report');
+  assert.equal(ENERGY_SOURCES.homeCharging.title, 'Charging Electric Vehicles at Home');
+});
