@@ -22,11 +22,13 @@ export const LONG_PAYBACK_NOTE = 'Longer than the 25-year lifetime used as an ex
  * Payback in years as one rounded month count: "12.5 years (12 years 6 months)".
  * Under half a month → "Less than 1 month"; over 100 years → "More than 100 years".
  */
+const count = (n, unit) => `${n} ${unit}${n === 1 ? '' : 's'}`;
+
 export function formatPayback(years) {
   if (years * 12 < 0.5) return 'Less than 1 month';
   if (years > 100) return 'More than 100 years';
   const months = Math.floor(years * 12 + 0.5);
-  return `${roundHalfUp(months / 12, 1)} years (${Math.floor(months / 12)} years ${months % 12} months)`;
+  return `${roundHalfUp(months / 12, 1)} years (${count(Math.floor(months / 12), 'year')} ${count(months % 12, 'month')})`;
 }
 
 export function parsePaybackForm(values) {

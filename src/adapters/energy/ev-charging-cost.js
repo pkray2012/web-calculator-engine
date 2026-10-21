@@ -37,12 +37,13 @@ export function parseEvCostForm(values) {
     if (result.error) errors[field] = result.error;
     return result.value;
   };
-  const { capacityKwh, startPercent, targetPercent } = parseLevels(values, take);
+  const { capacityKwh, startPercent, targetPercent } = parseLevels(values, take, 'Start charge level');
   const efficiencyPercent = take('efficiency', numberField(values.efficiency, { label: 'Charging efficiency', ...COST_LIMITS.efficiency }));
   const rate = take('rate', rateField(values.rate, 'Electricity rate'));
   const figureType = values.figureType === 'epa' || values.figureType === 'dashboard' ? values.figureType : null;
-  const figureLimits = figureType === 'dashboard' ? COST_LIMITS.dashboard : COST_LIMITS.epa;
-  const figure = take('figure', numberField(values.figure, { label: 'Efficiency figure', required: figureType !== null, fallback: null, ...figureLimits }));
+  // Without a figure type the limits are unknown, so only the number itself is checked and the figure-type error explains what is missing.
+  const figureLimits = figureType === 'dashboard' ? COST_LIMITS.dashboard : figureType === 'epa' ? COST_LIMITS.epa : {};
+  const figure = take('figure', numberField(values.figure, { label: 'Figure value', required: figureType !== null, fallback: null, ...figureLimits }));
   const milesPerMonth = take('milesPerMonth', numberField(values.milesPerMonth, { label: 'Miles per month', required: false, fallback: null, ...COST_LIMITS.miles }));
   if (figureType === null && !errors.figure && !errors.milesPerMonth && (figure !== null || milesPerMonth !== null)) errors.figureType = FIGURE_TYPE_ERROR;
   if (!errors.startLevel && !errors.targetLevel && targetPercent < startPercent) errors.targetLevel = 'Target charge level cannot be below the starting level.';

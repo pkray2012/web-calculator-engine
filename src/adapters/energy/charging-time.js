@@ -41,10 +41,15 @@ export const EV_TIME_DEFAULTS = Object.freeze({
   vehicleMax: ''
 });
 
-/** Shared parsing for the battery-and-levels part of every charging form (also used by EV Charging Cost). */
-export function parseLevels(values, take) {
+/**
+ * Shared parsing for the battery-and-levels part of every charging form (also used by EV Charging Cost).
+ * @param {Record<string, string>} values raw form values
+ * @param {(field: string, result: any) => any} take records a field's error and returns its value
+ * @param {string} [startLabel] the start-level field's visible label
+ */
+export function parseLevels(values, take, startLabel = 'Current charge level') {
   const capacityKwh = take('capacity', numberField(values.capacity, { label: 'Usable battery capacity', ...CHARGE_LIMITS.capacity }));
-  const startPercent = take('startLevel', numberField(values.startLevel, { label: 'Current charge level', min: 0, max: 100 }));
+  const startPercent = take('startLevel', numberField(values.startLevel, { label: startLabel, min: 0, max: 100 }));
   const targetPercent = take('targetLevel', numberField(values.targetLevel, { label: 'Target charge level', min: 0, max: 100 }));
   return { capacityKwh, startPercent, targetPercent };
 }
@@ -59,7 +64,7 @@ export function parseChargeForm(values, { vehicle = false } = {}) {
     if (result.error) errors[field] = result.error;
     return result.value;
   };
-  const { capacityKwh, startPercent, targetPercent } = parseLevels(values, take);
+  const { capacityKwh, startPercent, targetPercent } = parseLevels(values, take, vehicle ? 'Start charge level' : 'Current charge level');
   const powerKw = take('power', numberField(values.power, { label: 'Charging power', ...CHARGE_LIMITS.power }));
   const basis = values.basis === 'wall' || values.basis === 'battery' ? values.basis : null;
   if (!basis) errors.basis = 'Choose where the charging power is measured.';

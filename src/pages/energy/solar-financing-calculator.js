@@ -81,7 +81,7 @@ ${calculatorShell({
     <ul>
       <li>A fixed-rate loan with equal monthly payments. Rates up to 25% and terms up to 30 years (360 months) are supported.</li>
       <li>Rebates received later don't reduce the loan unless you use them to pay it down; they only lower the net cost.</li>
-      <li>Tax credits are not calculated. Amounts financed under $100, or payments under $1 a month, are too small to model.</li>
+      <li>Amounts financed under $100, or payments under $1 a month, are too small to model.</li>
     </ul>
   </section>
 

@@ -22,7 +22,7 @@ export const BILL_DEFAULTS = Object.freeze({
 /** Rate in dollars per kWh, 0 to 10: a rate typed in cents (16 for 16¢) gets a hint instead of a huge bill. */
 export function rateField(rawValue, label = 'Energy rate') {
   const result = numberField(rawValue, { label, min: 0 });
-  if (result.error) return result;
+  if (result.error) return result.error.endsWith('must be a number.') ? { error: `${result.error} ${RATE_HINT}` } : result;
   return result.value > LIMITS.maxRate ? { error: RATE_HINT } : result;
 }
 

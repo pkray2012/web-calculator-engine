@@ -23,7 +23,7 @@ export function paybackResults({ input, result, display, note, netCost, netSavin
 }
 
 export function paybackQuickResult({ display }) {
-  return html`<strong>${display}</strong> simple payback. <a href="#summary-heading">See full results</a>`;
+  return html`Simple payback: <strong>${display}</strong>. <a href="#summary-heading">See full results</a>`;
 }
 
 export function paybackAnnouncement({ display }) {

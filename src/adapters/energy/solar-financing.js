@@ -30,7 +30,7 @@ export function parseFinancingForm(values) {
   const priceCents = take('price', moneyField(values.price, { label: 'System price', min: 0.01, max: FINANCING_LIMITS.maxPriceCents / 100 }));
   const downCents = optional('down', 'Down payment');
   const purchaseRebatesCents = optional('purchaseRebates', 'Rebates applied at purchase');
-  const laterRebatesCents = optional('laterRebates', 'Rebates received later');
+  const laterRebatesCents = optional('laterRebates', 'Rebates or incentives received later');
   const feesCents = optional('fees', 'Fees added to the loan', FINANCING_LIMITS.maxFeesCents / 100);
   const annualRate = take('rate', numberField(values.rate, { label: 'Loan interest rate', min: 0, max: FINANCING_LIMITS.maxRate }));
   const termMonths = take('term', termField(values.term, values.termUnit, { label: 'Loan term', maxMonths: FINANCING_LIMITS.maxTermMonths }));

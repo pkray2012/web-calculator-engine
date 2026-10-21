@@ -12,8 +12,8 @@ export const ENERGY_SOURCES = Object.freeze({
   aprVsRate: SOURCES.aprVsRate,
   // E6: CONFIRMED for the simple-payback definition only.
   simplePayback: {
-    title: 'Simple Economic Calculations for Solar Electric Systems',
-    publisher: 'U.S. Department of Energy',
+    title: 'Simple Photovoltaic Economic Calculations (D. Heimiller, 2010)',
+    publisher: 'National Renewable Energy Laboratory for NARUC, hosted by the U.S. Department of Energy',
     url: 'https://www1.eere.energy.gov/solar/pdfs/simple_pv_economic_calculations_co.pdf',
     supports: 'Simple payback is the system cost divided by the yearly value of the electricity it produces, with no allowance for the time value of money.'
   },

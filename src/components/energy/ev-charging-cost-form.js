@@ -36,15 +36,15 @@ export function evCostForm(values = EV_COST_DEFAULTS, errors = {}, quick = null)
   ${field('rate', { label: 'Electricity rate', prefix: '$', suffix: 'per kWh', hint: 'The rate you pay for each extra kWh, not your bill\'s average.' })}
   ${choiceField({
     id: ids.figureType, name: 'figureType', legend: 'Cost per mile (optional)', value: values.figureType, error: errors.figureType,
-    hint: 'For all-electric miles only. Plug-in hybrids that also use gasoline aren\'t covered.',
+    hint: 'Adds the cost per mile and, with miles per month, a monthly cost.',
     options: [
       { value: '', label: 'Skip: cost per charge only' },
       { value: 'epa', label: 'EPA label kWh/100 mi (already includes charging losses)' },
       { value: 'dashboard', label: 'Dashboard mi/kWh' }
     ]
   })}
-  ${field('figure', { label: 'Efficiency figure', optional: true, hint: 'kWh per 100 miles from the EPA label, or miles per kWh from the dashboard.' })}
-  ${field('milesPerMonth', { label: 'Miles per month', suffix: 'miles', optional: true })}
+  ${field('figure', { label: 'Figure value', optional: true, hint: 'kWh per 100 miles from the EPA label, or miles per kWh from the dashboard.' })}
+  ${field('milesPerMonth', { label: 'Miles per month', suffix: 'miles', optional: true, hint: 'For all-electric miles only. Plug-in hybrids that also use gasoline aren\'t covered.' })}
   <button class="button" type="submit">Calculate</button>
   <p class="quick-result" id="quick-result"${quick ? '' : ' hidden'}>${quick ?? ''}</p>
 </form>`;

@@ -28,7 +28,7 @@ export function financingResults({ input, result }) {
     { label: 'Down payment + loan payments', value: formatCurrency(result.financingOutlay), note: 'What you pay in total' },
     ...(later ? [{ label: 'After later rebates', value: formatCurrency(result.netCostAfterLaterRebates), note: `Less ${formatCurrency(input.laterRebatesCents / 100)} received later` }] : [])
   ])}
-  <p class="note">Uses the loan's interest rate. The cost of borrowing is the interest plus any fees added to the loan; tax credits are not included.</p>
+  <p class="note">Uses the loan's interest rate. The cost of borrowing is the interest plus any fees added to the loan.</p>
 </section>`;
 }
 

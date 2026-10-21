@@ -69,7 +69,7 @@ ${calculatorShell({
     <h2 id="ppw-assumptions-heading">Assumptions and limits</h2>
     <ul>
       <li>Use the DC rating on the quote: the total of the panels' watt ratings. Some quotes also give an AC rating; compare every quote on the same rating.</li>
-      <li>Only the incentives you enter are subtracted. Tax credits are not calculated.</li>
+      <li>Only the incentives you enter are subtracted.</li>
       <li>Price per watt compares quotes; it does not tell you how much electricity a system will produce or how long it takes to pay back.</li>
     </ul>
   </section>

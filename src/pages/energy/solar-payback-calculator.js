@@ -73,8 +73,8 @@ ${calculatorShell({
     <ul>
       <li>The same savings every year: no change in electricity prices and no loss of panel output over time.</li>
       <li>No time value of money and no financing costs. If you take a loan, see the Solar Financing Calculator for the cost of borrowing.</li>
-      <li>Only the incentives you enter are subtracted. Tax credits are not calculated.</li>
-      <li>If yearly savings minus maintenance is zero or negative, the cost is never recovered and no payback is shown.</li>
+      <li>Only the incentives you enter are subtracted.</li>
+      <li>If yearly savings minus maintenance is zero or negative, no payback period is defined, so none is shown.</li>
     </ul>
   </section>
 

@@ -6,13 +6,14 @@
 import { html } from '../../lib/html.js';
 import { formatCurrency, formatCount } from '../../lib/format.js';
 import { statGrid } from '../results.js';
+import { plainDecimal } from '../../lib/energy/format.js';
 
 export function evCostResults({ input, result, batteryText, meteredText, perMileText, message, notes }) {
   const perMile = result.perMile;
   return html`<section class="result-block" aria-labelledby="summary-heading">
   <h2 id="summary-heading">Charging cost</h2>
   ${statGrid([
-    { label: 'Cost per charge', value: formatCurrency(result.costPerCharge), primary: true, note: `${meteredText} at ${formatCurrency(input.rate)} per kWh` },
+    { label: 'Cost per charge', value: formatCurrency(result.costPerCharge), primary: true, note: `${meteredText} at $${plainDecimal(input.rate)} per kWh` },
     { label: 'Energy drawn from the wall', value: meteredText, note: `${batteryText} into the battery at ${formatCount(input.efficiencyPercent)}% efficiency` },
     ...(perMile ? [
       { label: 'Cost per mile', value: perMileText, note: `${formatCurrency(perMile.costPer100Miles)} per 100 miles` },
