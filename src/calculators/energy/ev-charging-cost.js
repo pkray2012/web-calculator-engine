@@ -15,6 +15,8 @@
  * All-electric miles only: plug-in hybrids that also burn gasoline are not covered.
  */
 
+import { epaCostPerMile, dashboardCostPerMile } from './per-mile.js';
+
 export const COST_LIMITS = Object.freeze({
   capacity: { min: 0.01, max: 10_000 },
   efficiency: { min: 1, max: 100 },
@@ -71,7 +73,7 @@ export function calculateEvChargingCost({ capacityKwh, startPercent, targetPerce
 
   if (figureType !== 'epa' && figureType !== 'dashboard') throw new RangeError('figureType must be epa or dashboard');
   range('figure', figure, COST_LIMITS[figureType]);
-  const costPerMile = finite('figure', figureType === 'epa' ? (figure / 100) * rate : rate / (figure * efficiency));
+  const costPerMile = finite('figure', figureType === 'epa' ? epaCostPerMile(figure, rate) : dashboardCostPerMile(figure, efficiency, rate));
   let monthly = null;
   if (milesPerMonth !== null) {
     range('milesPerMonth', milesPerMonth, COST_LIMITS.miles);

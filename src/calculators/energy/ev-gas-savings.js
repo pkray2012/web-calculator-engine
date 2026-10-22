@@ -13,6 +13,7 @@
  */
 
 import { calculateTripFuelCost } from '../fuel-cost.js';
+import { epaCostPerMile } from './per-mile.js';
 
 export const SAVINGS_LIMITS = Object.freeze({
   miles: { max: 1_000_000 },
@@ -63,7 +64,7 @@ export function calculateEvGasSavings({ miles, kwhPer100Miles, rate, mpg, priceP
   positive('mpg', mpg, L.mpg.max);
   positive('pricePerGallon', pricePerGallon, L.pricePerGallon.max);
 
-  const evPerMile = (kwhPer100Miles / 100) * rate;
+  const evPerMile = epaCostPerMile(kwhPer100Miles, rate);
   const evCost = finite('miles', miles * evPerMile, 'Miles per year is too large to calculate.');
   const gas = calculateTripFuelCost({ distanceMiles: miles, mpg, pricePerGallon });
   const gasCost = finite('mpg', gas.cost, 'Fuel economy is too small to calculate.');

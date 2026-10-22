@@ -11,6 +11,8 @@
  * miles per year (optional). All-electric miles only.
  */
 
+import { epaCostPerMile, dashboardCostPerMile } from './per-mile.js';
+
 export const PER_MILE_LIMITS = Object.freeze({
   rate: { min: 0, max: 10 },
   epa: { min: 1, max: 1000 },
@@ -47,12 +49,12 @@ export function calculateEvCostPerMile({ rate, figureType, figure, efficiencyPer
   let milesPerKwh = null;
   if (figureType === 'epa') {
     if (efficiencyPercent !== null) throw new RangeError('efficiency is not used with the EPA figure');
-    costPerMile = finite('figure', (figure / 100) * rate);
+    costPerMile = finite('figure', epaCostPerMile(figure, rate));
     milesPerKwh = 100 / figure;
   } else {
     if (efficiencyPercent === null) throw new RangeError('efficiency is required with a dashboard figure');
     range('efficiencyPercent', efficiencyPercent, PER_MILE_LIMITS.efficiency);
-    costPerMile = finite('figure', rate / (figure * (efficiencyPercent / 100)));
+    costPerMile = finite('figure', dashboardCostPerMile(figure, efficiencyPercent / 100, rate));
   }
   let annual = null;
   if (annualMiles !== null) {
