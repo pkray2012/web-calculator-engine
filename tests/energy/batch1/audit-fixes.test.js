@@ -14,6 +14,7 @@ import { billResults } from '../../../src/components/energy/electric-bill-result
 import { formatPayback } from '../../../src/adapters/energy/solar-payback.js';
 import { PPW_DEFAULTS, runPpwCalculator } from '../../../src/adapters/energy/solar-price-per-watt.js';
 import { ppwResults } from '../../../src/components/energy/solar-price-per-watt-results.js';
+import { scheduleInvariantFailures } from '../../../src/calculators/energy/solar-financing.js';
 import { ENERGY_SOURCES } from '../../../src/content/energy-sources.js';
 import { solarPricePerWattPage } from '../../../src/pages/energy/solar-price-per-watt-calculator.js';
 import { solarPaybackPage } from '../../../src/pages/energy/solar-payback-calculator.js';
@@ -104,5 +105,14 @@ test('Electric Bill shows exact half cents rounded up, not one cent low (Codex 0
       const run = runBillCalculator({ ...BILL_DEFAULTS, kwh: String(k), rate, fixed: '0' });
       assert.equal(run.view.result.billCents, expectedCents, `${k} kWh × $${rate}`);
     }
+  }
+});
+
+test('the final-balance invariant fails a negative or non-finite balance (Codex 14:03)', () => {
+  const ledger = (balance) => ({ loan: 100, payment: 100, termMonths: 1, schedule: [{ payment: 100, principal: 100, interest: 0, balance }] });
+  assert.deepEqual(scheduleInvariantFailures(ledger(0)), []);
+  assert.deepEqual(scheduleInvariantFailures(ledger(0.004)), []);
+  for (const balance of [-0.006, -1_000_000, -Infinity, Infinity, NaN, 0.006]) {
+    assert.ok(scheduleInvariantFailures(ledger(balance)).includes('2 balance'), String(balance));
   }
 });

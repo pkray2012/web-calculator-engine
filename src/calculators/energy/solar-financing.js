@@ -59,7 +59,8 @@ export function scheduleInvariantFailures({ loan, payment, termMonths, schedule 
   }
   const fails = [];
   if (schedule.length !== termMonths) fails.push('1 rows = n');
-  if (!(schedule.at(-1)?.balance < TOLERANCE)) fails.push('2 balance');
+  // Distance from zero, so an overpaid (negative) or non-finite final balance also fails.
+  if (!(Math.abs(schedule.at(-1)?.balance ?? NaN) < TOLERANCE)) fails.push('2 balance');
   if (!(Math.abs(principal - loan) < TOLERANCE)) fails.push('3 principal');
   if (!(Math.abs(totalPaid - loan - interest) < TOLERANCE)) fails.push('4 totals');
   if (!(Math.abs(interest - (payment * termMonths - loan)) < TOLERANCE)) fails.push('5 interest');
