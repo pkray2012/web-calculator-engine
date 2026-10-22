@@ -8,7 +8,13 @@
  * - 12 × this bill is shown for budgeting; it is not a forecast.
  * Tiered and time-of-use rates, riders and taxes are not modeled; fixed
  * charges are whatever the user enters.
+ *
+ * The displayed amounts come from exact whole cents (billCents and the others):
+ * the energy charge is computed from the decimals as entered and rounded half
+ * up once, so an exact half cent is never shown one cent low.
  */
+
+import { productCents, divideCents } from '../../lib/energy/money.js';
 
 export const LIMITS = Object.freeze({ maxKwh: 10_000_000, maxRate: 10, maxFixedCents: 100_000_000, maxDays: 366 });
 
@@ -33,6 +39,8 @@ export function calculateElectricBill({ kwh, rate, fixedCents = 0, days = 30 }) 
   if (!Number.isInteger(days) || days < 1 || days > LIMITS.maxDays) throw new RangeError('days must be a whole number from 1 to 366');
 
   const bill = finite('bill', kwh * rate + fixedCents / 100);
+  const energyCents = productCents(kwh, rate);
+  const billCents = energyCents + fixedCents;
   return {
     bill,
     energyCharge: kwh * rate,
@@ -40,6 +48,10 @@ export function calculateElectricBill({ kwh, rate, fixedCents = 0, days = 30 }) 
     daily: bill / days,
     averageCentsPerKwh: kwh >= 1 ? (bill / kwh) * 100 : null,
     twelveTimesBill: bill * 12,
-    highRate: rate > 1
+    highRate: rate > 1,
+    energyCents,
+    billCents,
+    dailyCents: divideCents(billCents, days),
+    twelveTimesBillCents: billCents * 12
   };
 }

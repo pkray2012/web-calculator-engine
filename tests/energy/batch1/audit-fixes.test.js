@@ -89,3 +89,20 @@ test('the Price Per Watt page cites E5 for the DC rating', () => {
   assert.ok(body.includes(ENERGY_SOURCES.dcRating.url));
   assert.equal(ENERGY_SOURCES.dcRating.url, 'https://atb.nlr.gov/electricity/2024/residential_pv');
 });
+
+test('Electric Bill shows exact half cents rounded up, not one cent low (Codex 07:04)', () => {
+  const show = (kwh, rate, fixed) => String(billResults(runBillCalculator({ ...BILL_DEFAULTS, kwh, rate, fixed }).view));
+  assert.match(show('3', '0.145', '0'), /\$0\.44/);
+  assert.doesNotMatch(show('3', '0.145', '0'), /\$0\.43/);
+  assert.match(show('3', '0.145', '0'), /\$5\.28/, '12 × the rounded bill');
+  assert.match(show('78', '0.0225', '12'), /\$13\.76/);
+  // Whole kWh × a rate with up to four decimals: compare with integer arithmetic.
+  for (let k = 1; k <= 30; k += 1) {
+    for (let t = 1; t <= 2000; t += 7) {
+      const rate = (t / 10000).toString();
+      const expectedCents = Math.floor((2 * k * t + 100) / 200);
+      const run = runBillCalculator({ ...BILL_DEFAULTS, kwh: String(k), rate, fixed: '0' });
+      assert.equal(run.view.result.billCents, expectedCents, `${k} kWh × $${rate}`);
+    }
+  }
+});

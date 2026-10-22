@@ -8,6 +8,8 @@
  * and rejects anything with more than two decimal places.
  */
 
+import { plainDecimal } from './format.js';
+
 const NUMBER = /^-?(\d+\.?\d*|\.\d+)$/;
 
 /** Dollar text → { sign, whole, fraction } digits, or null when not a plain decimal. */
@@ -60,4 +62,40 @@ export function moneyField(rawValue, { label, required = true, fallback = 0, min
   if (cents < Math.round(min * 100)) return { error: `${label} must be at least ${min.toLocaleString('en-US')}.` };
   if (max !== undefined && cents > Math.round(max * 100)) return { error: `${label} must be ${max.toLocaleString('en-US')} or less.` };
   return { value: cents };
+}
+
+/** A non-negative number's shortest decimal form as an integer and a count of decimal places. */
+function scaledDigits(x) {
+  const [whole, fraction = ''] = plainDecimal(x).split('.');
+  return { digits: BigInt(whole + fraction), places: fraction.length };
+}
+
+/**
+ * x × y dollars in whole cents, rounded half up, computed exactly from the
+ * shortest decimal form of each factor. Binary multiplication can land just
+ * below a half cent (3 × 0.145 = 0.43499999999999994), which would display
+ * one cent low; the exact product is 0.435 and rounds to $0.44.
+ * Both factors must be finite and non-negative.
+ * @param {number} x
+ * @param {number} y
+ * @returns {number}
+ */
+export function productCents(x, y) {
+  const a = scaledDigits(x);
+  const b = scaledDigits(y);
+  const numerator = a.digits * b.digits * 100n;
+  const denominator = 10n ** BigInt(a.places + b.places);
+  return Number((2n * numerator + denominator) / (2n * denominator));
+}
+
+/**
+ * Whole cents ÷ a positive whole number, rounded half up to whole cents.
+ * @param {number} cents
+ * @param {number} divisor
+ * @returns {number}
+ */
+export function divideCents(cents, divisor) {
+  const c = BigInt(cents);
+  const d = BigInt(divisor);
+  return Number((2n * c + d) / (2n * d));
 }

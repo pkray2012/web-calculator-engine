@@ -20,7 +20,7 @@ export function electricBillPage() {
   const { input, result, averageText } = example;
   const rate = formatCurrency(input.rate);
   const fixed = formatCurrency(result.fixed);
-  const bill = formatCurrency(result.bill);
+  const bill = formatCurrency(result.billCents / 100);
 
   const faqs = [
     {
@@ -57,9 +57,9 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="bill-how-heading">
     <h2 id="bill-how-heading">How to estimate an electric bill</h2>
     <ol>
-      <li><strong>Energy charge:</strong> kWh used × rate: ${input.kwh} × ${rate} = ${formatCurrency(result.energyCharge)}.</li>
-      <li><strong>Add fixed charges:</strong> ${formatCurrency(result.energyCharge)} + ${fixed} = ${bill}.</li>
-      <li><strong>Daily cost:</strong> ${bill} ÷ ${input.days} days = ${formatCurrency(result.daily)}, fixed charges included.</li>
+      <li><strong>Energy charge:</strong> kWh used × rate: ${input.kwh} × ${rate} = ${formatCurrency(result.energyCents / 100)}.</li>
+      <li><strong>Add fixed charges:</strong> ${formatCurrency(result.energyCents / 100)} + ${fixed} = ${bill}.</li>
+      <li><strong>Daily cost:</strong> ${bill} ÷ ${input.days} days = ${formatCurrency(result.dailyCents / 100)}, fixed charges included.</li>
     </ol>
     <p class="formula"><code>Bill = kWh × rate per kWh + fixed charges</code></p>
   </section>
