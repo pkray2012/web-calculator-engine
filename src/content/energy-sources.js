@@ -44,5 +44,12 @@ export const ENERGY_SOURCES = Object.freeze({
     publisher: 'National Institute of Standards and Technology',
     url: 'https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b8',
     supports: 'A kilowatt-hour is 3.6 million joules: one kilowatt of power for one hour.'
+  },
+  // E2: CONFIRMED (Codex); re-confirmed by the builder 2026-10-22 (Batch 2, Electricity Cost). Cited only for the formula and its worked example.
+  applianceEnergy: {
+    title: 'Energy Series: Estimating Appliance and Home Electronic Energy Use (2901-9014)',
+    publisher: 'Virginia Cooperative Extension, Virginia Tech',
+    url: 'https://www.pubs.ext.vt.edu/2901/2901-9014/2901-9014.html',
+    supports: 'An appliance\'s daily kWh is its wattage × hours used per day ÷ 1,000, multiplied by the days it is used; appliances such as refrigerators cycle on and off.'
   }
 });

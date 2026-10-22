@@ -1,0 +1,1195 @@
+[
+ {
+  "name": "EC1 E2 worked example",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 200,
+   "hours": 4,
+   "days": 120,
+   "rate": 0.085
+  },
+  "ref": "E2: 96 kWh, $8.16",
+  "output": {
+   "kwh_per_day": 0.8,
+   "kwh": 96.0,
+   "cost": 8.16,
+   "cost_per_day": 0.068,
+   "cost_cents": 816,
+   "cost_per_day_cents": 7,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "0.80 kWh",
+    "kwh": "96.00 kWh",
+    "cost": "$8.16",
+    "cost_per_day": "$0.07"
+   }
+  }
+ },
+ {
+  "name": "EC2 135 kWh",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 1500,
+   "hours": 3,
+   "days": 30,
+   "rate": 0.15
+  },
+  "ref": "$20.25",
+  "output": {
+   "kwh_per_day": 4.5,
+   "kwh": 135.0,
+   "cost": 20.25,
+   "cost_per_day": 0.675,
+   "cost_cents": 2025,
+   "cost_per_day_cents": 68,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "4.50 kWh",
+    "kwh": "135.00 kWh",
+    "cost": "$20.25",
+    "cost_per_day": "$0.68"
+   }
+  }
+ },
+ {
+  "name": "EC3 watts 0",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 0,
+   "hours": 4,
+   "days": 30,
+   "rate": 0.15
+  },
+  "error_field": "watts",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "EC4 watts 0.009",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 0.009,
+   "hours": 4,
+   "days": 30,
+   "rate": 0.15
+  },
+  "ref": "below the P minimum",
+  "error_field": "watts",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "EC5 watts 0.01",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 0.01,
+   "hours": 1,
+   "days": 1,
+   "rate": 0.15
+  },
+  "ref": "minimum; less than 0.01 kWh",
+  "output": {
+   "kwh_per_day": 1e-05,
+   "kwh": 1e-05,
+   "cost": 1.5e-06,
+   "cost_per_day": 1.5e-06,
+   "cost_cents": 0,
+   "cost_per_day_cents": 0,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "less than 0.01 kWh",
+    "kwh": "less than 0.01 kWh",
+    "cost": "$0.00",
+    "cost_per_day": "$0.00"
+   }
+  }
+ },
+ {
+  "name": "EC6 watts 1e6 corner",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 1000000,
+   "hours": 24,
+   "days": 366,
+   "rate": 10
+  },
+  "ref": "maximum corner, finite",
+  "output": {
+   "kwh_per_day": 24000.0,
+   "kwh": 8784000.0,
+   "cost": 87840000.0,
+   "cost_per_day": 240000.0,
+   "cost_cents": 8784000000,
+   "cost_per_day_cents": 24000000,
+   "rate_note": true,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less.",
+    "Higher than any U.S. state's 2025 all-sector average (EIA)."
+   ],
+   "display": {
+    "kwh_per_day": "24,000.00 kWh",
+    "kwh": "8,784,000.00 kWh",
+    "cost": "$87,840,000.00",
+    "cost_per_day": "$240,000.00"
+   }
+  }
+ },
+ {
+  "name": "EC7 watts 1000000.01",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 1000000.01,
+   "hours": 4,
+   "days": 30,
+   "rate": 0.15
+  },
+  "error_field": "watts",
+  "error_message": "must be 1000000 or less"
+ },
+ {
+  "name": "EC8 hours 24",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 24,
+   "days": 30,
+   "rate": 0.15
+  },
+  "output": {
+   "kwh_per_day": 2.4,
+   "kwh": 72.0,
+   "cost": 10.799999999999999,
+   "cost_per_day": 0.36,
+   "cost_cents": 1080,
+   "cost_per_day_cents": 36,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "2.40 kWh",
+    "kwh": "72.00 kWh",
+    "cost": "$10.80",
+    "cost_per_day": "$0.36"
+   }
+  }
+ },
+ {
+  "name": "EC9 hours 24.01",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 24.01,
+   "days": 30,
+   "rate": 0.15
+  },
+  "error_field": "hours",
+  "error_message": "must be 24 or less"
+ },
+ {
+  "name": "EC10 hours 0",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 0,
+   "days": 30,
+   "rate": 0.15
+  },
+  "ref": "0 kWh, $0.00",
+  "output": {
+   "kwh_per_day": 0.0,
+   "kwh": 0.0,
+   "cost": 0.0,
+   "cost_per_day": 0.0,
+   "cost_cents": 0,
+   "cost_per_day_cents": 0,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "0.00 kWh",
+    "kwh": "0.00 kWh",
+    "cost": "$0.00",
+    "cost_per_day": "$0.00"
+   }
+  }
+ },
+ {
+  "name": "EC11 days 0",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 4,
+   "days": 0,
+   "rate": 0.15
+  },
+  "error_field": "days",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "EC12 days 30.5",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 4,
+   "days": 30.5,
+   "rate": 0.15
+  },
+  "error_field": "days",
+  "error_message": "must be a whole number"
+ },
+ {
+  "name": "EC13 rate 16 (cents typed)",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 4,
+   "days": 30,
+   "rate": 16
+  },
+  "ref": "rate hint",
+  "error_field": "rate",
+  "error_message": "Enter dollars per kWh, for example 0.16 for 16¢."
+ },
+ {
+  "name": "EC14 exact half cent",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 125,
+   "hours": 24,
+   "days": 1,
+   "rate": 0.145
+  },
+  "ref": "3 kWh x $0.145 = $0.435 -> $0.44",
+  "output": {
+   "kwh_per_day": 3.0,
+   "kwh": 3.0,
+   "cost": 0.43499999999999994,
+   "cost_per_day": 0.43499999999999994,
+   "cost_cents": 44,
+   "cost_per_day_cents": 44,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "3.00 kWh",
+    "kwh": "3.00 kWh",
+    "cost": "$0.44",
+    "cost_per_day": "$0.44"
+   }
+  }
+ },
+ {
+  "name": "EC15 days 367",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 4,
+   "days": 367,
+   "rate": 0.15
+  },
+  "error_field": "days",
+  "error_message": "must be 366 or less"
+ },
+ {
+  "name": "EC16 rate 1.01 note",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 4,
+   "days": 30,
+   "rate": 1.01
+  },
+  "ref": "EIA note",
+  "output": {
+   "kwh_per_day": 0.4,
+   "kwh": 12.0,
+   "cost": 12.120000000000001,
+   "cost_per_day": 0.404,
+   "cost_cents": 1212,
+   "cost_per_day_cents": 40,
+   "rate_note": true,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less.",
+    "Higher than any U.S. state's 2025 all-sector average (EIA)."
+   ],
+   "display": {
+    "kwh_per_day": "0.40 kWh",
+    "kwh": "12.00 kWh",
+    "cost": "$12.12",
+    "cost_per_day": "$0.40"
+   }
+  }
+ },
+ {
+  "name": "EC17 negative watts",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": -1,
+   "hours": 4,
+   "days": 30,
+   "rate": 0.15
+  },
+  "error_field": "watts",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "EC18 watts tiny",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 1e-321,
+   "hours": 4,
+   "days": 30,
+   "rate": 0.15
+  },
+  "ref": "tiny decimal string",
+  "error_field": "watts",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "EC19 rate 0",
+  "fn": "electricity_cost",
+  "input": {
+   "watts": 100,
+   "hours": 4,
+   "days": 30,
+   "rate": 0
+  },
+  "ref": "$0.00",
+  "output": {
+   "kwh_per_day": 0.4,
+   "kwh": 12.0,
+   "cost": 0.0,
+   "cost_per_day": 0.0,
+   "cost_cents": 0,
+   "cost_per_day_cents": 0,
+   "rate_note": false,
+   "notes": [
+    "Nameplate watts are a maximum; appliances that cycle on and off use less."
+   ],
+   "display": {
+    "kwh_per_day": "0.40 kWh",
+    "kwh": "12.00 kWh",
+    "cost": "$0.00",
+    "cost_per_day": "$0.00"
+   }
+  }
+ },
+ {
+  "name": "ER1 example",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 950,
+   "fixed": "15.70"
+  },
+  "ref": "15.00¢ and 13.35¢",
+  "output": {
+   "all_in_cents_per_kwh": 15.0,
+   "residual_cents_per_kwh": 13.347368421052632,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 14250,
+   "fixed_cents": 1570,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+   ],
+   "display": {
+    "all_in": "15.00¢",
+    "residual": "13.35¢"
+   }
+  }
+ },
+ {
+  "name": "ER2 no exclusions",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 950
+  },
+  "ref": "both 15.00¢",
+  "output": {
+   "all_in_cents_per_kwh": 15.0,
+   "residual_cents_per_kwh": 15.0,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 14250,
+   "fixed_cents": 0,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+   ],
+   "display": {
+    "all_in": "15.00¢",
+    "residual": "15.00¢"
+   }
+  }
+ },
+ {
+  "name": "ER3 exclusions = bill",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 950,
+   "fixed": "142.50"
+  },
+  "ref": "residual 0.00¢ with note",
+  "output": {
+   "all_in_cents_per_kwh": 15.0,
+   "residual_cents_per_kwh": 0.0,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 14250,
+   "fixed_cents": 14250,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion.",
+    "Everything on the bill was entered as an exclusion, so nothing is left to divide by the kWh."
+   ],
+   "display": {
+    "all_in": "15.00¢",
+    "residual": "0.00¢"
+   }
+  }
+ },
+ {
+  "name": "ER4 exclusions > bill",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 950,
+   "fixed": "142.51"
+  },
+  "error_field": "fixed",
+  "error_message": "cannot be more than the bill"
+ },
+ {
+  "name": "ER5 kWh 0.99",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 0.99
+  },
+  "ref": "B2-P2 floor 1",
+  "error_field": "kwh",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "ER6 kWh 1",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "0.16",
+   "kwh": 1
+  },
+  "ref": "16.00¢",
+  "output": {
+   "all_in_cents_per_kwh": 16.0,
+   "residual_cents_per_kwh": 16.0,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 16,
+   "fixed_cents": 0,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+   ],
+   "display": {
+    "all_in": "16.00¢",
+    "residual": "16.00¢"
+   }
+  }
+ },
+ {
+  "name": "ER7 kWh 10000000.01",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 10000000.01
+  },
+  "error_field": "kwh",
+  "error_message": "must be 10000000 or less"
+ },
+ {
+  "name": "ER8 bill 0",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "0",
+   "kwh": 950
+  },
+  "error_field": "bill",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "ER9 bill 1000000.01",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "1000000.01",
+   "kwh": 950
+  },
+  "error_field": "bill",
+  "error_message": "must be 1,000,000 or less"
+ },
+ {
+  "name": "ER10 bill 0.001 (R1)",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "0.001",
+   "kwh": 1
+  },
+  "error_field": "bill",
+  "error_message": "enter dollars and cents, for example 1.25"
+ },
+ {
+  "name": "ER11 fixed 0.005 (R1)",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 950,
+   "fixed": "0.005"
+  },
+  "error_field": "fixed",
+  "error_message": "enter dollars and cents, for example 1.25"
+ },
+ {
+  "name": "ER12 residue clamp",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "0.02",
+   "kwh": 10000000,
+   "fixed": "0.01"
+  },
+  "ref": "\"0.00¢\", never \"-0.00¢\"",
+  "output": {
+   "all_in_cents_per_kwh": 2e-07,
+   "residual_cents_per_kwh": 1e-07,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 2,
+   "fixed_cents": 1,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+   ],
+   "display": {
+    "all_in": "0.00¢",
+    "residual": "0.00¢"
+   }
+  }
+ },
+ {
+  "name": "ER13 average over $1/kWh",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "150",
+   "kwh": 100
+  },
+  "ref": "150.00¢ with period note",
+  "output": {
+   "all_in_cents_per_kwh": 150.0,
+   "residual_cents_per_kwh": 150.0,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 15000,
+   "fixed_cents": 0,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion.",
+    "Check the billing period and kWh: this average is more than $1 per kWh."
+   ],
+   "display": {
+    "all_in": "150.00¢",
+    "residual": "150.00¢"
+   }
+  }
+ },
+ {
+  "name": "ER14 kWh tiny",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "142.50",
+   "kwh": 1e-321
+  },
+  "ref": "tiny decimal string",
+  "error_field": "kwh",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "ER15 bill $1,000 formatted",
+  "fn": "electricity_rate",
+  "input": {
+   "bill": "$1,000",
+   "kwh": 5000
+  },
+  "ref": "20.00¢",
+  "output": {
+   "all_in_cents_per_kwh": 20.0,
+   "residual_cents_per_kwh": 20.0,
+   "residual_label": "Rate after entered exclusions",
+   "bill_cents": 100000,
+   "fixed_cents": 0,
+   "notes": [
+    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+   ],
+   "display": {
+    "all_in": "20.00¢",
+    "residual": "20.00¢"
+   }
+  }
+ },
+ {
+  "name": "PM1 EPA example",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 30,
+   "annual_miles": 12000
+  },
+  "ref": "4.50¢ ($0.045), $540.00",
+  "output": {
+   "cost_per_mile": 0.045,
+   "cost_per_100mi": 4.5,
+   "mi_per_kwh": 3.3333333333333335,
+   "annual": 540.0,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "4.50¢ ($0.045)",
+    "per_100mi": "$4.50",
+    "mi_per_kwh": "3.33",
+    "annual": "$540.00"
+   }
+  }
+ },
+ {
+  "name": "PM2 EPA 28 x 0.137",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.137,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 28
+  },
+  "ref": "3.84¢ ($0.038)",
+  "output": {
+   "cost_per_mile": 0.038360000000000005,
+   "cost_per_100mi": 3.8360000000000003,
+   "mi_per_kwh": 3.5714285714285716,
+   "annual": null,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "3.84¢ ($0.038)",
+    "per_100mi": "$3.84",
+    "mi_per_kwh": "3.57",
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM3 dashboard 10/3 at 90%",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "dashboard_mi_per_kwh",
+   "figure": 3.3333333333333335,
+   "efficiency": 90
+  },
+  "ref": "5.00¢ ($0.050)",
+  "output": {
+   "cost_per_mile": 0.049999999999999996,
+   "cost_per_100mi": 5.0,
+   "mi_per_kwh": null,
+   "annual": null,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "5.00¢ ($0.050)",
+    "per_100mi": "$5.00",
+    "mi_per_kwh": null,
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM4 dashboard without efficiency",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "dashboard_mi_per_kwh",
+   "figure": 4
+  },
+  "error_field": "efficiency",
+  "error_message": "required with a dashboard figure"
+ },
+ {
+  "name": "PM5 EPA with efficiency",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 30,
+   "efficiency": 90
+  },
+  "error_field": "efficiency",
+  "error_message": "not used with the EPA figure (it already includes charging losses)"
+ },
+ {
+  "name": "PM6 no figure type",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure": 30
+  },
+  "error_field": "figure_type",
+  "error_message": "choose the figure type"
+ },
+ {
+  "name": "PM7 EPA 0.99",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 0.99
+  },
+  "error_field": "figure",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "PM8 EPA 1000.01",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 1000.01
+  },
+  "error_field": "figure",
+  "error_message": "must be 1000 or less"
+ },
+ {
+  "name": "PM9 dashboard 0.09",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "dashboard_mi_per_kwh",
+   "figure": 0.09,
+   "efficiency": 90
+  },
+  "error_field": "figure",
+  "error_message": "must be at least 0.1"
+ },
+ {
+  "name": "PM10 rate 0",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 30
+  },
+  "ref": "0.00¢ ($0.000)",
+  "output": {
+   "cost_per_mile": 0.0,
+   "cost_per_100mi": 0.0,
+   "mi_per_kwh": 3.3333333333333335,
+   "annual": null,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "0.00¢ ($0.000)",
+    "per_100mi": "$0.00",
+    "mi_per_kwh": "3.33",
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM11 tie 4.85",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.0485,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 100
+  },
+  "ref": "4.85¢ ($0.049)",
+  "output": {
+   "cost_per_mile": 0.0485,
+   "cost_per_100mi": 4.8500000000000005,
+   "mi_per_kwh": 1.0,
+   "annual": null,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "4.85¢ ($0.049)",
+    "per_100mi": "$4.85",
+    "mi_per_kwh": "1.00",
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM12 annual 1000000.01",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 30,
+   "annual_miles": 1000000.01
+  },
+  "error_field": "annual_miles",
+  "error_message": "must be 1000000 or less"
+ },
+ {
+  "name": "PM13 rate 10.0001",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 10.0001,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 30
+  },
+  "error_field": "rate",
+  "error_message": "Enter dollars per kWh, for example 0.16 for 16¢."
+ },
+ {
+  "name": "PM14 dashboard tiny",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "dashboard_mi_per_kwh",
+   "figure": 1e-321,
+   "efficiency": 90
+  },
+  "error_field": "figure",
+  "error_message": "must be at least 0.1"
+ },
+ {
+  "name": "PM15 half-way 0.0445",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.0445,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 100
+  },
+  "ref": "4.45¢ ($0.045)",
+  "output": {
+   "cost_per_mile": 0.0445,
+   "cost_per_100mi": 4.45,
+   "mi_per_kwh": 1.0,
+   "annual": null,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "4.45¢ ($0.045)",
+    "per_100mi": "$4.45",
+    "mi_per_kwh": "1.00",
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM16 dashboard eta 49 note",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "dashboard_mi_per_kwh",
+   "figure": 4,
+   "efficiency": 49
+  },
+  "output": {
+   "cost_per_mile": 0.07653061224489796,
+   "cost_per_100mi": 7.653061224489796,
+   "mi_per_kwh": null,
+   "annual": null,
+   "rate_note": false,
+   "notes": [
+    "Efficiency is unusually low; check the value."
+   ],
+   "display": {
+    "per_mile": "7.65¢ ($0.077)",
+    "per_100mi": "$7.65",
+    "mi_per_kwh": null,
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "GS1 example",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "ref": "$540/$1,400/$860/$71.67",
+  "output": {
+   "ev_cost": 540.0,
+   "gas_cost": 1400.0,
+   "savings": 860.0,
+   "savings_per_month": 71.66666666666667,
+   "ev_per_mile": 0.045,
+   "gas_per_mile": 0.11666666666666667,
+   "gallons": 400.0,
+   "gas_cheaper": false,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "ev_cost": "$540.00",
+    "gas_cost": "$1,400.00",
+    "savings": "$860.00",
+    "savings_per_month": "$71.67",
+    "ev_per_mile": "4.50¢ ($0.045)",
+    "gas_per_mile": "11.67¢ ($0.117)"
+   }
+  }
+ },
+ {
+  "name": "GS2 miles 0",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 0,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "ref": "field error before the engine",
+  "error_field": "miles",
+  "error_message": "must be greater than 0"
+ },
+ {
+  "name": "GS3 gas cheaper",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.6,
+   "mpg": 50,
+   "price_per_gallon": 2
+  },
+  "ref": "negative savings note",
+  "output": {
+   "ev_cost": 2160.0,
+   "gas_cost": 480.0,
+   "savings": -1680.0,
+   "savings_per_month": -140.0,
+   "ev_per_mile": 0.18,
+   "gas_per_mile": 0.04,
+   "gallons": 240.0,
+   "gas_cheaper": true,
+   "rate_note": false,
+   "notes": [
+    "With these inputs the gas vehicle is cheaper to fuel."
+   ],
+   "display": {
+    "ev_cost": "$2,160.00",
+    "gas_cost": "$480.00",
+    "savings": "-$1,680.00",
+    "savings_per_month": "-$140.00",
+    "ev_per_mile": "18.00¢ ($0.180)",
+    "gas_per_mile": "4.00¢ ($0.040)"
+   }
+  }
+ },
+ {
+  "name": "GS4 mpg 0",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 0,
+   "price_per_gallon": 3.5
+  },
+  "error_field": "mpg",
+  "error_message": "must be greater than 0"
+ },
+ {
+  "name": "GS5 price 0",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 0
+  },
+  "error_field": "price_per_gallon",
+  "error_message": "must be greater than 0"
+ },
+ {
+  "name": "GS6 price 50.01",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 50.01
+  },
+  "error_field": "price_per_gallon",
+  "error_message": "must be 50 or less"
+ },
+ {
+  "name": "GS7 mpg 500.01",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 500.01,
+   "price_per_gallon": 3.5
+  },
+  "error_field": "mpg",
+  "error_message": "must be 500 or less"
+ },
+ {
+  "name": "GS8 kWh/100 mi 0.99",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 0.99,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "error_field": "kwh_per_100mi",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "GS9 rate 10.0001",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 10.0001,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "error_field": "rate",
+  "error_message": "Enter dollars per kWh, for example 0.16 for 16¢."
+ },
+ {
+  "name": "GS10 miles 1000000.01",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1000000.01,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "error_field": "miles",
+  "error_message": "must be 1000000 or less"
+ },
+ {
+  "name": "GS11 corner",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1000000,
+   "kwh_per_100mi": 1000,
+   "rate": 10,
+   "mpg": 1e-321,
+   "price_per_gallon": 50
+  },
+  "ref": "mpg tiny overflows: field error on mpg",
+  "error_field": "mpg",
+  "error_message": "must be a finite number"
+ },
+ {
+  "name": "GS12 miles tiny (B2-P3)",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1e-321,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "ref": "subnormal but finite",
+  "output": {
+   "ev_cost": 4.4e-323,
+   "gas_cost": 1.2e-322,
+   "savings": 7.4e-323,
+   "savings_per_month": 5e-324,
+   "ev_per_mile": 0.045,
+   "gas_per_mile": 0.11666666666666667,
+   "gallons": 3.5e-323,
+   "gas_cheaper": false,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "ev_cost": "$0.00",
+    "gas_cost": "$0.00",
+    "savings": "$0.00",
+    "savings_per_month": "$0.00",
+    "ev_per_mile": "4.50¢ ($0.045)",
+    "gas_per_mile": "11.67¢ ($0.117)"
+   }
+  }
+ },
+ {
+  "name": "GS13 rate 0",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "ref": "EV $0.00",
+  "output": {
+   "ev_cost": 0.0,
+   "gas_cost": 1400.0,
+   "savings": 1400.0,
+   "savings_per_month": 116.66666666666667,
+   "ev_per_mile": 0.0,
+   "gas_per_mile": 0.11666666666666667,
+   "gallons": 400.0,
+   "gas_cheaper": false,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "ev_cost": "$0.00",
+    "gas_cost": "$1,400.00",
+    "savings": "$1,400.00",
+    "savings_per_month": "$116.67",
+    "ev_per_mile": "0.00¢ ($0.000)",
+    "gas_per_mile": "11.67¢ ($0.117)"
+   }
+  }
+ },
+ {
+  "name": "GS14 max corner",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1000000,
+   "kwh_per_100mi": 1000,
+   "rate": 10,
+   "mpg": 500,
+   "price_per_gallon": 50
+  },
+  "ref": "finite",
+  "output": {
+   "ev_cost": 100000000.0,
+   "gas_cost": 100000.0,
+   "savings": -99900000.0,
+   "savings_per_month": -8325000.0,
+   "ev_per_mile": 100.0,
+   "gas_per_mile": 0.1,
+   "gallons": 2000.0,
+   "gas_cheaper": true,
+   "rate_note": true,
+   "notes": [
+    "Higher than any U.S. state's 2025 all-sector average (EIA).",
+    "With these inputs the gas vehicle is cheaper to fuel."
+   ],
+   "display": {
+    "ev_cost": "$100,000,000.00",
+    "gas_cost": "$100,000.00",
+    "savings": "-$99,900,000.00",
+    "savings_per_month": "-$8,325,000.00",
+    "ev_per_mile": "10000.00¢ ($100.000)",
+    "gas_per_mile": "10.00¢ ($0.100)"
+   }
+  }
+ }
+]

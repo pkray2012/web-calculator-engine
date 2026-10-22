@@ -99,3 +99,24 @@ export function divideCents(cents, divisor) {
   const d = BigInt(divisor);
   return Number((2n * c + d) / (2n * d));
 }
+
+/**
+ * The exact product of several non-negative factors ÷ a positive whole
+ * number, in whole cents rounded half up, from the shortest decimal form of
+ * each factor: 125 W × 24 h × 1 day × $0.145 ÷ 1,000 = $0.435 → 44 cents.
+ * @param {number[]} factors finite, non-negative
+ * @param {number} [divisor] a positive whole number
+ * @returns {number}
+ */
+export function productCentsOf(factors, divisor = 1) {
+  let digits = 1n;
+  let places = 0;
+  for (const factor of factors) {
+    const scaled = scaledDigits(factor);
+    digits *= scaled.digits;
+    places += scaled.places;
+  }
+  const numerator = digits * 100n;
+  const denominator = 10n ** BigInt(places) * BigInt(divisor);
+  return Number((2n * numerator + denominator) / (2n * denominator));
+}
