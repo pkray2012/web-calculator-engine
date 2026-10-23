@@ -400,7 +400,7 @@
    "bill_cents": 14250,
    "fixed_cents": 1570,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+    "The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
    ],
    "display": {
     "all_in": "15.00¢",
@@ -423,7 +423,7 @@
    "bill_cents": 14250,
    "fixed_cents": 0,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+    "The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
    ],
    "display": {
     "all_in": "15.00¢",
@@ -447,7 +447,6 @@
    "bill_cents": 14250,
    "fixed_cents": 14250,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion.",
     "Everything on the bill was entered as an exclusion, so nothing is left to divide by the kWh."
    ],
    "display": {
@@ -493,7 +492,7 @@
    "bill_cents": 16,
    "fixed_cents": 0,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+    "The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
    ],
    "display": {
     "all_in": "16.00¢",
@@ -568,7 +567,7 @@
    "bill_cents": 2,
    "fixed_cents": 1,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+    "The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
    ],
    "display": {
     "all_in": "0.00¢",
@@ -591,7 +590,7 @@
    "bill_cents": 15000,
    "fixed_cents": 0,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion.",
+    "The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion.",
     "Check the billing period and kWh: this average is more than $1 per kWh."
    ],
    "display": {
@@ -626,7 +625,7 @@
    "bill_cents": 100000,
    "fixed_cents": 0,
    "notes": [
-    "It may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
+    "The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan's energy rate only if every other charge was entered as an exclusion."
    ],
    "display": {
     "all_in": "20.00¢",
@@ -649,6 +648,9 @@
    "cost_per_100mi": 4.5,
    "mi_per_kwh": 3.3333333333333335,
    "annual": 540.0,
+   "cost_per_mile_hundredths_of_cent": 450,
+   "cost_per_100mi_cents": 450,
+   "annual_cents": 54000,
    "rate_note": false,
    "notes": [],
    "display": {
@@ -673,6 +675,9 @@
    "cost_per_100mi": 3.8360000000000003,
    "mi_per_kwh": 3.5714285714285716,
    "annual": null,
+   "cost_per_mile_hundredths_of_cent": 384,
+   "cost_per_100mi_cents": 384,
+   "annual_cents": null,
    "rate_note": false,
    "notes": [],
    "display": {
@@ -698,6 +703,9 @@
    "cost_per_100mi": 5.0,
    "mi_per_kwh": null,
    "annual": null,
+   "cost_per_mile_hundredths_of_cent": 500,
+   "cost_per_100mi_cents": 500,
+   "annual_cents": null,
    "rate_note": false,
    "notes": [],
    "display": {
@@ -709,7 +717,7 @@
   }
  },
  {
-  "name": "PM4 dashboard without efficiency",
+  "name": "PM4 trip computer without efficiency",
   "fn": "ev_cost_per_mile",
   "input": {
    "rate": 0.15,
@@ -717,7 +725,7 @@
    "figure": 4
   },
   "error_field": "efficiency",
-  "error_message": "required with a dashboard figure"
+  "error_message": "required with a trip-computer figure"
  },
  {
   "name": "PM5 EPA with efficiency",
@@ -789,6 +797,9 @@
    "cost_per_100mi": 0.0,
    "mi_per_kwh": 3.3333333333333335,
    "annual": null,
+   "cost_per_mile_hundredths_of_cent": 0,
+   "cost_per_100mi_cents": 0,
+   "annual_cents": null,
    "rate_note": false,
    "notes": [],
    "display": {
@@ -813,6 +824,9 @@
    "cost_per_100mi": 4.8500000000000005,
    "mi_per_kwh": 1.0,
    "annual": null,
+   "cost_per_mile_hundredths_of_cent": 485,
+   "cost_per_100mi_cents": 485,
+   "annual_cents": null,
    "rate_note": false,
    "notes": [],
    "display": {
@@ -872,6 +886,9 @@
    "cost_per_100mi": 4.45,
    "mi_per_kwh": 1.0,
    "annual": null,
+   "cost_per_mile_hundredths_of_cent": 445,
+   "cost_per_100mi_cents": 445,
+   "annual_cents": null,
    "rate_note": false,
    "notes": [],
    "display": {
@@ -896,6 +913,9 @@
    "cost_per_100mi": 7.653061224489796,
    "mi_per_kwh": null,
    "annual": null,
+   "cost_per_mile_hundredths_of_cent": 765,
+   "cost_per_100mi_cents": 765,
+   "annual_cents": null,
    "rate_note": false,
    "notes": [
     "Efficiency is unusually low; check the value."
@@ -927,6 +947,10 @@
    "ev_per_mile": 0.045,
    "gas_per_mile": 0.11666666666666667,
    "gallons": 400.0,
+   "ev_cents": 54000,
+   "gas_cents": 140000,
+   "savings_cents": 86000,
+   "savings_per_month_cents": 7167,
    "gas_cheaper": false,
    "rate_note": false,
    "notes": [],
@@ -952,7 +976,7 @@
   },
   "ref": "field error before the engine",
   "error_field": "miles",
-  "error_message": "must be greater than 0"
+  "error_message": "must be at least 1"
  },
  {
   "name": "GS3 gas cheaper",
@@ -973,6 +997,10 @@
    "ev_per_mile": 0.18,
    "gas_per_mile": 0.04,
    "gallons": 240.0,
+   "ev_cents": 216000,
+   "gas_cents": 48000,
+   "savings_cents": -168000,
+   "savings_per_month_cents": -14000,
    "gas_cheaper": true,
    "rate_note": false,
    "notes": [
@@ -999,7 +1027,7 @@
    "price_per_gallon": 3.5
   },
   "error_field": "mpg",
-  "error_message": "must be greater than 0"
+  "error_message": "must be at least 0.1"
  },
  {
   "name": "GS5 price 0",
@@ -1080,7 +1108,7 @@
   "error_message": "must be 1000000 or less"
  },
  {
-  "name": "GS11 corner",
+  "name": "GS11 mpg tiny",
   "fn": "ev_gas_savings",
   "input": {
    "miles": 1000000,
@@ -1089,9 +1117,9 @@
    "mpg": 1e-321,
    "price_per_gallon": 50
   },
-  "ref": "mpg tiny overflows: field error on mpg",
+  "ref": "below the 0.1 floor (N-M3)",
   "error_field": "mpg",
-  "error_message": "must be a finite number"
+  "error_message": "must be at least 0.1"
  },
  {
   "name": "GS12 miles tiny (B2-P3)",
@@ -1103,27 +1131,9 @@
    "mpg": 30,
    "price_per_gallon": 3.5
   },
-  "ref": "subnormal but finite",
-  "output": {
-   "ev_cost": 4.4e-323,
-   "gas_cost": 1.2e-322,
-   "savings": 7.4e-323,
-   "savings_per_month": 5e-324,
-   "ev_per_mile": 0.045,
-   "gas_per_mile": 0.11666666666666667,
-   "gallons": 3.5e-323,
-   "gas_cheaper": false,
-   "rate_note": false,
-   "notes": [],
-   "display": {
-    "ev_cost": "$0.00",
-    "gas_cost": "$0.00",
-    "savings": "$0.00",
-    "savings_per_month": "$0.00",
-    "ev_per_mile": "4.50¢ ($0.045)",
-    "gas_per_mile": "11.67¢ ($0.117)"
-   }
-  }
+  "ref": "below the 1-mile floor (N-L6)",
+  "error_field": "miles",
+  "error_message": "must be at least 1"
  },
  {
   "name": "GS13 rate 0",
@@ -1144,6 +1154,10 @@
    "ev_per_mile": 0.0,
    "gas_per_mile": 0.11666666666666667,
    "gallons": 400.0,
+   "ev_cents": 0,
+   "gas_cents": 140000,
+   "savings_cents": 140000,
+   "savings_per_month_cents": 11667,
    "gas_cheaper": false,
    "rate_note": false,
    "notes": [],
@@ -1176,6 +1190,10 @@
    "ev_per_mile": 100.0,
    "gas_per_mile": 0.1,
    "gallons": 2000.0,
+   "ev_cents": 10000000000,
+   "gas_cents": 10000000,
+   "savings_cents": -9990000000,
+   "savings_per_month_cents": -832500000,
    "gas_cheaper": true,
    "rate_note": true,
    "notes": [
@@ -1187,8 +1205,296 @@
     "gas_cost": "$100,000.00",
     "savings": "-$99,900,000.00",
     "savings_per_month": "-$8,325,000.00",
-    "ev_per_mile": "10000.00¢ ($100.000)",
+    "ev_per_mile": "10,000.00¢ ($100.000)",
     "gas_per_mile": "10.00¢ ($0.100)"
+   }
+  }
+ },
+ {
+  "name": "PM17 tie annual $0.225",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.15,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 30,
+   "annual_miles": 5
+  },
+  "ref": "N-M1: $0.23, not $0.22",
+  "output": {
+   "cost_per_mile": 0.045,
+   "cost_per_100mi": 4.5,
+   "mi_per_kwh": 3.3333333333333335,
+   "annual": 0.22499999999999998,
+   "cost_per_mile_hundredths_of_cent": 450,
+   "cost_per_100mi_cents": 450,
+   "annual_cents": 23,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "4.50¢ ($0.045)",
+    "per_100mi": "$4.50",
+    "mi_per_kwh": "3.33",
+    "annual": "$0.23"
+   }
+  }
+ },
+ {
+  "name": "PM18 tie 25.585¢",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 0.301,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 85
+  },
+  "ref": "N-M1: 25.59¢",
+  "output": {
+   "cost_per_mile": 0.25584999999999997,
+   "cost_per_100mi": 25.584999999999997,
+   "mi_per_kwh": 1.1764705882352942,
+   "annual": null,
+   "cost_per_mile_hundredths_of_cent": 2559,
+   "cost_per_100mi_cents": 2559,
+   "annual_cents": null,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "per_mile": "25.59¢ ($0.256)",
+    "per_100mi": "$25.59",
+    "mi_per_kwh": "1.18",
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM19 per mile vs per 100 mi",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 1.035,
+   "figure_type": "epa_kwh_per_100mi",
+   "figure": 65
+  },
+  "ref": "N-M2: 67.28¢ and $67.28",
+  "output": {
+   "cost_per_mile": 0.67275,
+   "cost_per_100mi": 67.27499999999999,
+   "mi_per_kwh": 1.5384615384615385,
+   "annual": null,
+   "cost_per_mile_hundredths_of_cent": 6728,
+   "cost_per_100mi_cents": 6728,
+   "annual_cents": null,
+   "rate_note": true,
+   "notes": [
+    "Higher than any U.S. state's 2025 all-sector average (EIA)."
+   ],
+   "display": {
+    "per_mile": "67.28¢ ($0.673)",
+    "per_100mi": "$67.28",
+    "mi_per_kwh": "1.54",
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "PM20 grouped cents",
+  "fn": "ev_cost_per_mile",
+  "input": {
+   "rate": 10,
+   "figure_type": "dashboard_mi_per_kwh",
+   "figure": 0.1,
+   "efficiency": 100
+  },
+  "ref": "N-L4: 10,000.00¢ ($100.000)",
+  "output": {
+   "cost_per_mile": 100.0,
+   "cost_per_100mi": 10000.0,
+   "mi_per_kwh": null,
+   "annual": null,
+   "cost_per_mile_hundredths_of_cent": 1000000,
+   "cost_per_100mi_cents": 1000000,
+   "annual_cents": null,
+   "rate_note": true,
+   "notes": [
+    "Higher than any U.S. state's 2025 all-sector average (EIA)."
+   ],
+   "display": {
+    "per_mile": "10,000.00¢ ($100.000)",
+    "per_100mi": "$10,000.00",
+    "mi_per_kwh": null,
+    "annual": null
+   }
+  }
+ },
+ {
+  "name": "GS15 tie gas $3,924.765",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 52330.2,
+   "kwh_per_100mi": 17.14,
+   "rate": 0.28,
+   "mpg": 20,
+   "price_per_gallon": 1.5
+  },
+  "ref": "N-M1: $3,924.77",
+  "output": {
+   "ev_cost": 2511.4309584000007,
+   "gas_cost": 3924.7649999999994,
+   "savings": 1413.3340415999987,
+   "savings_per_month": 117.77783679999989,
+   "ev_per_mile": 0.04799200000000001,
+   "gas_per_mile": 0.075,
+   "gallons": 2616.5099999999998,
+   "ev_cents": 251143,
+   "gas_cents": 392477,
+   "savings_cents": 141334,
+   "savings_per_month_cents": 11778,
+   "gas_cheaper": false,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "ev_cost": "$2,511.43",
+    "gas_cost": "$3,924.77",
+    "savings": "$1,413.34",
+    "savings_per_month": "$117.78",
+    "ev_per_mile": "4.80¢ ($0.048)",
+    "gas_per_mile": "7.50¢ ($0.075)"
+   }
+  }
+ },
+ {
+  "name": "GS16 mpg 0.09",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 12000,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 0.09,
+   "price_per_gallon": 3.5
+  },
+  "ref": "N-M3",
+  "error_field": "mpg",
+  "error_message": "must be at least 0.1"
+ },
+ {
+  "name": "GS17 mpg 0.1 corner",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1000000,
+   "kwh_per_100mi": 1,
+   "rate": 0,
+   "mpg": 0.1,
+   "price_per_gallon": 50
+  },
+  "ref": "N-M3: $500,000,000.00 gas, finite",
+  "output": {
+   "ev_cost": 0.0,
+   "gas_cost": 500000000.0,
+   "savings": 500000000.0,
+   "savings_per_month": 41666666.666666664,
+   "ev_per_mile": 0.0,
+   "gas_per_mile": 500.0,
+   "gallons": 10000000.0,
+   "ev_cents": 0,
+   "gas_cents": 50000000000,
+   "savings_cents": 50000000000,
+   "savings_per_month_cents": 4166666667,
+   "gas_cheaper": false,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "ev_cost": "$0.00",
+    "gas_cost": "$500,000,000.00",
+    "savings": "$500,000,000.00",
+    "savings_per_month": "$41,666,666.67",
+    "ev_per_mile": "0.00¢ ($0.000)",
+    "gas_per_mile": "50,000.00¢ ($500.000)"
+   }
+  }
+ },
+ {
+  "name": "GS18 miles 0.99",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 0.99,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "ref": "N-L6",
+  "error_field": "miles",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "GS19 miles 1",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1,
+   "kwh_per_100mi": 30,
+   "rate": 0.15,
+   "mpg": 30,
+   "price_per_gallon": 3.5
+  },
+  "ref": "N-L6 minimum",
+  "output": {
+   "ev_cost": 0.045,
+   "gas_cost": 0.11666666666666667,
+   "savings": 0.07166666666666667,
+   "savings_per_month": 0.0059722222222222225,
+   "ev_per_mile": 0.045,
+   "gas_per_mile": 0.11666666666666667,
+   "gallons": 0.03333333333333333,
+   "ev_cents": 5,
+   "gas_cents": 12,
+   "savings_cents": 7,
+   "savings_per_month_cents": 1,
+   "gas_cheaper": false,
+   "rate_note": false,
+   "notes": [],
+   "display": {
+    "ev_cost": "$0.05",
+    "gas_cost": "$0.12",
+    "savings": "$0.07",
+    "savings_per_month": "$0.01",
+    "ev_per_mile": "4.50¢ ($0.045)",
+    "gas_per_mile": "11.67¢ ($0.117)"
+   }
+  }
+ },
+ {
+  "name": "GS20 negative per month rounds away from zero",
+  "fn": "ev_gas_savings",
+  "input": {
+   "miles": 1,
+   "kwh_per_100mi": 1000,
+   "rate": 0.06,
+   "mpg": 500,
+   "price_per_gallon": 0.01
+  },
+  "ref": "savings -$0.60, month -$0.05",
+  "output": {
+   "ev_cost": 0.6,
+   "gas_cost": 2e-05,
+   "savings": -0.59998,
+   "savings_per_month": -0.04999833333333333,
+   "ev_per_mile": 0.6,
+   "gas_per_mile": 2e-05,
+   "gallons": 0.002,
+   "ev_cents": 60,
+   "gas_cents": 0,
+   "savings_cents": -60,
+   "savings_per_month_cents": -5,
+   "gas_cheaper": true,
+   "rate_note": false,
+   "notes": [
+    "With these inputs the gas vehicle is cheaper to fuel."
+   ],
+   "display": {
+    "ev_cost": "$0.60",
+    "gas_cost": "$0.00",
+    "savings": "-$0.60",
+    "savings_per_month": "-$0.05",
+    "ev_per_mile": "60.00¢ ($0.600)",
+    "gas_per_mile": "0.00¢ ($0.000)"
    }
   }
  }

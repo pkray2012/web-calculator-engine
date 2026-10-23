@@ -20,7 +20,7 @@ export const ENERGY_BATCH2 = Object.freeze([
     cluster: 'electricity',
     updated: '2026-10-22',
     title: 'Electricity Cost Calculator: Cost to Run an Appliance',
-    description: 'Find what an appliance costs to run from its watts, hours of use per day, days and your rate per kWh. 200 W for 4 hours a day for 120 days is 96 kWh.',
+    description: 'Find what an appliance costs to run from its watts, hours of use per day, days and your rate per kWh. Example: 200 W for 4 hours a day for 120 days is 96 kWh.',
     summary: 'What an appliance costs to run from its watts, hours of use and your rate.',
     related: ['electricity-rate-calculator']
   },
@@ -33,7 +33,7 @@ export const ENERGY_BATCH2 = Object.freeze([
     cluster: 'electricity',
     updated: '2026-10-22',
     title: 'Electricity Rate Calculator: Your Cost per kWh From a Bill',
-    description: 'Divide your electric bill by the kWh used to find your average cost per kWh, and the rate left after the fixed charges you exclude. $142.50 for 950 kWh is 15.00¢.',
+    description: 'Divide your electric bill by the kWh used to find your average cost per kWh, and the rate after the charges you exclude. Example: $142.50 for 950 kWh is 15.00¢.',
     summary: 'Your average cost per kWh from a bill, and the rate after the charges you exclude.',
     related: ['electricity-cost-calculator']
   },
@@ -46,7 +46,7 @@ export const ENERGY_BATCH2 = Object.freeze([
     cluster: 'ev',
     updated: '2026-10-22',
     title: 'EV Cost Per Mile Calculator: Electric Car Cost per Mile',
-    description: 'Find an electric car\'s cost per mile and per 100 miles from its EPA kWh per 100 miles or dashboard mi/kWh and your rate. 30 kWh/100 mi at 15¢ is 4.50¢ a mile.',
+    description: 'Find an electric car\'s cost per mile and per 100 miles from its EPA or trip-computer figure and your rate. Example: 30 kWh/100 mi at 15¢ per kWh is 4.50¢ a mile.',
     summary: 'An electric car\'s cost per mile, per 100 miles and per year.',
     related: ['ev-gas-savings-calculator']
   },
@@ -59,7 +59,7 @@ export const ENERGY_BATCH2 = Object.freeze([
     cluster: 'ev',
     updated: '2026-10-22',
     title: 'EV vs Gas Savings Calculator: Fuel Cost Savings per Year',
-    description: 'Compare a year of charging an electric car with buying gas for a gas car, from miles, kWh per 100 miles, MPG and prices. 12,000 miles: $540 vs $1,400.',
+    description: 'Compare a year of electricity for an EV with gas for a gas car. Example: 12,000 miles at 30 kWh/100 mi and 15¢ per kWh vs 30 MPG at $3.50 a gallon: $540 vs $1,400.',
     summary: 'A year of electricity for an EV against gas for a gas car.',
     related: ['ev-cost-per-mile-calculator']
   }

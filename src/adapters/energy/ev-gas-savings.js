@@ -1,13 +1,13 @@
 /**
  * Adapter between the EV Gas Savings Calculator page and its engine. Parses
  * the form, calls calculateEvGasSavings() and shapes the result for display.
- * No formulas live here. Miles of 0 is a field error here, before the Fuel
- * Cost engine (which throws for it) is reached.
+ * No formulas live here. Miles below 1 is a field error here, before the Fuel
+ * Cost engine (which throws for 0) is reached.
  */
 
 import { calculateEvGasSavings, SavingsError, SAVINGS_LIMITS } from '../../calculators/energy/ev-gas-savings.js';
 import { numberField } from '../../lib/validation.js';
-import { formatCentsAndDollars } from '../../lib/energy/format.js';
+import { formatPerMile } from '../../lib/energy/format.js';
 import { rateField } from './electric-bill.js';
 
 export const SAVINGS_NOTES = Object.freeze({
@@ -31,10 +31,10 @@ export function parseSavingsForm(values) {
     return result.value;
   };
   const L = SAVINGS_LIMITS;
-  const miles = take('miles', numberField(values.miles, { label: 'Miles per year', min: 0, minExclusive: true, max: L.miles.max }));
+  const miles = take('miles', numberField(values.miles, { label: 'Miles per year', ...L.miles }));
   const kwhPer100Miles = take('kwhPer100Miles', numberField(values.kwhPer100Miles, { label: 'EV efficiency', ...L.epa }));
   const rate = take('rate', rateField(values.rate, 'Electricity rate'));
-  const mpg = take('mpg', numberField(values.mpg, { label: 'Gas car fuel economy', min: 0, minExclusive: true, max: L.mpg.max }));
+  const mpg = take('mpg', numberField(values.mpg, { label: 'Gas car fuel economy', ...L.mpg }));
   const pricePerGallon = take('pricePerGallon', numberField(values.pricePerGallon, { label: 'Gas price', min: 0, minExclusive: true, max: L.pricePerGallon.max }));
   if (Object.keys(errors).length) return { ok: false, errors };
   return { ok: true, input: { miles, kwhPer100Miles, rate, mpg, pricePerGallon } };
@@ -48,8 +48,8 @@ export function buildSavingsView(input) {
   return {
     input,
     result,
-    evPerMileText: formatCentsAndDollars(result.evPerMile),
-    gasPerMileText: formatCentsAndDollars(result.gasPerMile),
+    evPerMileText: formatPerMile(result.evPerMileHundredthsOfCent),
+    gasPerMileText: formatPerMile(result.gasPerMileHundredthsOfCent),
     notes
   };
 }

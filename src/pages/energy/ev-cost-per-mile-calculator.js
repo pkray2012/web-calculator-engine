@@ -6,54 +6,55 @@
 
 import { html } from '../../lib/html.js';
 import { formatCurrency, formatCount } from '../../lib/format.js';
+import { plainDecimal } from '../../lib/energy/format.js';
 import { perMileForm } from '../../components/energy/ev-cost-per-mile-form.js';
 import { perMileResults, perMileQuickResult } from '../../components/energy/ev-cost-per-mile-results.js';
 import { relatedLinks, sourcesSection } from '../../components/layout.js';
 import { calculatorShell } from '../../components/calculator-shell.js';
 import { faqSection, faqStructuredData, directAnswer } from '../../components/faq.js';
-import { PER_MILE_DEFAULTS, runPerMileCalculator } from '../../adapters/energy/ev-cost-per-mile.js';
+import { PER_MILE_DEFAULTS, PER_MILE_EXAMPLE, runPerMileCalculator } from '../../adapters/energy/ev-cost-per-mile.js';
 import { findEnergyBatch2Calculator, relatedEnergyBatch2Calculators } from '../../content/energy-batch2.js';
 import { ENERGY_SOURCES } from '../../content/energy-sources.js';
 
 export function evCostPerMilePage() {
   const calculator = findEnergyBatch2Calculator('ev-cost-per-mile-calculator');
-  const example = runPerMileCalculator(PER_MILE_DEFAULTS).view;
-  const dashboard = runPerMileCalculator({ ...PER_MILE_DEFAULTS, figureType: 'dashboard', figure: '4', efficiency: '90', annualMiles: '' }).view;
+  const example = runPerMileCalculator(PER_MILE_EXAMPLE).view;
+  const tripComputer = runPerMileCalculator({ ...PER_MILE_EXAMPLE, figureType: 'dashboard', figure: '4', efficiency: '90', annualMiles: '' }).view;
   const { input, result, perMileText, milesPerKwhText } = example;
-  const rate = formatCurrency(input.rate);
-  const per100 = formatCurrency(result.costPer100Miles);
-  const annual = formatCurrency(result.annual);
+  const rate = `$${plainDecimal(input.rate)}`;
+  const per100 = formatCurrency(result.costPer100MilesCents / 100);
+  const annual = formatCurrency(result.annualCents / 100);
   const miles = formatCount(input.annualMiles);
   const source = ENERGY_SOURCES.epaLabelLosses;
 
   const faqs = [
     {
       question: 'How do I calculate an electric car\'s cost per mile?',
-      answer: `Divide the kWh per 100 miles on the EPA label by 100 and multiply by your rate. At ${input.figure} kWh per 100 miles and ${rate} per kWh, that is ${perMileText} a mile, ${per100} per 100 miles, or ${annual} for ${miles} miles.`
+      answer: `Divide the kWh per 100 miles on the EPA label by 100 and multiply by your rate. For example, at ${input.figure} kWh per 100 miles and ${rate} per kWh (example values), that is ${perMileText} a mile, ${per100} per 100 miles, or ${annual} for ${miles} miles.`
     },
     {
       question: 'Should I add charging losses to the EPA figure?',
-      answer: `No. The EPA figure is measured at the wall, so it already includes charging losses (EPA). A dashboard miles-per-kWh figure is treated as energy from the battery, so your charging efficiency is applied to it: 4 mi/kWh at 90% efficiency and ${rate} per kWh is ${dashboard.perMileText} a mile.`
+      answer: `No. The EPA figure is based on the electricity drawn from the outlet, so it already includes charging losses (EPA). A trip-computer miles-per-kWh figure is used as your vehicle reports it, and the charging efficiency you enter is applied once: for example, 4 mi/kWh at 90% efficiency with electricity at ${rate} per kWh (example values) is ${tripComputer.perMileText} a mile.`
     },
     {
       question: 'Which electricity rate should I use?',
-      answer: 'Use the rate you pay for each extra kWh, from your rate plan, not your bill\'s average cost per kWh: the average includes fixed charges that charging does not change.'
+      answer: 'Use the rate you pay for each extra kWh, from your rate plan, not your bill\'s average cost per kWh.'
     }
   ];
 
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
-  ${directAnswer(html`<strong>Cost per mile = EPA kWh per 100 miles ÷ 100 × your electricity rate.</strong> ${input.figure} kWh per 100 miles at ${rate} per kWh
-  is ${perMileText} a mile, ${per100} per 100 miles.`)}
-  <p class="lede">Find an electric car's electricity cost per mile, per 100 miles and per year from its EPA label or dashboard figure and your rate.
+  ${directAnswer(html`<strong>Cost per mile = EPA kWh per 100 miles ÷ 100 × your electricity rate.</strong> For example, ${input.figure} kWh per 100 miles at ${rate} per kWh
+  (example values) is ${perMileText} a mile, ${per100} per 100 miles.`)}
+  <p class="lede">Find an electric car's electricity cost per mile, per 100 miles and per year from its EPA label or trip-computer figure and your rate.
   Your inputs stay in your browser.</p>
 </header>
 
 ${calculatorShell({
     inputsHeading: 'Your car and rate',
     form: perMileForm(PER_MILE_DEFAULTS, {}, perMileQuickResult(example)),
-    exampleNote: `Example: ${input.figure} kWh per 100 miles (EPA) at ${rate} per kWh and ${miles} miles a year (illustrative values, not typical ones). Enter your own to update.`,
+    exampleNote: `Example: ${input.figure} kWh per 100 miles (EPA) at ${rate} per kWh and ${miles} miles a year (illustrative values, not typical ones). Choose your figure type and enter your own numbers to update.`,
     results: perMileResults(example)
   })}
 
@@ -66,15 +67,16 @@ ${calculatorShell({
       <li><strong>Per year:</strong> ${perMileText.split(' ')[0]} × ${miles} miles = ${annual}.</li>
     </ol>
     <p class="formula"><code>Cost per mile = kWh per 100 miles ÷ 100 × rate</code></p>
-    <p>The EPA figure is measured at the wall, so it already includes charging losses (<a href="${source.url}">EPA</a>); ${input.figure} kWh per 100 miles is ${milesPerKwhText} miles per kWh.
-    With a dashboard figure in miles per kWh, the cost per mile is the rate ÷ (mi/kWh × charging efficiency).</p>
+    <p>The EPA figure is based on the electricity drawn from the outlet, so it already includes charging losses (<a href="${source.url}">EPA</a>); ${input.figure} kWh per 100 miles is ${milesPerKwhText} miles per kWh.
+    With a trip-computer figure in miles per kWh, the cost per mile is the rate ÷ (mi/kWh × charging efficiency): the figure is used as your vehicle reports it, and the efficiency you enter is applied once.</p>
   </section>
 
   <section class="content-section" aria-labelledby="permile-assumptions-heading">
     <h2 id="permile-assumptions-heading">Assumptions and limits</h2>
     <ul>
       <li>One flat rate per kWh. Time-of-use rates, fixed charges and public-charger fees are not modeled.</li>
-      <li>Charging efficiency has no default. It is used only with a dashboard figure, and applied once.</li>
+      <li>Charging efficiency has no default. It is used only with a trip-computer figure, and applied once, as entered.</li>
+      <li>A trip-computer figure is used as your vehicle reports it. The calculator makes no assumption about where the vehicle measures it.</li>
       <li>All-electric miles only. Plug-in hybrids that also use gasoline aren't covered.</li>
     </ul>
   </section>
@@ -88,7 +90,7 @@ ${calculatorShell({
 
   ${faqSection(faqs, 'permile-faq')}
 
-  ${sourcesSection([source])}
+  ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
   ${relatedLinks(relatedEnergyBatch2Calculators(calculator.slug))}
 </article>

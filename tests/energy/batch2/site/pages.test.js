@@ -83,3 +83,25 @@ test('required disclosures are on the pages', () => {
   assert.match(String(evGasSavingsPage().body), /Fuel only/);
   assert.match(String(electricityRatePage().body), /is the price of one more kWh/);
 });
+
+test('B2-20 asks the user to choose the figure type and labels efficiency as required for a trip-computer figure (C-M3, C-M4)', () => {
+  const markup = String(perMileForm());
+  assert.ok(!/name="figureType"[^>]*checked/.test(markup), 'no figure type preselected');
+  assert.match(markup, /Required for a trip-computer figure; not used with the EPA figure\./);
+  assert.ok(!/Charging efficiency[^<]*<[^>]*>\s*\(optional\)/.test(markup), 'efficiency not marked optional');
+});
+
+test('the trip-computer figure is described as reported by the vehicle, with no measurement-point claim (S-M1)', async () => {
+  const { evChargingCostPage } = await import('../../../../src/pages/energy/ev-charging-cost-calculator.js');
+  for (const body of [String(evCostPerMilePage().body), String(evChargingCostPage().body)]) {
+    assert.match(body, /used as your vehicle reports it/);
+    assert.ok(!/energy from the battery|treated as energy/i.test(body));
+    assert.ok(!/measured at the wall, so it already includes/i.test(body), 'EPA wording follows the source (S-L4)');
+  }
+});
+
+test('pages that can show the EIA high-rate note cite the EIA source (C-M5)', () => {
+  for (const render of [electricityCostPage, evCostPerMilePage, evGasSavingsPage]) {
+    assert.match(String(render().body), /eia\.gov\/energyexplained\/electricity\/prices-and-factors-affecting-prices/);
+  }
+});

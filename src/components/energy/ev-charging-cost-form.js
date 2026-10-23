@@ -40,10 +40,10 @@ export function evCostForm(values = EV_COST_DEFAULTS, errors = {}, quick = null)
     options: [
       { value: '', label: 'Skip: cost per charge only' },
       { value: 'epa', label: 'EPA label kWh/100 mi (already includes charging losses)' },
-      { value: 'dashboard', label: 'Dashboard mi/kWh' }
+      { value: 'dashboard', label: 'Trip computer mi/kWh (used as your vehicle reports it)' }
     ]
   })}
-  ${field('figure', { label: 'Figure value', optional: true, hint: 'kWh per 100 miles from the EPA label, or miles per kWh from the dashboard.' })}
+  ${field('figure', { label: 'Figure value', optional: true, hint: 'kWh per 100 miles from the EPA label, or miles per kWh from your vehicle\'s trip computer.' })}
   ${field('milesPerMonth', { label: 'Miles per month', suffix: 'miles', optional: true, hint: 'For all-electric miles only. Plug-in hybrids that also use gasoline aren\'t covered.' })}
   <button class="button" type="submit">Calculate</button>
   <p class="quick-result" id="quick-result"${quick ? '' : ' hidden'}>${quick ?? ''}</p>

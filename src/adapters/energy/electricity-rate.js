@@ -9,11 +9,11 @@ import { moneyField } from '../../lib/energy/money.js';
 import { numberField } from '../../lib/validation.js';
 import { formatCentsPerKwh } from './electric-bill.js';
 
-/** The second result's label. Deliberately not "energy-only": other per-kWh charges may remain. */
+/** The second result's label. It does not claim to be the energy rate: other per-kWh charges may remain. */
 export const RESIDUAL_LABEL = 'Rate after entered exclusions';
 
 export const RATE_NOTES = Object.freeze({
-  residual: 'It may still include per-kWh delivery charges, riders and taxes; it equals your plan\'s energy rate only if every other charge was entered as an exclusion.',
+  residual: 'The rate after entered exclusions may still include per-kWh delivery charges, riders and taxes; it equals your plan\'s energy rate only if every other charge was entered as an exclusion.',
   allExcluded: 'Everything on the bill was entered as an exclusion, so nothing is left to divide by the kWh.',
   highAverage: 'Check the billing period and kWh: this average is more than $1 per kWh.'
 });
@@ -41,9 +41,9 @@ export function parseRateForm(values) {
 
 export function buildRateView(input) {
   const result = calculateElectricityRate(input);
+  // With everything excluded there is no residual to describe, so only the all-excluded note is shown.
   /** @type {string[]} */
-  const notes = [RATE_NOTES.residual];
-  if (result.allExcluded) notes.push(RATE_NOTES.allExcluded);
+  const notes = [result.allExcluded ? RATE_NOTES.allExcluded : RATE_NOTES.residual];
   if (result.highAverage) notes.push(RATE_NOTES.highAverage);
   return {
     input,

@@ -12,7 +12,7 @@ import { runElectricityCostCalculator, ELECTRICITY_COST_DEFAULTS } from '../../.
 import { electricityRatePage } from '../../../../src/pages/energy/electricity-rate-calculator.js';
 import { runRateCalculator, RATE_DEFAULTS } from '../../../../src/adapters/energy/electricity-rate.js';
 import { evCostPerMilePage } from '../../../../src/pages/energy/ev-cost-per-mile-calculator.js';
-import { runPerMileCalculator, PER_MILE_DEFAULTS } from '../../../../src/adapters/energy/ev-cost-per-mile.js';
+import { runPerMileCalculator, PER_MILE_EXAMPLE } from '../../../../src/adapters/energy/ev-cost-per-mile.js';
 import { evGasSavingsPage } from '../../../../src/pages/energy/ev-gas-savings-calculator.js';
 import { runSavingsCalculator, SAVINGS_DEFAULTS } from '../../../../src/adapters/energy/ev-gas-savings.js';
 
@@ -57,18 +57,20 @@ export const DRAFT_CHECKS = [
   {
     render: evCostPerMilePage,
     firstInput: '#permile-rate',
-    example: runPerMileCalculator(PER_MILE_DEFAULTS).view.perMileText,
+    example: runPerMileCalculator(PER_MILE_EXAMPLE).view.perMileText,
     async interact(page) {
+      // No figure type is preselected (C-M3): the user chooses it.
+      await page.locator('#permile-figure-type').check();
       await page.fill('#permile-rate', '0.137');
       await page.fill('#permile-figure', '28');
       assert.equal(await until(page, '3.84¢ ($0.038)'), '3.84¢ ($0.038)');
       await page.locator('#permile-figure-type-dashboard').check();
       await page.fill('#permile-figure', '4');
       await page.fill('#permile-efficiency', '90');
-      const dashboard = runPerMileCalculator({ ...PER_MILE_DEFAULTS, rate: '0.137', figureType: 'dashboard', figure: '4', efficiency: '90' }).view.perMileText;
+      const dashboard = runPerMileCalculator({ ...PER_MILE_EXAMPLE, rate: '0.137', figureType: 'dashboard', figure: '4', efficiency: '90' }).view.perMileText;
       assert.equal(await until(page, dashboard), dashboard);
     },
-    invalid: { input: '#permile-efficiency', value: '90', message: /not used with the EPA figure/, recover: '' }
+    invalid: { input: '#permile-rate', value: '15', message: /dollars per kWh, for example 0\.16/, recover: '0.15' }
   },
   {
     render: evGasSavingsPage,
@@ -85,6 +87,6 @@ export const DRAFT_CHECKS = [
       assert.equal(await until(page, negative), negative);
       assert.ok((await page.locator('#calc-results-body').textContent()).includes('the gas vehicle is cheaper to fuel'));
     },
-    invalid: { input: '#evgas-miles', value: '0', message: /greater than 0/, recover: '12000' }
+    invalid: { input: '#evgas-miles', value: '0.5', message: /at least 1/, recover: '12000' }
   }
 ];

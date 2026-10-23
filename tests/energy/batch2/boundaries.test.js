@@ -9,7 +9,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { runElectricityCostCalculator, ELECTRICITY_COST_DEFAULTS } from '../../../src/adapters/energy/electricity-cost.js';
 import { runRateCalculator, RATE_DEFAULTS } from '../../../src/adapters/energy/electricity-rate.js';
-import { runPerMileCalculator, PER_MILE_DEFAULTS } from '../../../src/adapters/energy/ev-cost-per-mile.js';
+import { runPerMileCalculator, PER_MILE_EXAMPLE } from '../../../src/adapters/energy/ev-cost-per-mile.js';
 import { runSavingsCalculator, SAVINGS_DEFAULTS } from '../../../src/adapters/energy/ev-gas-savings.js';
 import { calculateElectricityCost } from '../../../src/calculators/energy/electricity-cost.js';
 import { calculateElectricityRate } from '../../../src/calculators/energy/electricity-rate.js';
@@ -43,15 +43,15 @@ const PAGES = [
   { name: 'electricity rate (exclusions)', run: runRateCalculator, defaults: RATE_DEFAULTS, fields: {
     fixed: { min: 0, max: 142.5, unit: 0.01 }
   } },
-  { name: 'EV cost per mile (EPA)', run: runPerMileCalculator, defaults: PER_MILE_DEFAULTS, fields: {
+  { name: 'EV cost per mile (EPA)', run: runPerMileCalculator, defaults: PER_MILE_EXAMPLE, fields: {
     rate: { min: 0, max: 10, unit: 0.0001 }, figure: { min: 1, max: 1000, unit: 0.01 }, annualMiles: { min: 0, max: 1_000_000, unit: 1 }
   } },
-  { name: 'EV cost per mile (dashboard)', run: runPerMileCalculator, defaults: { ...PER_MILE_DEFAULTS, figureType: 'dashboard', figure: '4', efficiency: '90' }, fields: {
+  { name: 'EV cost per mile (trip computer)', run: runPerMileCalculator, defaults: { ...PER_MILE_EXAMPLE, figureType: 'dashboard', figure: '4', efficiency: '90' }, fields: {
     figure: { min: 0.1, max: 100, unit: 0.01 }, efficiency: { min: 1, max: 100, unit: 0.01 }
   } },
   { name: 'EV gas savings', run: runSavingsCalculator, defaults: SAVINGS_DEFAULTS, fields: {
-    miles: { min: 0.01, max: 1_000_000, unit: 0.01 }, kwhPer100Miles: { min: 1, max: 1000, unit: 0.01 }, rate: { min: 0, max: 10, unit: 0.0001 },
-    mpg: { min: 0.01, max: 500, unit: 0.01 }, pricePerGallon: { min: 0.01, max: 50, unit: 0.01 }
+    miles: { min: 1, max: 1_000_000, unit: 0.01 }, kwhPer100Miles: { min: 1, max: 1000, unit: 0.01 }, rate: { min: 0, max: 10, unit: 0.0001 },
+    mpg: { min: 0.1, max: 500, unit: 0.01 }, pricePerGallon: { min: 0.01, max: 50, unit: 0.01 }
   } }
 ];
 

@@ -35,8 +35,8 @@ export function evChargingTimePage() {
       answer: `On AC charging the car's onboard charger sets a maximum rate. If it is lower than the charger's, that is the rate that counts: with a ${capped.result.effectivePowerKw} kW vehicle maximum, the same charge takes ${capped.timeText}.`
     },
     {
-      question: 'Why does charging slow down near full?',
-      answer: 'Charging power varies with how full the battery is and usually drops as it approaches full. The calculator assumes constant power, so real charges to a high level can take longer.'
+      question: 'Why can a real charge take longer than this estimate?',
+      answer: 'Charging time depends on how depleted the battery is, its capacity, the onboard charger and the charging equipment (U.S. Department of Energy). The calculator assumes constant power throughout the charge, so a real charge can take longer.'
     }
   ];
 
@@ -70,7 +70,7 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="evtime-assumptions-heading">
     <h2 id="evtime-assumptions-heading">Assumptions and limits</h2>
     <ul>
-      <li>Constant charging power. Power varies with how full the battery is and often drops near full, so charges to a high level can take longer.</li>
+      <li>Constant charging power for the whole charge. Real charging power can change during a charge, so a real charge can take longer.</li>
       <li>Efficiency is applied once, only when the power is measured at the wall. There is no default efficiency: enter your own.</li>
       <li>The vehicle's maximum AC rate applies to AC charging measured at the wall. It is ignored for power measured going into the battery.</li>
     </ul>

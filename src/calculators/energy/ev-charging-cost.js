@@ -6,16 +6,17 @@
  *   cost = energy drawn × rate per kWh.
  * - Per mile (optional), from one of two efficiency figures:
  *     EPA label kWh per 100 miles: cost per mile = kWh/100 mi ÷ 100 × rate.
- *       The label is measured at the wall, so it already includes charging
+ *       The label is based on the electricity drawn from the outlet, so it already includes charging
  *       losses and the charging efficiency is not applied again.
- *     Dashboard miles per kWh: cost per mile = rate ÷ (mi/kWh × efficiency).
- *       The figure is treated as energy from the battery, so the charging
- *       efficiency is applied to it.
+ *     Trip-computer miles per kWh: cost per mile = rate ÷ (mi/kWh × efficiency).
+ *       The figure is used as the vehicle reports it, and the charging
+ *       efficiency the user enters is applied once.
  *   Monthly cost = cost per mile × miles per month.
  * All-electric miles only: plug-in hybrids that also burn gasoline are not covered.
  */
 
-import { epaCostPerMile, dashboardCostPerMile } from './per-mile.js';
+import { epaCostPerMile, dashboardCostPerMile, epaPerMileRatio, dashboardPerMileRatio } from './per-mile.js';
+import { roundRatio, multiplyRatio } from '../../lib/energy/money.js';
 
 export const COST_LIMITS = Object.freeze({
   capacity: { min: 0.01, max: 10_000 },
@@ -74,11 +75,20 @@ export function calculateEvChargingCost({ capacityKwh, startPercent, targetPerce
   if (figureType !== 'epa' && figureType !== 'dashboard') throw new RangeError('figureType must be epa or dashboard');
   range('figure', figure, COST_LIMITS[figureType]);
   const costPerMile = finite('figure', figureType === 'epa' ? epaCostPerMile(figure, rate) : dashboardCostPerMile(figure, efficiency, rate));
+  // Displayed figures are rounded half up once from the exact value: hundredths of a cent per mile, and the
+  // cost per 100 miles from those rounded cents, so the two never contradict.
+  const ratio = figureType === 'epa' ? epaPerMileRatio(figure, rate) : dashboardPerMileRatio(figure, efficiencyPercent, rate);
+  const costPerMileHundredthsOfCent = roundRatio(ratio, 4);
   let monthly = null;
+  let monthlyCents = null;
   if (milesPerMonth !== null) {
     range('milesPerMonth', milesPerMonth, COST_LIMITS.miles);
     monthly = finite('milesPerMonth', costPerMile * milesPerMonth);
+    monthlyCents = roundRatio(multiplyRatio(ratio, milesPerMonth), 2);
   }
-  result.perMile = { costPerMile, costPer100Miles: costPerMile * 100, monthly, highMonthly: monthly !== null && monthly > HIGH_MONTHLY };
+  result.perMile = {
+    costPerMile, costPer100Miles: costPerMile * 100, monthly, highMonthly: monthly !== null && monthly > HIGH_MONTHLY,
+    costPerMileHundredthsOfCent, costPer100MilesCents: costPerMileHundredthsOfCent, monthlyCents
+  };
   return result;
 }

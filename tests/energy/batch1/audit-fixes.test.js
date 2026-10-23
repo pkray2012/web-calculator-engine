@@ -36,7 +36,8 @@ test('start-level errors use each form\'s visible label', () => {
 
 test('a figure without a figure type asks for the type, whatever the figure', () => {
   const run = runEvCostCalculator({ ...evCost, figure: '0.5' });
-  assert.deepEqual(run.errors, { figureType: 'Choose the figure type (EPA kWh/100 mi or dashboard mi/kWh).' });
+  // Owner decision S-M1 (subagent audit, 2026-10-23): the second figure is the trip computer's, used as the vehicle reports it.
+  assert.deepEqual(run.errors, { figureType: 'Choose the figure type (EPA kWh/100 mi or trip computer mi/kWh).' });
   assert.match(runEvCostCalculator({ ...evCost, figureType: 'epa', figure: '' }).errors.figure, /^Figure value /);
 });
 
@@ -80,9 +81,10 @@ test('the E6 citation names the actual document', () => {
   assert.match(ENERGY_SOURCES.simplePayback.publisher, /National Renewable Energy Laboratory/);
 });
 
-test('the E8 and E7 citations use the live EPA download page and the current AFDC title', () => {
+test('the E8 and E7 citations use the live EPA download page and the AFDC page that holds the charging-time passage (S-H1)', () => {
   assert.equal(ENERGY_SOURCES.epaLabelLosses.url, 'https://www.epa.gov/automotive-trends/download-2024-automotive-trends-report');
-  assert.equal(ENERGY_SOURCES.homeCharging.title, 'Charging Electric Vehicles at Home');
+  assert.equal(ENERGY_SOURCES.homeCharging.url, 'https://afdc.energy.gov/fuels/electricity-stations');
+  assert.equal(ENERGY_SOURCES.homeCharging.title, 'Electric Vehicle Charging Stations');
 });
 
 test('the Price Per Watt page cites E5 for the DC rating', () => {

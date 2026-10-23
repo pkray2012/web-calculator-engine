@@ -62,6 +62,7 @@ export const formatShare = (percent) => `${roundHalfUp(percent, 1, { grouping: f
 /** Energy in kWh: "45.00 kWh"; under 0.005 kWh (but not zero) → "less than 0.01 kWh". */
 export function formatKwh(kwh) {
   if (kwh === 0) return '0.00 kWh';
+  if (kwh < 0) return `${roundHalfUp(kwh, 2)} kWh`;
   if (kwh < 0.005) return 'less than 0.01 kWh';
   return `${roundHalfUp(kwh, 2)} kWh`;
 }
@@ -81,9 +82,27 @@ export function formatHours(hours) {
   return hours >= 48 ? `${text} (${roundHalfUp(hours / 24, 2)} days)` : text;
 }
 
-/** Cost per unit in cents with the dollar figure from the rounded cents: "4.45¢ ($0.045)". */
+/**
+ * Cost per unit in cents with the dollar figure from the rounded cents:
+ * "4.45¢ ($0.045)", grouped from 1,000¢ ("10,000.00¢ ($100.000)"), with the
+ * sign in front of each figure for a negative amount ("-4.45¢ (-$0.045)").
+ */
 export function formatCentsAndDollars(dollars) {
-  const cents = roundHalfUp(dollars, 2, { grouping: false, shift: 2 });
-  const fromCents = roundHalfUp(Number(cents), 3, { grouping: false, shift: -2 });
-  return `${cents}¢ ($${fromCents})`;
+  const cents = roundHalfUp(Math.abs(dollars), 2, { grouping: false, shift: 2 });
+  const sign = dollars < 0 && /[1-9]/.test(cents) ? '-' : '';
+  return `${sign}${roundHalfUp(Number(cents), 2)}¢ (${sign}$${roundHalfUp(Number(cents), 3, { shift: -2 })})`;
+}
+
+/**
+ * The same display from an exact count of hundredths of a cent (already
+ * rounded half up once, see roundRatio in ./money.js): 445 → "4.45¢ ($0.045)".
+ * The dollar figure is the rounded cents rounded half up to 3 decimals.
+ * @param {number} hundredthsOfCent a non-negative whole number
+ */
+export function formatPerMile(hundredthsOfCent) {
+  const x = BigInt(hundredthsOfCent);
+  const thousandthsOfDollar = (x + 5n) / 10n;
+  const cents = `${x / 100n}.${String(x % 100n).padStart(2, '0')}`;
+  const dollars = `${thousandthsOfDollar / 1000n}.${String(thousandthsOfDollar % 1000n).padStart(3, '0')}`;
+  return `${roundHalfUp(Number(cents), 2)}¢ ($${roundHalfUp(Number(dollars), 3)})`;
 }

@@ -16,8 +16,8 @@ export function evCostResults({ input, result, batteryText, meteredText, perMile
     { label: 'Cost per charge', value: formatCurrency(result.costPerCharge), primary: true, note: `${meteredText} at $${plainDecimal(input.rate)} per kWh` },
     { label: 'Energy drawn from the wall', value: meteredText, note: `${batteryText} into the battery at ${formatCount(input.efficiencyPercent)}% efficiency` },
     ...(perMile ? [
-      { label: 'Cost per mile', value: perMileText, note: `${formatCurrency(perMile.costPer100Miles)} per 100 miles` },
-      ...(perMile.monthly !== null ? [{ label: 'Per month', value: formatCurrency(perMile.monthly), note: `${formatCount(input.milesPerMonth)} miles` }] : [])
+      { label: 'Cost per mile', value: perMileText, note: `${formatCurrency(perMile.costPer100MilesCents / 100)} per 100 miles` },
+      ...(perMile.monthlyCents !== null ? [{ label: 'Per month', value: formatCurrency(perMile.monthlyCents / 100), note: `${formatCount(input.milesPerMonth)} miles` }] : [])
     ] : [])
   ])}
   ${message ? html`<p class="note">${message}</p>` : ''}

@@ -30,15 +30,15 @@ export function evChargingCostPage() {
   const faqs = [
     {
       question: 'How do I calculate EV charging cost per mile?',
-      answer: `Multiply the kWh per 100 miles on the EPA label by your rate, then divide by 100. At 30 kWh per 100 miles and ${rate} per kWh, that is ${epa.perMileText} a mile, or ${formatCurrency(epa.result.perMile.monthly)} for 1,000 miles.`
+      answer: `Multiply the kWh per 100 miles on the EPA label by your rate, then divide by 100. For example, at 30 kWh per 100 miles and ${rate} per kWh, that is ${epa.perMileText} a mile, or ${formatCurrency(epa.result.perMile.monthlyCents / 100)} for 1,000 miles (example values).`
     },
     {
       question: 'Should I add charging losses to the EPA figure?',
-      answer: 'No. The EPA label figure is measured at the wall, so it already includes charging losses (EPA). Adding them again would overstate the cost. For a dashboard miles-per-kWh figure, the calculator treats the figure as energy from the battery and applies your charging efficiency to it.'
+      answer: 'No. The EPA label figure is based on the electricity drawn from the outlet, so it already includes charging losses (EPA). Adding them again would overstate the cost. A trip-computer miles-per-kWh figure is used as your vehicle reports it, and the charging efficiency you enter is applied once.'
     },
     {
       question: 'Which electricity rate should I use?',
-      answer: 'Use the rate you pay for each extra kWh, from your rate plan, not your bill\'s average cost per kWh: the average includes fixed charges that charging does not change.'
+      answer: 'Use the rate you pay for each extra kWh, from your rate plan, not your bill\'s average cost per kWh.'
     },
     {
       question: 'Does this work for plug-in hybrids?',
@@ -52,7 +52,7 @@ export function evChargingCostPage() {
   ${directAnswer(html`<strong>Cost per charge = energy added ÷ charging efficiency × your electricity rate.</strong> Adding ${example.batteryText.replace('.00', '')} at 90% efficiency draws
   ${example.meteredText.replace('.00', '')}; at ${rate}/kWh that is ${perCharge}.`)}
   <p class="lede">Work out what it costs to charge an electric car at home, per charge from the battery size and charging efficiency, and per mile from the EPA label
-  or your dashboard. Your inputs stay in your browser.</p>
+  or your vehicle's trip computer. Your inputs stay in your browser.</p>
 </header>
 
 ${calculatorShell({
@@ -71,8 +71,8 @@ ${calculatorShell({
       <li><strong>Cost:</strong> ${example.meteredText} × ${rate} = ${perCharge}.</li>
     </ol>
     <p class="formula"><code>Cost per mile = EPA kWh per 100 miles ÷ 100 × rate</code></p>
-    <p>The EPA figure is measured at the wall, so it already includes charging losses (<a href="${source.url}">EPA</a>).
-    With a dashboard figure in miles per kWh, the cost per mile is the rate ÷ (mi/kWh × charging efficiency).</p>
+    <p>The EPA figure is based on the electricity drawn from the outlet, so it already includes charging losses (<a href="${source.url}">EPA</a>).
+    With a trip-computer figure in miles per kWh, the cost per mile is the rate ÷ (mi/kWh × charging efficiency): the figure is used as your vehicle reports it, and the efficiency you enter is applied once.</p>
   </section>
 
   <section class="content-section" aria-labelledby="evcost-assumptions-heading">
@@ -93,7 +93,7 @@ ${calculatorShell({
 
   ${faqSection(faqs, 'evcost-faq')}
 
-  ${sourcesSection([source])}
+  ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
   ${relatedLinks(relatedEnergyCalculators(calculator.slug))}
 </article>

@@ -1,6 +1,7 @@
 /**
- * Home Energy Batch 1 against the revision 6.2 reference vectors
- * (fixtures/batch1_vectors_r6.json, from batch1_reference_r6.py).
+ * Home Energy Batch 1 against the revision 6.3 reference vectors
+ * (fixtures/batch1_vectors_r6_3.json, from batch1_reference_r6_3.py: revision 6.2
+ * with B1-25's per-mile text rounded once from the exact value and grouped).
  *
  * Each vector goes through the page's adapter exactly as typed form text, so
  * parsing, limits, cross-field rules and the engine are all exercised. A
@@ -31,7 +32,7 @@ const chargeValues = ({ capacity, s0, s1, power, basis, efficiency, vehicle_max_
   capacity: text(capacity), startLevel: text(s0), targetLevel: text(s1), power: text(power), basis, efficiency: text(efficiency), vehicleMax: text(vehicleMax)
 });
 
-const VECTORS = JSON.parse(readFileSync(new URL('./fixtures/batch1_vectors_r6.json', import.meta.url), 'utf8'));
+const VECTORS = JSON.parse(readFileSync(new URL('./fixtures/batch1_vectors_r6_3.json', import.meta.url), 'utf8'));
 
 /** Form text for a reference input: numbers as plain decimals (never exponent notation), strings as typed. */
 export const text = (value) => (value === null || value === undefined ? '' : typeof value === 'number' ? plainDecimal(value) : String(value));

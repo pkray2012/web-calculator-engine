@@ -6,7 +6,7 @@
 
 import { calculateEvChargingCost, COST_LIMITS } from '../../calculators/energy/ev-charging-cost.js';
 import { numberField } from '../../lib/validation.js';
-import { formatKwh, formatCentsAndDollars } from '../../lib/energy/format.js';
+import { formatKwh, formatPerMile } from '../../lib/energy/format.js';
 import { parseLevels } from './charging-time.js';
 import { rateField } from './electric-bill.js';
 
@@ -17,7 +17,7 @@ export const COST_NOTES = Object.freeze({
   nothing: 'Nothing to charge.'
 });
 
-export const FIGURE_TYPE_ERROR = 'Choose the figure type (EPA kWh/100 mi or dashboard mi/kWh).';
+export const FIGURE_TYPE_ERROR = 'Choose the figure type (EPA kWh/100 mi or trip computer mi/kWh).';
 
 /** Form values: the example's numbers, with no efficiency and the per-mile section off. */
 export const EV_COST_DEFAULTS = Object.freeze({
@@ -62,7 +62,7 @@ export function buildEvCostView(input) {
     result,
     batteryText: formatKwh(result.batteryKwh),
     meteredText: formatKwh(result.meteredKwh),
-    perMileText: result.perMile ? formatCentsAndDollars(result.perMile.costPerMile) : null,
+    perMileText: result.perMile ? formatPerMile(result.perMile.costPerMileHundredthsOfCent) : null,
     message: result.batteryKwh === 0 ? COST_NOTES.nothing : null,
     notes
   };

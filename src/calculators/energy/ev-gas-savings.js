@@ -2,7 +2,7 @@
  * A year's fuel cost of an electric vehicle against a gas vehicle.
  *
  * - Electricity cost = miles × EPA kWh per 100 miles ÷ 100 × rate per kWh.
- *   The EPA figure is measured at the wall, so it already includes charging
+ *   The EPA figure is based on the electricity drawn from the outlet, so it already includes charging
  *   losses; no charging efficiency is applied.
  * - Gas cost = miles ÷ MPG × price per gallon, from the site's Fuel Cost
  *   engine (calculateTripFuelCost), used unchanged.
@@ -10,16 +10,22 @@
  *   per month = savings ÷ 12. Cost per mile for each side.
  * Fuel only: purchase price, maintenance, insurance and incentives are not
  * included. All-electric miles only.
+ *
+ * Displayed amounts are rounded half up once from the exact value of the
+ * inputs as entered (evCents, gasCents and the per-mile figures in hundredths
+ * of a cent); savings = gasCents − evCents, and per month is that ÷ 12, half
+ * away from zero.
  */
 
 import { calculateTripFuelCost } from '../fuel-cost.js';
-import { epaCostPerMile } from './per-mile.js';
+import { epaCostPerMile, epaPerMileRatio } from './per-mile.js';
+import { exactRatio, roundRatio, divideCentsSigned } from '../../lib/energy/money.js';
 
 export const SAVINGS_LIMITS = Object.freeze({
-  miles: { max: 1_000_000 },
+  miles: { min: 1, max: 1_000_000 },
   epa: { min: 1, max: 1000 },
   rate: { min: 0, max: 10 },
-  mpg: { max: 500 },
+  mpg: { min: 0.1, max: 500 },
   pricePerGallon: { max: 50 }
 });
 
@@ -49,19 +55,19 @@ function finite(field, value, message) {
 
 /**
  * @param {object} input
- * @param {number} input.miles miles per year, greater than 0
+ * @param {number} input.miles miles per year, 1 to 1,000,000
  * @param {number} input.kwhPer100Miles EPA label kWh per 100 miles
  * @param {number} input.rate dollars per kWh
- * @param {number} input.mpg the gas vehicle's miles per gallon
+ * @param {number} input.mpg the gas vehicle's miles per gallon, 0.1 to 500
  * @param {number} input.pricePerGallon
  */
 export function calculateEvGasSavings({ miles, kwhPer100Miles, rate, mpg, pricePerGallon }) {
   const L = SAVINGS_LIMITS;
   // Checked here so the Fuel Cost engine, which throws for 0, is never called with it.
-  positive('miles', miles, L.miles.max);
+  range('miles', miles, L.miles);
   range('kwhPer100Miles', kwhPer100Miles, L.epa);
   range('rate', rate, L.rate);
-  positive('mpg', mpg, L.mpg.max);
+  range('mpg', mpg, L.mpg);
   positive('pricePerGallon', pricePerGallon, L.pricePerGallon.max);
 
   const evPerMile = epaCostPerMile(kwhPer100Miles, rate);
@@ -71,6 +77,9 @@ export function calculateEvGasSavings({ miles, kwhPer100Miles, rate, mpg, priceP
   finite('mpg', gas.gallons, 'Fuel economy is too small to calculate.');
   const gasPerMile = finite('mpg', gas.costPerMile, 'Fuel economy is too small to calculate.');
   const savings = gasCost - evCost;
+  const evCents = roundRatio(exactRatio([miles, kwhPer100Miles, rate], [100]), 2);
+  const gasCents = roundRatio(exactRatio([miles, pricePerGallon], [mpg]), 2);
+  const savingsCents = gasCents - evCents;
   return {
     evCost,
     gasCost,
@@ -79,7 +88,13 @@ export function calculateEvGasSavings({ miles, kwhPer100Miles, rate, mpg, priceP
     savingsPerMonth: savings / 12,
     evPerMile,
     gasPerMile,
-    gasCheaper: savings < 0,
-    highRate: rate > HIGH_RATE
+    gasCheaper: savingsCents < 0,
+    highRate: rate > HIGH_RATE,
+    evCents,
+    gasCents,
+    savingsCents,
+    savingsPerMonthCents: divideCentsSigned(savingsCents, 12),
+    evPerMileHundredthsOfCent: roundRatio(epaPerMileRatio(kwhPer100Miles, rate), 4),
+    gasPerMileHundredthsOfCent: roundRatio(exactRatio([pricePerGallon], [mpg]), 4)
   };
 }

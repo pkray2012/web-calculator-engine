@@ -1,6 +1,6 @@
 /**
- * Home Energy Batch 2 against the revision 7 reference vectors
- * (fixtures/batch2_vectors_r7.json, from batch2_reference_r7.py).
+ * Home Energy Batch 2 against the revision 7.1 reference vectors
+ * (fixtures/batch2_vectors_r7_1.json, from batch2_reference_r7_1.py).
  *
  * Each vector goes through the page's adapter exactly as typed form text, so
  * parsing, limits, cross-field rules and the engine are all exercised. A
@@ -22,7 +22,7 @@ import { electricityRatePage } from '../../../src/pages/energy/electricity-rate-
 import { rateResults } from '../../../src/components/energy/electricity-rate-results.js';
 
 const FIGURE_TYPES = { epa_kwh_per_100mi: 'epa', dashboard_mi_per_kwh: 'dashboard' };
-const VECTORS = JSON.parse(readFileSync(new URL('./fixtures/batch2_vectors_r7.json', import.meta.url), 'utf8'));
+const VECTORS = JSON.parse(readFileSync(new URL('./fixtures/batch2_vectors_r7_1.json', import.meta.url), 'utf8'));
 
 /** Form text for a reference input: numbers as plain decimals (never exponent notation), strings as typed. */
 const text = (value) => (value === null || value === undefined ? '' : typeof value === 'number' ? plainDecimal(value) : String(value));
@@ -78,7 +78,11 @@ const RUNNERS = {
       if (expected.annual === null) assert.equal(view.result.annual, null, `${name} annual`);
       else close(view.result.annual, expected.annual, MONEY, `${name} annual`);
       assert.equal(view.perMileText, expected.display.per_mile, `${name} per mile text`);
-      assert.equal(formatCurrency(view.result.costPer100Miles), expected.display.per_100mi, `${name} per 100 mi text`);
+      assert.equal(view.result.costPerMileHundredthsOfCent, expected.cost_per_mile_hundredths_of_cent, `${name} per mile rounded once`);
+      assert.equal(view.result.costPer100MilesCents, expected.cost_per_100mi_cents, `${name} per 100 mi from the rounded per-mile cents`);
+      assert.equal(view.result.annualCents, expected.annual_cents, `${name} annual cents`);
+      assert.equal(formatCurrency(view.result.costPer100MilesCents / 100), expected.display.per_100mi, `${name} per 100 mi text`);
+      if (expected.annual_cents !== null) assert.equal(formatCurrency(view.result.annualCents / 100), expected.display.annual, `${name} annual text`);
       assert.equal(view.milesPerKwhText, expected.display.mi_per_kwh, `${name} mi/kWh text`);
       assert.deepEqual(view.notes, expected.notes, `${name} notes`);
     }
@@ -98,8 +102,9 @@ const RUNNERS = {
       assert.equal(view.result.gasCheaper, expected.gas_cheaper, `${name} gas cheaper`);
       assert.equal(view.evPerMileText, expected.display.ev_per_mile, `${name} EV per mile text`);
       assert.equal(view.gasPerMileText, expected.display.gas_per_mile, `${name} gas per mile text`);
-      for (const [key, value] of [['ev_cost', view.result.evCost], ['gas_cost', view.result.gasCost], ['savings', view.result.savings], ['savings_per_month', view.result.savingsPerMonth]]) {
-        assert.equal(formatCurrency(value), expected.display[key], `${name} ${key} text`);
+      for (const [key, cents, expectedCents] of [['ev_cost', 'evCents', 'ev_cents'], ['gas_cost', 'gasCents', 'gas_cents'], ['savings', 'savingsCents', 'savings_cents'], ['savings_per_month', 'savingsPerMonthCents', 'savings_per_month_cents']]) {
+        assert.equal(view.result[cents], expected[expectedCents], `${name} ${key} cents`);
+        assert.equal(formatCurrency(view.result[cents] / 100), expected.display[key], `${name} ${key} text`);
       }
       assert.deepEqual(view.notes, expected.notes, `${name} notes`);
     }
@@ -126,7 +131,7 @@ for (const fn of Object.keys(RUNNERS)) {
 }
 
 test('every reference vector is covered', () => {
-  assert.equal(VECTORS.length, 64);
+  assert.equal(VECTORS.length, 74);
   assert.ok(VECTORS.every((vector) => vector.fn in RUNNERS));
 });
 
@@ -138,8 +143,8 @@ test('worked examples (master §4.9–4.12 acceptance)', () => {
   assert.equal(runElectricityCostCalculator({ watts: '125', hours: '24', days: '1', rate: '0.145' }).view.result.costCents, 44, 'half cent rounds up');
 
   const savings = runSavingsCalculator({ miles: '12000', kwhPer100Miles: '30', rate: '0.15', mpg: '30', pricePerGallon: '3.50' }).view;
-  assert.deepEqual([savings.result.evCost, savings.result.gasCost, savings.result.savings].map(formatCurrency), ['$540.00', '$1,400.00', '$860.00']);
-  assert.equal(formatCurrency(savings.result.savingsPerMonth), '$71.67');
+  assert.deepEqual([savings.result.evCents, savings.result.gasCents, savings.result.savingsCents].map((c) => formatCurrency(c / 100)), ['$540.00', '$1,400.00', '$860.00']);
+  assert.equal(formatCurrency(savings.result.savingsPerMonthCents / 100), '$71.67');
   assert.equal(savings.evPerMileText, '4.50¢ ($0.045)');
   assert.equal(savings.gasPerMileText, '11.67¢ ($0.117)');
 
@@ -147,7 +152,7 @@ test('worked examples (master §4.9–4.12 acceptance)', () => {
   assert.equal(perMile.perMileText, '4.50¢ ($0.045)');
   assert.ok(perMile.perMileText.includes('$0.045') && !perMile.perMileText.includes('$0.05)'), '$0.045, not $0.05');
   assert.equal(perMile.milesPerKwhText, '3.33');
-  assert.equal(formatCurrency(perMile.result.annual), '$540.00');
+  assert.equal(formatCurrency(perMile.result.annualCents / 100), '$540.00');
   assert.equal(runPerMileCalculator({ rate: '0.137', figureType: 'epa', figure: '28', efficiency: '', annualMiles: '' }).view.perMileText, '3.84¢ ($0.038)');
 
   const rate = runRateCalculator({ bill: '142.50', kwh: '950', fixed: '15.70' }).view;
@@ -173,8 +178,32 @@ test('B2-20: efficiency changes the dashboard path only', () => {
   assert.notEqual(dash('90'), dash('80'));
 });
 
-test('B2-19: miles of 0 is a field error before the Fuel Cost engine', () => {
-  const outcome = runSavingsCalculator({ miles: '0', kwhPer100Miles: '30', rate: '0.15', mpg: '30', pricePerGallon: '3.50' });
-  assert.equal(outcome.ok, false);
-  assert.ok('miles' in outcome.errors);
+test('B2-19: miles below 1 (and 0) is a field error before the Fuel Cost engine', () => {
+  for (const miles of ['0', '0.99']) {
+    const outcome = runSavingsCalculator({ miles, kwhPer100Miles: '30', rate: '0.15', mpg: '30', pricePerGallon: '3.50' });
+    assert.equal(outcome.ok, false);
+    assert.ok('miles' in outcome.errors);
+  }
+  assert.ok('mpg' in runSavingsCalculator({ miles: '12000', kwhPer100Miles: '30', rate: '0.15', mpg: '0.09', pricePerGallon: '3.50' }).errors, 'MPG floor 0.1 (N-M3)');
+});
+
+test('exact half-cent ties round up, and per 100 miles never contradicts per mile (N-M1, N-M2)', () => {
+  const perMile = (rate, figure, annualMiles = '') => runPerMileCalculator({ rate, figureType: 'epa', figure, efficiency: '', annualMiles }).view;
+  assert.equal(formatCurrency(perMile('0.15', '30', '5').result.annualCents / 100), '$0.23');
+  assert.equal(perMile('0.301', '85').perMileText, '25.59¢ ($0.256)');
+  const tie = perMile('1.035', '65');
+  assert.equal(tie.perMileText, '67.28¢ ($0.673)');
+  assert.equal(formatCurrency(tie.result.costPer100MilesCents / 100), '$67.28');
+  const gas = runSavingsCalculator({ miles: '52330.2', kwhPer100Miles: '17.14', rate: '0.28', mpg: '20', pricePerGallon: '1.5' }).view;
+  assert.equal(formatCurrency(gas.result.gasCents / 100), '$3,924.77');
+  for (let i = 1; i <= 2000; i += 1) {
+    const view = perMile(String(i / 1000), String(1 + (i % 997) / 7).slice(0, 8));
+    const cents = view.perMileText.split('¢')[0];
+    assert.equal(formatCurrency(view.result.costPer100MilesCents / 100), `$${cents}`, `rate ${i / 1000}`);
+  }
+});
+
+test('per-mile cents are grouped with thousands separators (N-L4)', () => {
+  const view = runPerMileCalculator({ rate: '10', figureType: 'dashboard', figure: '0.1', efficiency: '100', annualMiles: '' }).view;
+  assert.equal(view.perMileText, '10,000.00¢ ($100.000)');
 });

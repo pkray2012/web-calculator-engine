@@ -2,16 +2,21 @@
  * An electric vehicle's electricity cost per mile, from one of two figures.
  *
  * - EPA label kWh per 100 miles: cost per mile = kWh/100 mi ÷ 100 × rate.
- *   The label is measured at the wall, so it already includes charging
+ *   The label is based on the electricity drawn from the outlet, so it already includes charging
  *   losses; no charging efficiency is applied. Miles per kWh = 100 ÷ kWh/100 mi.
- * - Dashboard miles per kWh: cost per mile = rate ÷ (mi/kWh × efficiency).
- *   The figure is treated as energy from the battery, so the charging
- *   efficiency is applied once.
+ * - Trip-computer miles per kWh: cost per mile = rate ÷ (mi/kWh × efficiency).
+ *   The figure is used as the vehicle reports it, and the charging efficiency
+ *   the user enters is applied once; where the vehicle measures it is not
+ *   assumed.
  * Cost per 100 miles = cost per mile × 100; yearly cost = cost per mile ×
  * miles per year (optional). All-electric miles only.
+ * Displayed figures are rounded half up once from the exact value (hundredths
+ * of a cent per mile; the cost per 100 miles from those rounded cents, so the
+ * two never contradict; yearly cost in whole cents).
  */
 
-import { epaCostPerMile, dashboardCostPerMile } from './per-mile.js';
+import { epaCostPerMile, dashboardCostPerMile, epaPerMileRatio, dashboardPerMileRatio } from './per-mile.js';
+import { roundRatio, multiplyRatio } from '../../lib/energy/money.js';
 
 export const PER_MILE_LIMITS = Object.freeze({
   rate: { min: 0, max: 10 },
@@ -46,20 +51,29 @@ export function calculateEvCostPerMile({ rate, figureType, figure, efficiencyPer
   if (figureType !== 'epa' && figureType !== 'dashboard') throw new RangeError('figureType must be epa or dashboard');
   range('figure', figure, PER_MILE_LIMITS[figureType]);
   let costPerMile;
+  let ratio;
   let milesPerKwh = null;
   if (figureType === 'epa') {
     if (efficiencyPercent !== null) throw new RangeError('efficiency is not used with the EPA figure');
     costPerMile = finite('figure', epaCostPerMile(figure, rate));
+    ratio = epaPerMileRatio(figure, rate);
     milesPerKwh = 100 / figure;
   } else {
-    if (efficiencyPercent === null) throw new RangeError('efficiency is required with a dashboard figure');
+    if (efficiencyPercent === null) throw new RangeError('efficiency is required with a trip-computer figure');
     range('efficiencyPercent', efficiencyPercent, PER_MILE_LIMITS.efficiency);
     costPerMile = finite('figure', dashboardCostPerMile(figure, efficiencyPercent / 100, rate));
+    ratio = dashboardPerMileRatio(figure, efficiencyPercent, rate);
   }
+  const costPerMileHundredthsOfCent = roundRatio(ratio, 4);
   let annual = null;
+  let annualCents = null;
   if (annualMiles !== null) {
     range('annualMiles', annualMiles, PER_MILE_LIMITS.miles);
     annual = finite('annualMiles', costPerMile * annualMiles);
+    annualCents = roundRatio(multiplyRatio(ratio, annualMiles), 2);
   }
-  return { costPerMile, costPer100Miles: costPerMile * 100, milesPerKwh, annual, highRate: rate > HIGH_RATE };
+  return {
+    costPerMile, costPer100Miles: costPerMile * 100, milesPerKwh, annual, highRate: rate > HIGH_RATE,
+    costPerMileHundredthsOfCent, costPer100MilesCents: costPerMileHundredthsOfCent, annualCents
+  };
 }

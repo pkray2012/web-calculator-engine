@@ -120,3 +120,63 @@ export function productCentsOf(factors, divisor = 1) {
   const denominator = 10n ** BigInt(places) * BigInt(divisor);
   return Number((2n * numerator + denominator) / (2n * denominator));
 }
+
+/**
+ * An exact non-negative ratio, as BigInt numerator and denominator: the
+ * product of factors divided by the product of divisors, each taken at its
+ * shortest decimal form (for input of up to 15 significant digits this is the
+ * text as typed; beyond 17 it is the parsed number's shortest form).
+ * Factors must be finite and non-negative; divisors finite and positive.
+ * @param {number[]} factors
+ * @param {number[]} [divisors]
+ * @returns {{ n: bigint, d: bigint }}
+ */
+export function exactRatio(factors, divisors = []) {
+  let n = 1n;
+  let d = 1n;
+  for (const factor of factors) {
+    const scaled = scaledDigits(factor);
+    n *= scaled.digits;
+    d *= 10n ** BigInt(scaled.places);
+  }
+  for (const divisor of divisors) {
+    const scaled = scaledDigits(divisor);
+    d *= scaled.digits;
+    n *= 10n ** BigInt(scaled.places);
+  }
+  return { n, d };
+}
+
+/**
+ * An exact ratio × 10^scale, rounded half up to a whole number, once.
+ * roundRatio(r, 2) is whole cents of a dollar ratio; roundRatio(r, 4) is
+ * hundredths of a cent.
+ * @param {{ n: bigint, d: bigint }} ratio
+ * @param {number} [scale]
+ * @returns {number}
+ */
+export function roundRatio({ n, d }, scale = 0) {
+  const m = n * 10n ** BigInt(scale);
+  return Number((2n * m + d) / (2n * d));
+}
+
+/**
+ * Whole cents (any sign) ÷ a positive whole number, rounded half away from
+ * zero, so a negative amount rounds like its positive counterpart.
+ * @param {number} cents
+ * @param {number} divisor
+ * @returns {number}
+ */
+export function divideCentsSigned(cents, divisor) {
+  return cents < 0 ? -divideCents(-cents, divisor) : divideCents(cents, divisor);
+}
+
+/**
+ * An exact ratio × a finite non-negative number (at its shortest decimal form).
+ * @param {{ n: bigint, d: bigint }} ratio
+ * @param {number} factor
+ */
+export function multiplyRatio({ n, d }, factor) {
+  const scaled = exactRatio([factor]);
+  return { n: n * scaled.n, d: d * scaled.d };
+}

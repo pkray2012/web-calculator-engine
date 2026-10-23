@@ -6,6 +6,7 @@
 
 import { html } from '../../lib/html.js';
 import { formatCurrency } from '../../lib/format.js';
+import { plainDecimal } from '../../lib/energy/format.js';
 import { electricityCostForm } from '../../components/energy/electricity-cost-form.js';
 import { electricityCostResults, electricityCostQuickResult } from '../../components/energy/electricity-cost-results.js';
 import { relatedLinks, sourcesSection } from '../../components/layout.js';
@@ -19,14 +20,14 @@ export function electricityCostPage() {
   const calculator = findEnergyBatch2Calculator('electricity-cost-calculator');
   const example = runElectricityCostCalculator(ELECTRICITY_COST_DEFAULTS).view;
   const { input, result, kwhText, kwhPerDayText } = example;
-  const rate = formatCurrency(input.rate);
+  const rate = `$${plainDecimal(input.rate)}`;
   const cost = formatCurrency(result.costCents / 100);
   const source = ENERGY_SOURCES.applianceEnergy;
 
   const faqs = [
     {
       question: 'How do I calculate the cost to run an appliance?',
-      answer: `Multiply its watts by the hours it runs each day and divide by 1,000 to get kWh per day, multiply by the number of days, then multiply by your rate. ${input.watts} W × ${input.hours} hours ÷ 1,000 = ${kwhPerDayText} a day; over ${input.days} days that is ${kwhText}, or ${cost} at ${rate} per kWh.`
+      answer: `Multiply its watts by the hours it runs each day and divide by 1,000 to get kWh per day, multiply by the number of days, then multiply by your rate. For example (example values), ${input.watts} W × ${input.hours} hours ÷ 1,000 = ${kwhPerDayText} a day; over ${input.days} days that is ${kwhText}, or ${cost} at ${rate} per kWh.`
     },
     {
       question: 'Why can the estimate be higher than my real use?',
@@ -34,15 +35,15 @@ export function electricityCostPage() {
     },
     {
       question: 'Which electricity rate should I use?',
-      answer: 'Use the rate you pay for each extra kWh, from your rate plan, not your bill\'s average cost per kWh: the average includes fixed charges that running one more appliance does not change.'
+      answer: 'Use the rate you pay for each extra kWh, from your rate plan, not your bill\'s average cost per kWh.'
     }
   ];
 
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
-  ${directAnswer(html`<strong>kWh = watts × hours per day × days ÷ 1,000; cost = kWh × your rate.</strong> ${input.watts} W for ${input.hours} hours a day over ${input.days} days
-  is ${kwhText.replace('.00', '')}; at ${rate} per kWh that is ${cost}.`)}
+  ${directAnswer(html`<strong>kWh = watts × hours per day × days ÷ 1,000; cost = kWh × your rate.</strong> For example, ${input.watts} W for ${input.hours} hours a day over ${input.days} days
+  is ${kwhText.replace('.00', '')}; at an example rate of ${rate} per kWh that is ${cost}.`)}
   <p class="lede">Find what an appliance or device costs to run from its power, how many hours a day it runs and your electricity rate.
   Your inputs stay in your browser.</p>
 </header>
@@ -84,7 +85,7 @@ ${calculatorShell({
 
   ${faqSection(faqs, 'elcost-faq')}
 
-  ${sourcesSection([source])}
+  ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
   ${relatedLinks(relatedEnergyBatch2Calculators(calculator.slug))}
 </article>

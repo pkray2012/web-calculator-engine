@@ -26,23 +26,23 @@ export function electricityRatePage() {
   const faqs = [
     {
       question: 'How do I find my price per kWh from my bill?',
-      answer: `Divide the bill total by the kWh used. ${bill} ÷ ${kwh} = ${averageText} per kWh. That average includes every charge on the bill.`
+      answer: `Divide the bill total by the kWh used. For example, ${bill} ÷ ${kwh} = ${averageText} per kWh. That average includes every charge on the bill.`
     },
     {
-      question: `What is the "${RESIDUAL_LABEL.toLowerCase()}"?`,
-      answer: `It is the bill minus the charges you choose to leave out, divided by the kWh: (${bill} − ${excluded}) ÷ ${kwh} = ${residualText}. ${RATE_NOTES.residual}`
+      question: 'How is the average rate different from the rate on my plan?',
+      answer: `The average divides the whole bill by the kWh, so fixed charges are spread over every kWh. The ${RESIDUAL_LABEL.toLowerCase()} leaves out the charges you enter: for example, (${bill} − ${excluded}) ÷ ${kwh} = ${residualText}. ${RATE_NOTES.residual} The rate on your plan is the price per kWh your utility lists.`
     },
     {
       question: 'Which rate should I use for EV charging or solar savings?',
-      answer: 'The rate you pay for each extra kWh, from your rate plan. The averages on this page spread fixed charges over every kWh, and charging a car or making your own power does not change those fixed charges.'
+      answer: 'The rate you pay for each extra kWh, from your rate plan. The averages on this page spread fixed charges over every kWh, so they are not the price of one more kWh.'
     }
   ];
 
   const body = html`<div class="container">
 <header class="page-header">
   <h1>${calculator.name}</h1>
-  ${directAnswer(html`<strong>Average cost per kWh = bill ÷ kWh used.</strong> ${bill} ÷ ${kwh} = ${averageText};
-  leaving out ${excluded} of fixed charges gives ${residualText}.`)}
+  ${directAnswer(html`<strong>Average cost per kWh = bill ÷ kWh used.</strong> For example, ${bill} ÷ ${kwh} = ${averageText};
+  leaving out ${excluded} of fixed charges gives ${residualText} (example values).`)}
   <p class="lede">Work out what you paid per kWh from your electric bill, with and without the fixed charges you choose to leave out.
   Your inputs stay in your browser.</p>
 </header>

@@ -7,6 +7,7 @@
 
 import { html } from '../../lib/html.js';
 import { formatCurrency, formatCount } from '../../lib/format.js';
+import { plainDecimal } from '../../lib/energy/format.js';
 import { savingsForm } from '../../components/energy/ev-gas-savings-form.js';
 import { savingsResults, savingsQuickResult } from '../../components/energy/ev-gas-savings-results.js';
 import { relatedLinks, sourcesSection } from '../../components/layout.js';
@@ -21,21 +22,21 @@ export function evGasSavingsPage() {
   const example = runSavingsCalculator(SAVINGS_DEFAULTS).view;
   const { input, result, evPerMileText, gasPerMileText } = example;
   const miles = formatCount(input.miles);
-  const rate = formatCurrency(input.rate);
+  const rate = `$${plainDecimal(input.rate)}`;
   const gasPrice = formatCurrency(input.pricePerGallon);
-  const ev = formatCurrency(result.evCost);
-  const gas = formatCurrency(result.gasCost);
-  const savings = formatCurrency(result.savings);
+  const ev = formatCurrency(result.evCents / 100);
+  const gas = formatCurrency(result.gasCents / 100);
+  const savings = formatCurrency(result.savingsCents / 100);
   const source = ENERGY_SOURCES.epaLabelLosses;
 
   const faqs = [
     {
       question: 'How much does an electric car save on fuel?',
-      answer: `It depends on your miles, the two cars' efficiency and your prices. For ${miles} miles at ${input.kwhPer100Miles} kWh per 100 miles and ${rate} per kWh, electricity costs ${ev}; a ${input.mpg} MPG car at ${gasPrice} a gallon uses ${gas} of gas, so the EV saves ${savings} a year, ${formatCurrency(result.savingsPerMonth)} a month.`
+      answer: `It depends on your miles, the two cars' efficiency and your prices. For example, for ${miles} miles at ${input.kwhPer100Miles} kWh per 100 miles and ${rate} per kWh, electricity costs ${ev}; a ${input.mpg} MPG car at ${gasPrice} a gallon uses ${gas} of gas, so the EV saves ${savings} a year, ${formatCurrency(result.savingsPerMonthCents / 100)} a month (example values).`
     },
     {
       question: 'Do I need to add charging losses to the EPA figure?',
-      answer: 'No. The EPA kWh per 100 miles is measured at the wall, so it already includes charging losses (EPA).'
+      answer: 'No. The EPA kWh per 100 miles is based on the electricity drawn from the outlet, so it already includes charging losses (EPA).'
     },
     {
       question: 'What does this comparison leave out?',
@@ -47,7 +48,8 @@ export function evGasSavingsPage() {
 <header class="page-header">
   <h1>${calculator.name}</h1>
   ${directAnswer(html`<strong>Fuel savings = gas cost (miles ÷ MPG × gas price) − electricity cost (miles × kWh per 100 miles ÷ 100 × rate).</strong>
-  For ${miles} miles that is ${gas} − ${ev} = ${savings} a year.`)}
+  For example, ${miles} miles in an EV using ${input.kwhPer100Miles} kWh per 100 miles at ${rate} per kWh, against a ${input.mpg} MPG car at ${gasPrice} a gallon
+  (example values): ${gas} − ${ev} = ${savings} a year.`)}
   <p class="lede">Compare a year of electricity for an electric car with a year of gas for a gas car, and see the cost per mile of each.
   Your inputs stay in your browser.</p>
 </header>
@@ -68,7 +70,7 @@ ${calculatorShell({
       <li><strong>Savings:</strong> ${gas} − ${ev} = ${savings} a year.</li>
     </ol>
     <p class="formula"><code>Savings = miles ÷ MPG × gas price − miles × kWh per 100 miles ÷ 100 × rate</code></p>
-    <p>The EPA figure is measured at the wall, so it already includes charging losses (<a href="${source.url}">EPA</a>).</p>
+    <p>The EPA figure is based on the electricity drawn from the outlet, so it already includes charging losses (<a href="${source.url}">EPA</a>).</p>
   </section>
 
   <section class="content-section" aria-labelledby="evgas-assumptions-heading">
@@ -84,13 +86,13 @@ ${calculatorShell({
   <section class="content-section" aria-labelledby="evgas-method-heading">
     <h2 id="evgas-method-heading">Methodology and testing</h2>
     <p>The gas cost uses the same engine as our fuel cost calculator. Costs per mile are shown in cents to two decimals, with the dollar figure taken from those rounded cents.
-    Automated tests check the worked example, zero miles, the MPG, price and rate limits and a case where gas is cheaper.
+    Automated tests check the worked example, miles below 1, the MPG, price and rate limits and a case where gas is cheaper.
     <a href="/about/">How we build and test calculators</a>.</p>
   </section>
 
   ${faqSection(faqs, 'evgas-faq')}
 
-  ${sourcesSection([source])}
+  ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
   ${relatedLinks(relatedEnergyBatch2Calculators(calculator.slug))}
 </article>

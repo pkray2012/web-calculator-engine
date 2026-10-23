@@ -2,12 +2,12 @@
  * Adapter between the EV Cost Per Mile Calculator page and its engine. Parses
  * the form, calls calculateEvCostPerMile() and shapes the result for display.
  * No formulas live here. Charging efficiency has no default value and is
- * accepted only with a dashboard figure.
+ * accepted only with a trip-computer figure.
  */
 
 import { calculateEvCostPerMile, PER_MILE_LIMITS } from '../../calculators/energy/ev-cost-per-mile.js';
 import { numberField } from '../../lib/validation.js';
-import { formatCentsAndDollars, roundHalfUp } from '../../lib/energy/format.js';
+import { formatPerMile, roundHalfUp } from '../../lib/energy/format.js';
 import { rateField } from './electric-bill.js';
 import { FIGURE_TYPE_ERROR } from './ev-charging-cost.js';
 
@@ -18,14 +18,20 @@ export const PER_MILE_NOTES = Object.freeze({
 
 export const EPA_EFFICIENCY_ERROR = 'Charging efficiency is not used with the EPA figure (it already includes charging losses). Leave it blank.';
 
-/** Illustrative example values, not typical ones: the EPA figure path, no efficiency. */
+/** Hint for the efficiency field (C-M4): it is required with one figure type and refused with the other. */
+export const EFFICIENCY_HINT = 'Required for a trip-computer figure; not used with the EPA figure.';
+
+/** Form values: example numbers with no figure type chosen (the user must choose) and no efficiency. */
 export const PER_MILE_DEFAULTS = Object.freeze({
   rate: '0.15',
-  figureType: 'epa',
+  figureType: '',
   figure: '30',
   efficiency: '',
   annualMiles: '12000'
 });
+
+/** The pre-rendered example: the form's numbers read as an EPA label figure. Illustrative values, not typical ones. */
+export const PER_MILE_EXAMPLE = Object.freeze({ ...PER_MILE_DEFAULTS, figureType: 'epa' });
 
 export function parsePerMileForm(values) {
   const errors = {};
@@ -55,7 +61,7 @@ export function buildPerMileView(input) {
   return {
     input,
     result,
-    perMileText: formatCentsAndDollars(result.costPerMile),
+    perMileText: formatPerMile(result.costPerMileHundredthsOfCent),
     milesPerKwhText: result.milesPerKwh === null ? null : roundHalfUp(result.milesPerKwh, 2),
     notes
   };

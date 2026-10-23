@@ -27,7 +27,7 @@ export function solarPaybackPage() {
   const faqs = [
     {
       question: 'What is a solar payback period?',
-      answer: `It is how many years of bill savings it takes to cover what you paid for the system. The U.S. Department of Energy's simple payback divides the cost by the yearly value of the electricity the system produces: ${cost} ÷ ${savings} a year = ${years} years.`
+      answer: `It is how many years of bill savings it takes to cover what you paid for the system. The simple payback in an NREL guide (written for NARUC and hosted by the U.S. Department of Energy) divides the cost by the yearly value of the electricity the system produces: ${cost} ÷ ${savings} a year = ${years} years.`
     },
     {
       question: 'What does simple payback leave out?',
@@ -64,7 +64,7 @@ ${calculatorShell({
       <li><strong>Divide:</strong> ${cost} ÷ ${savings} = ${years} years. With $100 a year of maintenance, ${cost} ÷ ${formatCurrency(withMaintenance.netSavings).replace('.00', '')} = ${withMaintenance.display}.</li>
     </ol>
     <p class="formula"><code>Payback (years) = (cost − incentives) ÷ (yearly savings − yearly maintenance)</code></p>
-    <p>The Department of Energy defines simple payback as cost divided by the yearly value of the energy produced
+    <p>An NREL guide, hosted by the Department of Energy, defines simple payback as cost divided by the yearly value of the energy produced
     (<a href="${doe.url}">${doe.publisher}</a>). Subtracting maintenance is an extension of that definition, applied only to the amount you enter.</p>
   </section>
 
