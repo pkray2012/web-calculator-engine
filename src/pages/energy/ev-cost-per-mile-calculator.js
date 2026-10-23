@@ -15,6 +15,7 @@ import { faqSection, faqStructuredData, directAnswer } from '../../components/fa
 import { PER_MILE_DEFAULTS, PER_MILE_EXAMPLE, runPerMileCalculator } from '../../adapters/energy/ev-cost-per-mile.js';
 import { findEnergyBatch2Calculator, relatedEnergyBatch2Calculators } from '../../content/energy-batch2.js';
 import { ENERGY_SOURCES } from '../../content/energy-sources.js';
+import { releasedOnly } from '../../content/energy-release.js';
 
 export function evCostPerMilePage() {
   const calculator = findEnergyBatch2Calculator('ev-cost-per-mile-calculator');
@@ -92,7 +93,7 @@ ${calculatorShell({
 
   ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
-  ${relatedLinks(relatedEnergyBatch2Calculators(calculator.slug))}
+  ${relatedLinks(releasedOnly(relatedEnergyBatch2Calculators(calculator.slug)))}
 </article>
 </div>`;
 

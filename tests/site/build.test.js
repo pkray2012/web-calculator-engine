@@ -28,8 +28,11 @@ test('builds only real destinations with clean URLs', async () => {
   const calculators = ['asphalt-calculator', 'auto-loan-calculator', 'auto-loan-refinance-calculator', 'balance-transfer-calculator', 'board-foot-calculator', 'btu-calculator', 'car-lease-calculator', 'cd-calculator', 'compound-interest-calculator', 'concrete-calculator', 'credit-card-payoff-calculator', 'cubic-yard-calculator', 'debt-to-income-calculator', 'deck-calculator', 'dividend-calculator', 'drywall-calculator', 'fence-calculator', 'flooring-calculator', 'fuel-cost-calculator', 'gravel-calculator', 'heloc-payment-calculator', 'home-affordability-calculator', 'home-equity-loan-calculator', 'hourly-to-salary-calculator', 'loan-payment-calculator', 'loan-payoff-calculator', 'margin-calculator', 'mortgage-calculator', 'mortgage-points-calculator', 'mortgage-refinance-calculator', 'mulch-calculator', 'percentage-calculator', 'personal-loan-calculator', 'rent-vs-buy-calculator', 'roofing-calculator', 'sales-tax-calculator', 'savings-goal-calculator', 'square-footage-calculator', 'student-loan-refinance-calculator', 'time-card-calculator', 'tip-calculator']
     .map((slug) => `/calculators/${slug}/`);
   const legal = ['/contact/', '/contact/thanks/', '/disclaimer/', '/privacy/', '/terms/'];
-  assert.deepEqual(pages, ['/', '/404.html', '/about/', ...calculators, ...legal]);
-  assert.deepEqual(indexable, ['/', '/about/', ...calculators, ...legal.filter((path) => path !== '/contact/thanks/')]);
+  // Home Energy, EV cluster only (integration branch): the /energy/ev/ hub and its three calculators.
+  const energy = ['/energy/ev/', '/energy/ev/ev-charging-cost-calculator/', '/energy/ev/ev-cost-per-mile-calculator/', '/energy/ev/ev-gas-savings-calculator/'];
+  const [legalBefore, legalAfter] = [legal.slice(0, 3), legal.slice(3)];
+  assert.deepEqual(pages, ['/', '/404.html', '/about/', ...calculators, ...legalBefore, ...energy, ...legalAfter]);
+  assert.deepEqual(indexable, ['/', '/about/', ...calculators, ...legalBefore.filter((path) => path !== '/contact/thanks/'), ...energy, ...legalAfter]);
 });
 
 test('contact page is a Netlify form that publishes no email address', async () => {
@@ -90,7 +93,7 @@ test('robots.txt allows crawling and points at the sitemap', async () => {
   assert.equal(await read('robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
   const sitemap = await read('sitemap.xml');
   assert.match(sitemap, /<loc>https:\/\/calculators\.test\/calculators\/loan-payment-calculator\/<\/loc>/);
-  assert.equal((sitemap.match(/<url>/g) ?? []).length, 47);
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 51); // 47 + the EV hub and its three calculators
 });
 
 test('every relative import in shipped browser modules resolves', async () => {
@@ -292,10 +295,12 @@ test('module graphs never pull server-only code into the browser', async () => {
 test('every external link on a calculator page is an official source listed under "Sources"', async () => {
   const { liveCalculators } = await import('../../src/content/site.js');
   const { SOURCES } = await import('../../src/content/sources.js');
-  const known = new Set(Object.values(SOURCES).map((source) => source.url));
+  const { ENERGY_SOURCES } = await import('../../src/content/energy-sources.js');
+  // The released EV pages cite two energy sources: EPA (E8) and EIA (E3).
+  const known = new Set([...Object.values(SOURCES), ENERGY_SOURCES.epaLabelLosses, ENERGY_SOURCES.eiaStateAverages].map((source) => source.url));
   // Official US government sources only: the CFPB, the Department of Education's Federal Student Aid, NIST, the Department of Labor,
-  // FuelEconomy.gov and ENERGY STAR (DOE and EPA), the SEC's Investor.gov, the IRS and the SBA.
-  for (const url of known) assert.match(url, /^https:\/\/(www\.consumerfinance\.gov|studentaid\.gov|www\.nist\.gov|www\.dol\.gov|www\.fueleconomy\.gov|www\.energystar\.gov|www\.irs\.gov|www\.sba\.gov|www\.investor\.gov)\//);
+  // FuelEconomy.gov and ENERGY STAR (DOE and EPA), the SEC's Investor.gov, the IRS, the SBA, the EPA and the EIA.
+  for (const url of known) assert.match(url, /^https:\/\/(www\.consumerfinance\.gov|studentaid\.gov|www\.nist\.gov|www\.dol\.gov|www\.fueleconomy\.gov|www\.energystar\.gov|www\.irs\.gov|www\.sba\.gov|www\.investor\.gov|www\.epa\.gov|www\.eia\.gov)\//);
   for (const calc of liveCalculators()) {
     const doc = await read(`${calc.path.slice(1)}index.html`);
     const main = doc.slice(doc.indexOf('<main'), doc.indexOf('</main>'));
@@ -316,7 +321,7 @@ test('the deployment smoke test passes against a host that serves the build corr
   try {
     const ok = await smokeTest(base, { origin: ORIGIN });
     assert.deepEqual(ok.problems, []);
-    assert.equal(ok.checked, 47);
+    assert.equal(ok.checked, 51);
     // A build made for a different domain is caught.
     const wrong = await smokeTest(base, { origin: 'https://other.test' });
     assert.match(wrong.problems.join('\n'), /robots\.txt does not name https:\/\/other\.test\/sitemap\.xml/);

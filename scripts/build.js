@@ -61,6 +61,10 @@ import { concretePage } from '../src/pages/concrete-calculator.js';
 import { gravelPage } from '../src/pages/gravel-calculator.js';
 import { mulchPage } from '../src/pages/mulch-calculator.js';
 import { loanPayoffPage } from '../src/pages/loan-payoff-calculator.js';
+import { evGasSavingsPage } from '../src/pages/energy/ev-gas-savings-calculator.js';
+import { evCostPerMilePage } from '../src/pages/energy/ev-cost-per-mile-calculator.js';
+import { evChargingCostPage } from '../src/pages/energy/ev-charging-cost-calculator.js';
+import { evHubPage, underEvHub } from '../src/pages/energy/ev-hub.js';
 import { homePage, aboutPage, notFoundPage } from '../src/pages/static-pages.js';
 import { privacyPage, termsPage, disclaimerPage, contactPage, contactThanksPage, LEGAL_UPDATED } from '../src/pages/legal-pages.js';
 
@@ -173,6 +177,10 @@ export function buildPages(origin, brand = {}) {
     { ...homeEquityLoanPage(), updated: calculators.find((calc) => calc.slug === 'home-equity-loan-calculator').updated },
     { ...studentLoanRefinancePage(), updated: calculators.find((calc) => calc.slug === 'student-loan-refinance-calculator').updated },
     { ...loanPayoffPage(), updated: calculators.find((calc) => calc.slug === 'loan-payoff-calculator').updated },
+    { ...underEvHub(evGasSavingsPage()), updated: calculators.find((calc) => calc.slug === 'ev-gas-savings-calculator').updated },
+    { ...underEvHub(evCostPerMilePage()), updated: calculators.find((calc) => calc.slug === 'ev-cost-per-mile-calculator').updated },
+    { ...underEvHub(evChargingCostPage()), updated: calculators.find((calc) => calc.slug === 'ev-charging-cost-calculator').updated },
+    { ...evHubPage(), updated: '2026-10-23' },
     { ...aboutPage(), updated: '2026-09-27' },
     { ...contactPage(), updated: LEGAL_UPDATED },
     { ...privacyPage(), updated: LEGAL_UPDATED },

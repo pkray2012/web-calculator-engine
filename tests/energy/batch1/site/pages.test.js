@@ -9,6 +9,7 @@ import assert from 'node:assert/strict';
 import { escapeHtml } from '../../../../src/lib/html.js';
 import { ENERGY_BATCH1, findEnergyCalculator } from '../../../../src/content/energy-batch1.js';
 import { CALCULATORS } from '../../../../src/content/site.js';
+import { ENERGY_RELEASED_SLUGS } from '../../../../src/content/energy-release.js';
 import { utilityCostPage } from '../../../../src/pages/energy/utility-cost-calculator.js';
 import { utilityForm, UTILITY_FIELD_IDS } from '../../../../src/components/energy/utility-cost-form.js';
 import { solarPricePerWattPage } from '../../../../src/pages/energy/solar-price-per-watt-calculator.js';
@@ -53,7 +54,9 @@ test('every Batch 1 entry is a draft, outside the main registry', () => {
   assert.equal(ENERGY_BATCH1.length, 8);
   for (const entry of ENERGY_BATCH1) {
     assert.equal(entry.status, 'planned', entry.slug);
-    assert.ok(!CALCULATORS.some((calc) => calc.slug === entry.slug || calc.path === entry.path), `${entry.slug} is not in site.js`);
+    // Integration branch: the EV cluster is released (live in site.js); every other draft stays out of it.
+    if (ENERGY_RELEASED_SLUGS.includes(entry.slug)) assert.ok(CALCULATORS.some((calc) => calc.slug === entry.slug && calc.path === entry.path && calc.status === 'live'), `${entry.slug} is live in site.js`);
+    else assert.ok(!CALCULATORS.some((calc) => calc.slug === entry.slug || calc.path === entry.path), `${entry.slug} is not in site.js`);
     for (const related of entry.related) assert.ok(findEnergyCalculator(related), `${entry.slug} → ${related}`);
   }
 });

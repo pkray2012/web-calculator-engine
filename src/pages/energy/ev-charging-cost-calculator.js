@@ -14,6 +14,7 @@ import { faqSection, faqStructuredData, directAnswer } from '../../components/fa
 import { EV_COST_DEFAULTS, runEvCostCalculator } from '../../adapters/energy/ev-charging-cost.js';
 import { findEnergyCalculator, relatedEnergyCalculators } from '../../content/energy-batch1.js';
 import { ENERGY_SOURCES } from '../../content/energy-sources.js';
+import { releasedOnly } from '../../content/energy-release.js';
 
 /** The pre-rendered example: the form's numbers at an illustrative 90% efficiency. */
 export const EV_COST_EXAMPLE = Object.freeze({ ...EV_COST_DEFAULTS, efficiency: '90' });
@@ -95,7 +96,7 @@ ${calculatorShell({
 
   ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
-  ${relatedLinks(relatedEnergyCalculators(calculator.slug))}
+  ${relatedLinks(releasedOnly(relatedEnergyCalculators(calculator.slug)))}
 </article>
 </div>`;
 

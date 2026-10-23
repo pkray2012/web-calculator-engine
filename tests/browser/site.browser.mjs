@@ -6,6 +6,7 @@
  */
 
 import test from 'node:test';
+import { ENERGY_RELEASED } from '../../src/content/energy-release.js';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { mkdir } from 'node:fs/promises';
@@ -1550,11 +1551,14 @@ test('dividend: a zero yield is reported on its field', async () => {
   await close();
 });
 
+/** The Home Energy pages released on this branch: the EV cluster only. */
+const ENERGY_PATHS = ENERGY_RELEASED.map((entry) => entry.path);
+
 test('home page lists every live calculator by category', async () => {
   const { page, close } = await openPage('/');
   const links = await page.locator('#calculators .directory__list a').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
-  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV].sort());
-  assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans & Mortgages', 'Debt & Credit', 'Savings & Investing', 'Home & Construction', 'Work & Income', 'Everyday Money', 'Business']);
+  assert.deepEqual(links.sort(), [AUTO, CARD, CALC, PERSONAL, REFI, POINTS, PAYOFF, MORTGAGE, SLR, HEL, AUTO_REFI, AFFORD, SAVINGS, LEASE, DTI, TRANSFER, HELOC, RVB, CONCRETE, GRAVEL, MULCH, FLOORING, DRYWALL, ROOFING, FENCE, CD, COMPOUND, TIMECARD, BOARDFOOT, HOURLY, DECK, FUEL, TAX, MARGIN, PCT, TIP, SQFT, ASPHALT, CY, BTU, DIV, ...ENERGY_PATHS].sort());
+  assert.deepEqual(await page.locator('#calculators h3').allTextContents(), ['Loans & Mortgages', 'Debt & Credit', 'Savings & Investing', 'Home & Construction', 'Work & Income', 'Everyday Money', 'Business', 'Home Energy']);
   await close();
 });
 
