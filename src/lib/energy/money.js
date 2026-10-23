@@ -180,3 +180,46 @@ export function multiplyRatio({ n, d }, factor) {
   const scaled = exactRatio([factor]);
   return { n: n * scaled.n, d: d * scaled.d };
 }
+
+/**
+ * Signed exact ratios for Batch 2b (solar savings can be negative). A ratio is
+ * { n, d } with a BigInt numerator of any sign and a positive denominator.
+ * @typedef {{ n: bigint, d: bigint }} Ratio
+ */
+
+/** @param {Ratio} a @param {Ratio} b @returns {Ratio} */
+export const addRatios = (a, b) => ({ n: a.n * b.d + b.n * a.d, d: a.d * b.d });
+/** @param {Ratio} a @param {Ratio} b @returns {Ratio} */
+export const subtractRatios = (a, b) => ({ n: a.n * b.d - b.n * a.d, d: a.d * b.d });
+/** @param {Ratio} a @param {Ratio} b @returns {Ratio} */
+export const multiplyRatios = (a, b) => ({ n: a.n * b.n, d: a.d * b.d });
+
+/**
+ * a ÷ b for b > 0.
+ * @param {Ratio} a
+ * @param {Ratio} b
+ * @returns {Ratio}
+ */
+export function divideRatios(a, b) {
+  if (b.n <= 0n) throw new RangeError('can only divide by a positive ratio');
+  return { n: a.n * b.d, d: a.d * b.n };
+}
+
+/**
+ * An exact ratio × 10^scale, rounded half away from zero to a whole number, once (any sign).
+ * @param {Ratio} ratio
+ * @param {number} [scale]
+ * @returns {number}
+ */
+export function roundRatioSigned({ n, d }, scale = 0) {
+  return n < 0n ? -roundRatio({ n: -n, d }, scale) : roundRatio({ n, d }, scale);
+}
+
+/**
+ * The smallest whole number at or above a non-negative exact ratio.
+ * @param {Ratio} ratio
+ * @returns {number}
+ */
+export function ceilRatio({ n, d }) {
+  return Number((n + d - 1n) / d);
+}

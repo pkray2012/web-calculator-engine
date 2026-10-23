@@ -1,6 +1,6 @@
 /**
- * The figures in the twelve draft meta descriptions (energy-batch1.js and
- * energy-batch2.js) are typed text, so each one is recomputed here from the
+ * The figures in the draft meta descriptions (energy-batch1.js,
+ * energy-batch2.js and energy-batch2b.js) are typed text, so each one is recomputed here from the
  * engine with the inputs the description states (subagent audit C-M2). A
  * description that drifts from its calculator fails this test.
  */
@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 import { formatCurrency } from '../../src/lib/format.js';
 import { ENERGY_BATCH1 } from '../../src/content/energy-batch1.js';
 import { ENERGY_BATCH2 } from '../../src/content/energy-batch2.js';
+import { ENERGY_BATCH2B } from '../../src/content/energy-batch2b.js';
 import { runUtilityCalculator } from '../../src/adapters/energy/utility-cost.js';
 import { runPpwCalculator } from '../../src/adapters/energy/solar-price-per-watt.js';
 import { runBillCalculator } from '../../src/adapters/energy/electric-bill.js';
@@ -21,6 +22,10 @@ import { runElectricityCostCalculator } from '../../src/adapters/energy/electric
 import { runRateCalculator } from '../../src/adapters/energy/electricity-rate.js';
 import { runPerMileCalculator } from '../../src/adapters/energy/ev-cost-per-mile.js';
 import { runSavingsCalculator } from '../../src/adapters/energy/ev-gas-savings.js';
+import { runRoiCalculator } from '../../src/adapters/energy/solar-roi.js';
+import { runSolarSavingsCalculator } from '../../src/adapters/energy/solar-savings.js';
+import { runSizeCalculator } from '../../src/adapters/energy/solar-panel-size.js';
+import { runOutputCalculator } from '../../src/adapters/energy/solar-panel-output.js';
 
 const whole = (dollars) => formatCurrency(dollars).replace(/\.00$/, '');
 const view = (outcome) => {
@@ -53,14 +58,26 @@ const EXPECTED = {
   'ev-gas-savings-calculator': () => {
     const v = view(runSavingsCalculator({ miles: '12000', kwhPer100Miles: '30', rate: '0.15', mpg: '30', pricePerGallon: '3.50' }));
     return [`${whole(v.result.evCents / 100)} vs ${whole(v.result.gasCents / 100)}`];
+  },
+  'solar-roi-calculator': () => [view(runRoiCalculator({ cost: '20000', incentives: '', savings: '1600', maintenance: '0', years: '25' })).roiText],
+  'solar-savings-calculator': () => [whole(view(runSolarSavingsCalculator({ production: '10000', selfUse: '60', retailRate: '0.16', exportRate: '0.05', fees: '' })).savingsCents / 100)],
+  'solar-panel-size-calculator': () => {
+    const v = view(runSizeCalculator({ annualKwh: '10800', sunHours: '4.5', losses: '14', panelWatts: '400' }));
+    return [v.sizeText, `${v.panelsText} panels of 400 W`];
+  },
+  'solar-panel-output-calculator': () => {
+    const v = view(runOutputCalculator({ sizeKw: '7.6', sunHours: '4.5', losses: '14' }));
+    return [`${v.dailyText} a day`, `${v.annualText} a year`];
   }
 };
 
+const DRAFTS = [...ENERGY_BATCH1, ...ENERGY_BATCH2, ...ENERGY_BATCH2B];
+
 test('every draft description is covered', () => {
-  assert.deepEqual(Object.keys(EXPECTED).sort(), [...ENERGY_BATCH1, ...ENERGY_BATCH2].map((entry) => entry.slug).sort());
+  assert.deepEqual(Object.keys(EXPECTED).sort(), DRAFTS.map((entry) => entry.slug).sort());
 });
 
-for (const entry of [...ENERGY_BATCH1, ...ENERGY_BATCH2]) {
+for (const entry of DRAFTS) {
   test(`${entry.slug}: the figures in the description are what the engine computes`, () => {
     for (const figure of EXPECTED[entry.slug]()) assert.ok(entry.description.includes(figure), `"${figure}" not in: ${entry.description}`);
   });

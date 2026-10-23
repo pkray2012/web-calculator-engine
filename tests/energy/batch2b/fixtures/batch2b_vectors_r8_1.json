@@ -1,0 +1,1253 @@
+[
+ {
+  "name": "RO1 example",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25
+  },
+  "ref": "100.0%",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 2000000,
+   "total_net_savings_cents": 4000000,
+   "net_gain_cents": 2000000,
+   "roi_percent": 100.0,
+   "notes": [],
+   "display": {
+    "roi": "100.0%",
+    "net_cost": "$20,000.00",
+    "total_net_savings": "$40,000.00",
+    "net_gain": "$20,000.00"
+   }
+  }
+ },
+ {
+  "name": "RO2 maintenance",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": "100",
+   "years": 25
+  },
+  "ref": "87.5%",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 2000000,
+   "total_net_savings_cents": 3750000,
+   "net_gain_cents": 1750000,
+   "roi_percent": 87.5,
+   "notes": [],
+   "display": {
+    "roi": "87.5%",
+    "net_cost": "$20,000.00",
+    "total_net_savings": "$37,500.00",
+    "net_gain": "$17,500.00"
+   }
+  }
+ },
+ {
+  "name": "RO3 incentives",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "incentives": "5000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25
+  },
+  "ref": "166.7%",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 1500000,
+   "total_net_savings_cents": 4000000,
+   "net_gain_cents": 2500000,
+   "roi_percent": 166.66666666666669,
+   "notes": [],
+   "display": {
+    "roi": "166.7%",
+    "net_cost": "$15,000.00",
+    "total_net_savings": "$40,000.00",
+    "net_gain": "$25,000.00"
+   }
+  }
+ },
+ {
+  "name": "RO4 loss",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "500",
+   "maintenance": "0",
+   "years": 10
+  },
+  "ref": "-75.0%",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 2000000,
+   "total_net_savings_cents": 500000,
+   "net_gain_cents": -1500000,
+   "roi_percent": -75.0,
+   "notes": [],
+   "display": {
+    "roi": "-75.0%",
+    "net_cost": "$20,000.00",
+    "total_net_savings": "$5,000.00",
+    "net_gain": "-$15,000.00"
+   }
+  }
+ },
+ {
+  "name": "RO5 incentives = cost",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "incentives": "20000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25
+  },
+  "ref": "not defined",
+  "output": {
+   "defined": false,
+   "net_cost_cents": 0,
+   "total_net_savings_cents": 4000000,
+   "net_gain_cents": 4000000,
+   "roi_percent": null,
+   "notes": [],
+   "display": {
+    "roi": "Not defined: incentives cover the whole cost",
+    "net_cost": "$0.00",
+    "total_net_savings": "$40,000.00",
+    "net_gain": "$40,000.00"
+   }
+  }
+ },
+ {
+  "name": "RO6 incentives > cost",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "incentives": "20000.01",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25
+  },
+  "error_field": "incentives",
+  "error_message": "cannot be more than the cost"
+ },
+ {
+  "name": "RO7 years 0",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 0
+  },
+  "error_field": "years",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "RO8 years 25.5",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25.5
+  },
+  "error_field": "years",
+  "error_message": "must be a whole number"
+ },
+ {
+  "name": "RO9 years 51",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 51
+  },
+  "error_field": "years",
+  "error_message": "must be 50 or less"
+ },
+ {
+  "name": "RO10 years 30 note",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 30
+  },
+  "ref": "lifetime note",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 2000000,
+   "total_net_savings_cents": 4800000,
+   "net_gain_cents": 2800000,
+   "roi_percent": 140.0,
+   "notes": [
+    "Longer than the 25-year lifetime used as an example in the DOE/NREL document."
+   ],
+   "display": {
+    "roi": "140.0%",
+    "net_cost": "$20,000.00",
+    "total_net_savings": "$48,000.00",
+    "net_gain": "$28,000.00"
+   }
+  }
+ },
+ {
+  "name": "RO11 maintenance > savings",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "100",
+   "maintenance": "150",
+   "years": 20
+  },
+  "ref": "negative net savings: -105.0%",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 2000000,
+   "total_net_savings_cents": -100000,
+   "net_gain_cents": -2100000,
+   "roi_percent": -105.0,
+   "notes": [],
+   "display": {
+    "roi": "-105.0%",
+    "net_cost": "$20,000.00",
+    "total_net_savings": "-$1,000.00",
+    "net_gain": "-$21,000.00"
+   }
+  }
+ },
+ {
+  "name": "RO12 cost 0",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "0",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25
+  },
+  "error_field": "cost",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "RO13 R1 cost 20000.005",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000.005",
+   "savings": "1600",
+   "maintenance": "0",
+   "years": 25
+  },
+  "error_field": "cost",
+  "error_message": "enter dollars and cents, for example 1.25"
+ },
+ {
+  "name": "RO14 maintenance blank",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1600",
+   "maintenance": null,
+   "years": 25
+  },
+  "ref": "required, enter 0",
+  "error_field": "maintenance",
+  "error_message": "is required"
+ },
+ {
+  "name": "RO15 corner",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "0.01",
+   "savings": "100000000",
+   "maintenance": "0",
+   "years": 50
+  },
+  "ref": "finite",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 1,
+   "total_net_savings_cents": 500000000000,
+   "net_gain_cents": 499999999999,
+   "roi_percent": 49999999999900.0,
+   "notes": [
+    "Longer than the 25-year lifetime used as an example in the DOE/NREL document."
+   ],
+   "display": {
+    "roi": "49,999,999,999,900.0%",
+    "net_cost": "$0.01",
+    "total_net_savings": "$5,000,000,000.00",
+    "net_gain": "$4,999,999,999.99"
+   }
+  }
+ },
+ {
+  "name": "RO16 break-even",
+  "fn": "solar_roi",
+  "input": {
+   "cost": "20000",
+   "savings": "1000",
+   "maintenance": "0",
+   "years": 20
+  },
+  "ref": "0.0%, never \"-0.0%\"",
+  "output": {
+   "defined": true,
+   "net_cost_cents": 2000000,
+   "total_net_savings_cents": 2000000,
+   "net_gain_cents": 0,
+   "roi_percent": 0.0,
+   "notes": [],
+   "display": {
+    "roi": "0.0%",
+    "net_cost": "$20,000.00",
+    "total_net_savings": "$20,000.00",
+    "net_gain": "$0.00"
+   }
+  }
+ },
+ {
+  "name": "SV1 example",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "ref": "$1,160.00; 11.60¢",
+  "output": {
+   "self_kwh": 6000.0,
+   "exported_kwh": 4000.0,
+   "used_value": 960.0,
+   "export_value": 200.0,
+   "savings": 1160.0,
+   "savings_per_month": 96.66666666666667,
+   "cents_per_solar_kwh": 11.600000000000001,
+   "notes": [],
+   "display": {
+    "savings": "$1,160.00",
+    "savings_per_month": "$96.67",
+    "self_kwh": "6,000.00 kWh",
+    "exported_kwh": "4,000.00 kWh",
+    "cents_per_solar_kwh": "11.60¢"
+   }
+  }
+ },
+ {
+  "name": "SV2 all self-used",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 100,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "ref": "$1,600.00",
+  "output": {
+   "self_kwh": 10000.0,
+   "exported_kwh": 0.0,
+   "used_value": 1600.0,
+   "export_value": 0.0,
+   "savings": 1600.0,
+   "savings_per_month": 133.33333333333334,
+   "cents_per_solar_kwh": 16.0,
+   "notes": [],
+   "display": {
+    "savings": "$1,600.00",
+    "savings_per_month": "$133.33",
+    "self_kwh": "10,000.00 kWh",
+    "exported_kwh": "0.00 kWh",
+    "cents_per_solar_kwh": "16.00¢"
+   }
+  }
+ },
+ {
+  "name": "SV3 all exported",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 0,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "ref": "$500.00",
+  "output": {
+   "self_kwh": 0.0,
+   "exported_kwh": 10000.0,
+   "used_value": 0.0,
+   "export_value": 500.0,
+   "savings": 500.0,
+   "savings_per_month": 41.666666666666664,
+   "cents_per_solar_kwh": 5.0,
+   "notes": [],
+   "display": {
+    "savings": "$500.00",
+    "savings_per_month": "$41.67",
+    "self_kwh": "0.00 kWh",
+    "exported_kwh": "10,000.00 kWh",
+    "cents_per_solar_kwh": "5.00¢"
+   }
+  }
+ },
+ {
+  "name": "SV4 fees",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": 0.05,
+   "fees": "120"
+  },
+  "ref": "$1,040.00",
+  "output": {
+   "self_kwh": 6000.0,
+   "exported_kwh": 4000.0,
+   "used_value": 960.0,
+   "export_value": 200.0,
+   "savings": 1040.0,
+   "savings_per_month": 86.66666666666667,
+   "cents_per_solar_kwh": 10.4,
+   "notes": [],
+   "display": {
+    "savings": "$1,040.00",
+    "savings_per_month": "$86.67",
+    "self_kwh": "6,000.00 kWh",
+    "exported_kwh": "4,000.00 kWh",
+    "cents_per_solar_kwh": "10.40¢"
+   }
+  }
+ },
+ {
+  "name": "SV5 fees above savings",
+  "fn": "solar_savings",
+  "input": {
+   "production": 1000,
+   "self_use": 50,
+   "retail_rate": 0.16,
+   "export_rate": 0.05,
+   "fees": "200"
+  },
+  "ref": "negative with note",
+  "output": {
+   "self_kwh": 500.0,
+   "exported_kwh": 500.0,
+   "used_value": 80.0,
+   "export_value": 25.0,
+   "savings": -95.0,
+   "savings_per_month": -7.916666666666667,
+   "cents_per_solar_kwh": -9.5,
+   "notes": [
+    "With these inputs the solar fees are more than the bill savings."
+   ],
+   "display": {
+    "savings": "-$95.00",
+    "savings_per_month": "-$7.92",
+    "self_kwh": "500.00 kWh",
+    "exported_kwh": "500.00 kWh",
+    "cents_per_solar_kwh": "-9.50¢"
+   }
+  }
+ },
+ {
+  "name": "SV6 export above retail",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 60,
+   "retail_rate": 0.1,
+   "export_rate": 0.12
+  },
+  "ref": "note",
+  "output": {
+   "self_kwh": 6000.0,
+   "exported_kwh": 4000.0,
+   "used_value": 600.0,
+   "export_value": 480.0,
+   "savings": 1080.0,
+   "savings_per_month": 90.0,
+   "cents_per_solar_kwh": 10.8,
+   "notes": [
+    "Your export credit is higher than your retail rate; check both values."
+   ],
+   "display": {
+    "savings": "$1,080.00",
+    "savings_per_month": "$90.00",
+    "self_kwh": "6,000.00 kWh",
+    "exported_kwh": "4,000.00 kWh",
+    "cents_per_solar_kwh": "10.80¢"
+   }
+  }
+ },
+ {
+  "name": "SV7 production 0",
+  "fn": "solar_savings",
+  "input": {
+   "production": 0,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "ref": "$0.00, average —",
+  "output": {
+   "self_kwh": 0.0,
+   "exported_kwh": 0.0,
+   "used_value": 0.0,
+   "export_value": 0.0,
+   "savings": 0.0,
+   "savings_per_month": 0.0,
+   "cents_per_solar_kwh": null,
+   "notes": [],
+   "display": {
+    "savings": "$0.00",
+    "savings_per_month": "$0.00",
+    "self_kwh": "0.00 kWh",
+    "exported_kwh": "0.00 kWh",
+    "cents_per_solar_kwh": "—"
+   }
+  }
+ },
+ {
+  "name": "SV8 production 0.99",
+  "fn": "solar_savings",
+  "input": {
+   "production": 0.99,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "ref": "average —",
+  "output": {
+   "self_kwh": 0.594,
+   "exported_kwh": 0.396,
+   "used_value": 0.09504,
+   "export_value": 0.0198,
+   "savings": 0.11484,
+   "savings_per_month": 0.00957,
+   "cents_per_solar_kwh": null,
+   "notes": [],
+   "display": {
+    "savings": "$0.11",
+    "savings_per_month": "$0.01",
+    "self_kwh": "0.59 kWh",
+    "exported_kwh": "0.40 kWh",
+    "cents_per_solar_kwh": "—"
+   }
+  }
+ },
+ {
+  "name": "SV9 self-use 100.01",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 100.01,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "error_field": "self_use",
+  "error_message": "must be 100 or less"
+ },
+ {
+  "name": "SV10 export rate blank",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": null
+  },
+  "ref": "required, no default",
+  "error_field": "export_rate",
+  "error_message": "is required"
+ },
+ {
+  "name": "SV11 retail 16 (cents)",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 60,
+   "retail_rate": 16,
+   "export_rate": 0.05
+  },
+  "ref": "rate hint",
+  "error_field": "retail_rate",
+  "error_message": "Enter dollars per kWh, for example 0.16 for 16¢."
+ },
+ {
+  "name": "SV12 production 10000000.01",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000000.01,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": 0.05
+  },
+  "error_field": "production",
+  "error_message": "must be 10000000 or less"
+ },
+ {
+  "name": "SV13 fees R1",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000,
+   "self_use": 60,
+   "retail_rate": 0.16,
+   "export_rate": 0.05,
+   "fees": "1.005"
+  },
+  "error_field": "fees",
+  "error_message": "enter dollars and cents, for example 1.25"
+ },
+ {
+  "name": "SV14 corner",
+  "fn": "solar_savings",
+  "input": {
+   "production": 10000000,
+   "self_use": 100,
+   "retail_rate": 10,
+   "export_rate": 10
+  },
+  "ref": "finite, rate note",
+  "output": {
+   "self_kwh": 10000000.0,
+   "exported_kwh": 0.0,
+   "used_value": 100000000.0,
+   "export_value": 0.0,
+   "savings": 100000000.0,
+   "savings_per_month": 8333333.333333333,
+   "cents_per_solar_kwh": 1000.0,
+   "notes": [
+    "Higher than any U.S. state's 2025 all-sector average (EIA)."
+   ],
+   "display": {
+    "savings": "$100,000,000.00",
+    "savings_per_month": "$8,333,333.33",
+    "self_kwh": "10,000,000.00 kWh",
+    "exported_kwh": "0.00 kWh",
+    "cents_per_solar_kwh": "1,000.00¢"
+   }
+  }
+ },
+ {
+  "name": "WH1 example",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "output": {
+   "rise_f": 70,
+   "water_kwh": 8.541079188367027,
+   "drawn_kwh": 8.990609671965291,
+   "kw": 2.996869890655097,
+   "watts": 2996.869890655097,
+   "notes": [],
+   "display": {
+    "water_kwh": "8.54 kWh",
+    "drawn_kwh": "8.99 kWh",
+    "kw": "3.00 kW",
+    "watts": "2,997 W"
+   }
+  }
+ },
+ {
+  "name": "WH2 efficiency 100",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 100
+  },
+  "output": {
+   "rise_f": 70,
+   "water_kwh": 8.541079188367027,
+   "drawn_kwh": 8.541079188367027,
+   "kw": 2.847026396122342,
+   "watts": 2847.0263961223422,
+   "notes": [],
+   "display": {
+    "water_kwh": "8.54 kWh",
+    "drawn_kwh": "8.54 kWh",
+    "kw": "2.85 kW",
+    "watts": "2,847 W"
+   }
+  }
+ },
+ {
+  "name": "WH3 target = inlet",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 120,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "error_field": "target_f",
+  "error_message": "must be higher than the starting temperature"
+ },
+ {
+  "name": "WH4 target < inlet",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 120,
+   "target_f": 100,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "error_field": "target_f",
+  "error_message": "must be higher than the starting temperature"
+ },
+ {
+  "name": "WH5 start 39.99",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 39.99,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "ref": "S-M3: below 40 °F",
+  "error_field": "inlet_f",
+  "error_message": "must be at least 40"
+ },
+ {
+  "name": "WH6 target 160.01",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 160.01,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "ref": "S-M3: above 160 °F",
+  "error_field": "target_f",
+  "error_message": "must be 160 or less"
+ },
+ {
+  "name": "WH7 hours 0",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 0,
+   "efficiency": 95
+  },
+  "error_field": "hours",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "WH8 hours tiny",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 1e-321,
+   "efficiency": 95
+  },
+  "error_field": "hours",
+  "error_message": "must be at least 0.01"
+ },
+ {
+  "name": "WH9 efficiency blank",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": null
+  },
+  "ref": "no default",
+  "error_field": "efficiency",
+  "error_message": "required"
+ },
+ {
+  "name": "WH10 efficiency 0.99",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 0.99
+  },
+  "error_field": "efficiency",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "WH11 efficiency 49 note",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 50,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 49
+  },
+  "output": {
+   "rise_f": 70,
+   "water_kwh": 8.541079188367027,
+   "drawn_kwh": 17.43077385381026,
+   "kw": 5.810257951270086,
+   "watts": 5810.257951270086,
+   "notes": [
+    "Efficiency is unusually low; check the value."
+   ],
+   "display": {
+    "water_kwh": "8.54 kWh",
+    "drawn_kwh": "17.43 kWh",
+    "kw": "5.81 kW",
+    "watts": "5,810 W"
+   }
+  }
+ },
+ {
+  "name": "WH12 gallons 0",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 0,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "error_field": "gallons",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "WH13 gallons 10000.01",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 10000.01,
+   "inlet_f": 50,
+   "target_f": 120,
+   "hours": 3,
+   "efficiency": 95
+  },
+  "error_field": "gallons",
+  "error_message": "must be 10000 or less"
+ },
+ {
+  "name": "WH14 corner",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 10000,
+   "inlet_f": 40,
+   "target_f": 160,
+   "hours": 0.01,
+   "efficiency": 1
+  },
+  "ref": "finite",
+  "output": {
+   "rise_f": 120,
+   "water_kwh": 2928.370007440123,
+   "drawn_kwh": 292837.0007440123,
+   "kw": 29283700.07440123,
+   "watts": 29283700074.40123,
+   "notes": [
+    "Efficiency is unusually low; check the value."
+   ],
+   "display": {
+    "water_kwh": "2,928.37 kWh",
+    "drawn_kwh": "292,837.00 kWh",
+    "kw": "29,283,700.07 kW",
+    "watts": "29,283,700,074 W"
+   }
+  }
+ },
+ {
+  "name": "WH16 range ends 40 -> 160",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 40,
+   "inlet_f": 40,
+   "target_f": 160,
+   "hours": 4,
+   "efficiency": 100
+  },
+  "ref": "S-M3 limits accepted",
+  "output": {
+   "rise_f": 120,
+   "water_kwh": 11.713480029760493,
+   "drawn_kwh": 11.713480029760493,
+   "kw": 2.9283700074401233,
+   "watts": 2928.370007440123,
+   "notes": [],
+   "display": {
+    "water_kwh": "11.71 kWh",
+    "drawn_kwh": "11.71 kWh",
+    "kw": "2.93 kW",
+    "watts": "2,928 W"
+   }
+  }
+ },
+ {
+  "name": "WH15 one gallon one degree",
+  "fn": "water_heating_power",
+  "input": {
+   "gallons": 1,
+   "inlet_f": 60,
+   "target_f": 61,
+   "hours": 1,
+   "efficiency": 100
+  },
+  "ref": "kWh per gallon per °F",
+  "output": {
+   "rise_f": 1,
+   "water_kwh": 0.002440308339533436,
+   "drawn_kwh": 0.002440308339533436,
+   "kw": 0.002440308339533436,
+   "watts": 2.440308339533436,
+   "notes": [],
+   "display": {
+    "water_kwh": "less than 0.01 kWh",
+    "drawn_kwh": "less than 0.01 kWh",
+    "kw": "0.00 kW",
+    "watts": "2 W"
+   }
+  }
+ },
+ {
+  "name": "PS1 example",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 4.5,
+   "losses": 14,
+   "panel_watts": 400
+  },
+  "output": {
+   "size_kw": 7.6457470532016565,
+   "panels": 20,
+   "notes": [],
+   "display": {
+    "size": "7.65 kW",
+    "panels": "20"
+   }
+  }
+ },
+ {
+  "name": "PS2 no panel watts",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 4.5,
+   "losses": 14
+  },
+  "output": {
+   "size_kw": 7.6457470532016565,
+   "panels": null,
+   "notes": [],
+   "display": {
+    "size": "7.65 kW",
+    "panels": null
+   }
+  }
+ },
+ {
+  "name": "PS3 losses 0",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 7300,
+   "sun_hours": 4,
+   "losses": 0,
+   "panel_watts": 500
+  },
+  "ref": "exact 5 kW -> exactly 10 panels",
+  "output": {
+   "size_kw": 5.0,
+   "panels": 10,
+   "notes": [],
+   "display": {
+    "size": "5.00 kW",
+    "panels": "10"
+   }
+  }
+ },
+ {
+  "name": "PS4 losses blank",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 4.5,
+   "losses": null
+  },
+  "ref": "no default",
+  "error_field": "losses",
+  "error_message": "required"
+ },
+ {
+  "name": "PS5 losses 99.01",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 4.5,
+   "losses": 99.01
+  },
+  "error_field": "losses",
+  "error_message": "must be 99 or less"
+ },
+ {
+  "name": "PS6 losses 99",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 4.5,
+   "losses": 99
+  },
+  "ref": "N limit, note",
+  "output": {
+   "size_kw": 657.5342465753419,
+   "panels": null,
+   "notes": [
+    "Losses are unusually high; check the value."
+   ],
+   "display": {
+    "size": "657.53 kW",
+    "panels": null
+   }
+  }
+ },
+ {
+  "name": "PS7 sun 0.09",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 0.09,
+   "losses": 14
+  },
+  "error_field": "sun_hours",
+  "error_message": "must be at least 0.1"
+ },
+ {
+  "name": "PS8 sun 24.01",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 24.01,
+   "losses": 14
+  },
+  "error_field": "sun_hours",
+  "error_message": "must be 24 or less"
+ },
+ {
+  "name": "PS9 annual 0.99",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 0.99,
+   "sun_hours": 4.5,
+   "losses": 14
+  },
+  "error_field": "annual_kwh",
+  "error_message": "must be at least 1"
+ },
+ {
+  "name": "PS10 panel 2000.01",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 4.5,
+   "losses": 14,
+   "panel_watts": 2000.01
+  },
+  "error_field": "panel_watts",
+  "error_message": "must be 2000 or less"
+ },
+ {
+  "name": "PS11 corner",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10000000,
+   "sun_hours": 0.1,
+   "losses": 99,
+   "panel_watts": 1
+  },
+  "ref": "finite",
+  "output": {
+   "size_kw": 27397260.27397258,
+   "panels": 27397260274,
+   "notes": [
+    "Losses are unusually high; check the value."
+   ],
+   "display": {
+    "size": "27,397,260.27 kW",
+    "panels": "27,397,260,274"
+   }
+  }
+ },
+ {
+  "name": "PS12 sun tiny",
+  "fn": "solar_panel_size",
+  "input": {
+   "annual_kwh": 10800,
+   "sun_hours": 1e-321,
+   "losses": 14
+  },
+  "error_field": "sun_hours",
+  "error_message": "must be at least 0.1"
+ },
+ {
+  "name": "PO1 example",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 7.6,
+   "sun_hours": 4.5,
+   "losses": 14
+  },
+  "ref": "monthly exactly 894.615 -> 894.62 kWh (N-M5)",
+  "output": {
+   "daily_kwh": 29.411999999999995,
+   "annual_kwh": 10735.38,
+   "monthly_kwh": 894.6149999999999,
+   "notes": [],
+   "display": {
+    "daily": "29.41 kWh",
+    "annual": "10,735.38 kWh",
+    "monthly": "894.62 kWh"
+   }
+  }
+ },
+ {
+  "name": "PO2 losses 0",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 5,
+   "sun_hours": 4,
+   "losses": 0
+  },
+  "ref": "20 kWh/day, 7,300 kWh/yr",
+  "output": {
+   "daily_kwh": 20.0,
+   "annual_kwh": 7300.0,
+   "monthly_kwh": 608.3333333333334,
+   "notes": [],
+   "display": {
+    "daily": "20.00 kWh",
+    "annual": "7,300.00 kWh",
+    "monthly": "608.33 kWh"
+   }
+  }
+ },
+ {
+  "name": "PO3 losses blank",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 7.6,
+   "sun_hours": 4.5,
+   "losses": null
+  },
+  "error_field": "losses",
+  "error_message": "required"
+ },
+ {
+  "name": "PO4 size 0.0009",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 0.0009,
+   "sun_hours": 4.5,
+   "losses": 14
+  },
+  "error_field": "size_kw",
+  "error_message": "must be at least 0.001"
+ },
+ {
+  "name": "PO5 size 1000.001",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 1000.001,
+   "sun_hours": 4.5,
+   "losses": 14
+  },
+  "error_field": "size_kw",
+  "error_message": "must be 1000 or less"
+ },
+ {
+  "name": "PO6 losses 99",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 7.6,
+   "sun_hours": 4.5,
+   "losses": 99
+  },
+  "ref": "note",
+  "output": {
+   "daily_kwh": 0.34200000000000025,
+   "annual_kwh": 124.83000000000008,
+   "monthly_kwh": 10.402500000000007,
+   "notes": [
+    "Losses are unusually high; check the value."
+   ],
+   "display": {
+    "daily": "0.34 kWh",
+    "annual": "124.83 kWh",
+    "monthly": "10.40 kWh"
+   }
+  }
+ },
+ {
+  "name": "PO7 corner",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 1000,
+   "sun_hours": 24,
+   "losses": 0
+  },
+  "ref": "finite",
+  "output": {
+   "daily_kwh": 24000.0,
+   "annual_kwh": 8760000.0,
+   "monthly_kwh": 730000.0,
+   "notes": [],
+   "display": {
+    "daily": "24,000.00 kWh",
+    "annual": "8,760,000.00 kWh",
+    "monthly": "730,000.00 kWh"
+   }
+  }
+ },
+ {
+  "name": "PO8 small",
+  "fn": "solar_panel_output",
+  "input": {
+   "size_kw": 0.001,
+   "sun_hours": 0.1,
+   "losses": 99
+  },
+  "ref": "less than 0.01 kWh",
+  "output": {
+   "daily_kwh": 1.000000000000001e-06,
+   "annual_kwh": 0.00036500000000000036,
+   "monthly_kwh": 3.0416666666666697e-05,
+   "notes": [
+    "Losses are unusually high; check the value."
+   ],
+   "display": {
+    "daily": "less than 0.01 kWh",
+    "annual": "less than 0.01 kWh",
+    "monthly": "less than 0.01 kWh"
+   }
+  }
+ }
+]

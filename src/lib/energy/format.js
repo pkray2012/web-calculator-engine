@@ -106,3 +106,26 @@ export function formatPerMile(hundredthsOfCent) {
   const dollars = `${thousandthsOfDollar / 1000n}.${String(thousandthsOfDollar % 1000n).padStart(3, '0')}`;
   return `${roundHalfUp(Number(cents), 2)}¢ ($${roundHalfUp(Number(dollars), 3)})`;
 }
+
+/**
+ * An exact ratio { n, d } (BigInt, d > 0, n of any sign) as decimal text with
+ * dp decimals, rounded half away from zero once and grouped with commas;
+ * a value that rounds to zero never shows a minus sign.
+ * @param {{ n: bigint, d: bigint }} ratio
+ * @param {number} dp
+ */
+export function ratioDecimal({ n, d }, dp) {
+  const negative = n < 0n;
+  const m = (negative ? -n : n) * 10n ** BigInt(dp);
+  const scaled = (2n * m + d) / (2n * d);
+  const digits = scaled.toString().padStart(dp + 1, '0');
+  const body = group(digits.slice(0, digits.length - dp)) + (dp ? `.${digits.slice(digits.length - dp)}` : '');
+  return negative && scaled !== 0n ? `-${body}` : body;
+}
+
+/** Energy from an exact non-negative ratio, with the formatKwh rules: "894.62 kWh", "less than 0.01 kWh". */
+export function formatKwhRatio(ratio) {
+  if (ratio.n === 0n) return '0.00 kWh';
+  if (ratio.n * 200n < ratio.d) return 'less than 0.01 kWh';
+  return `${ratioDecimal(ratio, 2)} kWh`;
+}

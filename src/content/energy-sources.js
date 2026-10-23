@@ -1,5 +1,5 @@
 /**
- * Sources cited by the Home Energy draft pages (Batch 1 and Batch 2). Only
+ * Sources cited by the Home Energy draft pages (Batch 1, Batch 2 and Batch 2b). Only
  * confirmed sources (or partly confirmed, where the page claims only the
  * confirmed part) are listed, each with the claim it supports. The status is
  * noted beside each entry; ENERGY_SOURCE_RETRIEVALS (end of file) records
@@ -26,7 +26,7 @@ export const ENERGY_SOURCES = Object.freeze({
     url: 'https://afdc.energy.gov/fuels/electricity-stations',
     supports: 'Charging time depends on how depleted the battery is, its capacity, the vehicle\'s onboard charger and the charging equipment.'
   },
-  // E5: confirmed by builder/subagent retrieval; owner/Codex confirmation pending (X11). Cited only for residential prices and sizes being quoted on the DC rating.
+  // E5: CONFIRMED; X11 closed by the owner on 2026-10-23 (Codex has reviewed E5). Cited only for residential prices and sizes being quoted on the DC rating.
   dcRating: {
     title: '2024 Electricity Annual Technology Baseline (ATB): Residential PV',
     publisher: 'National Laboratory of the Rockies (NLR), U.S. Department of Energy',
@@ -72,7 +72,7 @@ export const ENERGY_SOURCE_RETRIEVALS = Object.freeze({
   aprVsRate: { retrieved: '2026-10-22', status: 'E4a CONFIRMED (CFPB); subagent re-retrieval 2026-10-22' },
   simplePayback: { retrieved: '2026-10-22', status: 'E6 CONFIRMED (simple payback definition); PDF hash unchanged' },
   homeCharging: { retrieved: '2026-10-22', status: 'E7 PARTIAL; passage on the stations page' },
-  dcRating: { retrieved: '2026-10-22', status: 'E5 confirmed by builder/subagent retrieval; owner/Codex confirmation pending (X11)' },
+  dcRating: { retrieved: '2026-10-22', status: 'E5 CONFIRMED; X11 closed by the owner 2026-10-23 (Codex reviewed E5)' },
   epaLabelLosses: { retrieved: '2026-10-22', status: 'E8 CONFIRMED; passage re-read in a live EPA copy of EPA-420-R-24-022' },
   kilowattHour: { retrieved: '2026-10-20', status: 'E1 CONFIRMED; HTML page unreachable through the proxy on 2026-10-22, PDF hash unchanged' },
   applianceEnergy: { retrieved: '2026-10-22', status: 'E2 CONFIRMED; page hash unchanged since 2026-10-20' },
