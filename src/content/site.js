@@ -15,8 +15,6 @@ export const SITE = Object.freeze({
   ads: false
 });
 
-import { ENERGY_RELEASED } from './energy-release.js';
-
 /** Display order is the order on the home page and in the footer directory. */
 export const CATEGORIES = Object.freeze({
   loans: { name: 'Loans & Mortgages', description: 'Monthly payments, total interest and payoff schedules for mortgages, car loans, personal loans and refinancing.' },
@@ -25,8 +23,7 @@ export const CATEGORIES = Object.freeze({
   homeImprovement: { name: 'Home & Construction', description: 'Materials and quantities for projects around the house, from concrete and gravel to flooring, roofing and decks.' },
   work: { name: 'Work & Income', description: 'Hours worked and pay, from a weekly time card or an hourly wage converted to a salary.' },
   everyday: { name: 'Everyday Money', description: 'Quick everyday math: sales tax, tips, percentages and what a drive costs in fuel.' },
-  business: { name: 'Business', description: 'Pricing, profit margin and markup for a small business.' },
-  energy: { name: 'Home Energy', description: 'What it costs to charge and drive an electric car, from your own electricity rate and your car\'s figures.' }
+  business: { name: 'Business', description: 'Pricing, profit margin and markup for a small business.' }
 });
 
 /** Shown first on the home page: the calculators people most often look for. */
@@ -642,9 +639,7 @@ export const CALCULATORS = Object.freeze([
     description: 'Project dividend income and portfolio value with or without reinvestment (DRIP), monthly contributions, dividend growth, price growth and tax on dividends.',
     summary: 'Dividend income and value over time, reinvested or taken as cash, with contributions, dividend and price growth, and tax.',
     related: ['compound-interest-calculator', 'savings-goal-calculator', 'cd-calculator']
-  },
-  // Home Energy: the EV cluster only (owner, 2026-10-23); see energy-release.js.
-  ...ENERGY_RELEASED.map((entry) => ({ ...entry, category: 'energy', navName: entry.name.replace(/ Calculator$/, ''), status: 'live' }))
+  }
 ]);
 
 export function liveCalculators(registry = CALCULATORS) {

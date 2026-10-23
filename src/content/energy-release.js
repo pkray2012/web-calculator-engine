@@ -1,9 +1,11 @@
 /**
  * The Home Energy pages released on this integration branch (owner,
- * 2026-10-23): the EV cluster only. These three are the only energy entries
- * src/content/site.js lists as live; every other Batch 1 and Batch 2 draft
- * stays planned and unlinked. Links between energy pages are kept only when
- * both ends are released, so no live page links to an unbuilt one.
+ * 2026-10-23): the EV cluster only. scripts/build.js builds these three and
+ * the /energy/ev/ hub; they are not listed in src/content/site.js, so the home
+ * page, footer directory and llms.txt are unchanged until D7 is decided. Every
+ * other Batch 1 and Batch 2 draft stays planned and unlinked. Links between
+ * energy pages are kept only when both ends are released, so no live page
+ * links to an unbuilt one.
  */
 
 import { ENERGY_BATCH1 } from './energy-batch1.js';

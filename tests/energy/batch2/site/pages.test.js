@@ -10,7 +10,6 @@ import { escapeHtml } from '../../../../src/lib/html.js';
 import { ENERGY_BATCH2, findEnergyBatch2Calculator } from '../../../../src/content/energy-batch2.js';
 import { ENERGY_BATCH1 } from '../../../../src/content/energy-batch1.js';
 import { CALCULATORS } from '../../../../src/content/site.js';
-import { ENERGY_RELEASED_SLUGS } from '../../../../src/content/energy-release.js';
 import { electricityCostPage } from '../../../../src/pages/energy/electricity-cost-calculator.js';
 import { electricityCostForm, ELECTRICITY_COST_FIELD_IDS } from '../../../../src/components/energy/electricity-cost-form.js';
 import { electricityRatePage } from '../../../../src/pages/energy/electricity-rate-calculator.js';
@@ -39,9 +38,7 @@ test('every Batch 2 entry is a draft with a new, unique /energy/ route outside t
     assert.equal(entry.status, 'planned', entry.slug);
     assert.equal(entry.batch, 2, entry.slug);
     assert.match(entry.path, /^\/energy\/(electricity|ev)\/[a-z-]+-calculator\/$/);
-    // Integration branch: the EV cluster is released (live in site.js); every other draft stays out of it.
-    if (ENERGY_RELEASED_SLUGS.includes(entry.slug)) assert.ok(CALCULATORS.some((calc) => calc.slug === entry.slug && calc.path === entry.path && calc.status === 'live'), `${entry.slug} is live in site.js`);
-    else assert.ok(!CALCULATORS.some((calc) => calc.slug === entry.slug || calc.path === entry.path), `${entry.slug} is not in site.js`);
+    assert.ok(!CALCULATORS.some((calc) => calc.slug === entry.slug || calc.path === entry.path), `${entry.slug} is not in site.js`);
     assert.ok(!batch1Paths.has(entry.path), `${entry.slug} does not reuse a Batch 1 route`);
     for (const related of entry.related) assert.ok(findEnergyBatch2Calculator(related), `${entry.slug} → ${related}`);
   }

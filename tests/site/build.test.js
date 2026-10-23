@@ -295,12 +295,10 @@ test('module graphs never pull server-only code into the browser', async () => {
 test('every external link on a calculator page is an official source listed under "Sources"', async () => {
   const { liveCalculators } = await import('../../src/content/site.js');
   const { SOURCES } = await import('../../src/content/sources.js');
-  const { ENERGY_SOURCES } = await import('../../src/content/energy-sources.js');
-  // The released EV pages cite two energy sources: EPA (E8) and EIA (E3).
-  const known = new Set([...Object.values(SOURCES), ENERGY_SOURCES.epaLabelLosses, ENERGY_SOURCES.eiaStateAverages].map((source) => source.url));
+  const known = new Set(Object.values(SOURCES).map((source) => source.url));
   // Official US government sources only: the CFPB, the Department of Education's Federal Student Aid, NIST, the Department of Labor,
-  // FuelEconomy.gov and ENERGY STAR (DOE and EPA), the SEC's Investor.gov, the IRS, the SBA, the EPA and the EIA.
-  for (const url of known) assert.match(url, /^https:\/\/(www\.consumerfinance\.gov|studentaid\.gov|www\.nist\.gov|www\.dol\.gov|www\.fueleconomy\.gov|www\.energystar\.gov|www\.irs\.gov|www\.sba\.gov|www\.investor\.gov|www\.epa\.gov|www\.eia\.gov)\//);
+  // FuelEconomy.gov and ENERGY STAR (DOE and EPA), the SEC's Investor.gov, the IRS and the SBA.
+  for (const url of known) assert.match(url, /^https:\/\/(www\.consumerfinance\.gov|studentaid\.gov|www\.nist\.gov|www\.dol\.gov|www\.fueleconomy\.gov|www\.energystar\.gov|www\.irs\.gov|www\.sba\.gov|www\.investor\.gov)\//);
   for (const calc of liveCalculators()) {
     const doc = await read(`${calc.path.slice(1)}index.html`);
     const main = doc.slice(doc.indexOf('<main'), doc.indexOf('</main>'));
