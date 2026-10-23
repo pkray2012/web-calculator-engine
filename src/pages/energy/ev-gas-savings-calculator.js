@@ -16,6 +16,7 @@ import { faqSection, faqStructuredData, directAnswer } from '../../components/fa
 import { SAVINGS_DEFAULTS, runSavingsCalculator } from '../../adapters/energy/ev-gas-savings.js';
 import { findEnergyBatch2Calculator, relatedEnergyBatch2Calculators } from '../../content/energy-batch2.js';
 import { ENERGY_SOURCES } from '../../content/energy-sources.js';
+import { releasedOnly } from '../../content/energy-release.js';
 
 export function evGasSavingsPage() {
   const calculator = findEnergyBatch2Calculator('ev-gas-savings-calculator');
@@ -94,7 +95,7 @@ ${calculatorShell({
 
   ${sourcesSection([source, ENERGY_SOURCES.eiaStateAverages])}
 
-  ${relatedLinks(relatedEnergyBatch2Calculators(calculator.slug))}
+  ${relatedLinks(releasedOnly(relatedEnergyBatch2Calculators(calculator.slug)))}
 </article>
 </div>`;
 

@@ -61,6 +61,11 @@ import { concretePage } from '../src/pages/concrete-calculator.js';
 import { gravelPage } from '../src/pages/gravel-calculator.js';
 import { mulchPage } from '../src/pages/mulch-calculator.js';
 import { loanPayoffPage } from '../src/pages/loan-payoff-calculator.js';
+import { evGasSavingsPage } from '../src/pages/energy/ev-gas-savings-calculator.js';
+import { evCostPerMilePage } from '../src/pages/energy/ev-cost-per-mile-calculator.js';
+import { evChargingCostPage } from '../src/pages/energy/ev-charging-cost-calculator.js';
+import { evHubPage, underEvHub } from '../src/pages/energy/ev-hub.js';
+import { ENERGY_RELEASED } from '../src/content/energy-release.js';
 import { homePage, aboutPage, notFoundPage } from '../src/pages/static-pages.js';
 import { privacyPage, termsPage, disclaimerPage, contactPage, contactThanksPage, LEGAL_UPDATED } from '../src/pages/legal-pages.js';
 
@@ -126,6 +131,8 @@ function hash(content) {
  *   breadcrumbs?: { name: string, path: string }[], structuredData?: object[] }} Page
  */
 
+const releasedEnergy = (slug) => ENERGY_RELEASED.find((entry) => entry.slug === slug);
+
 /** @returns {Page[]} */
 export function buildPages(origin, brand = {}) {
   const calculators = liveCalculators();
@@ -173,6 +180,12 @@ export function buildPages(origin, brand = {}) {
     { ...homeEquityLoanPage(), updated: calculators.find((calc) => calc.slug === 'home-equity-loan-calculator').updated },
     { ...studentLoanRefinancePage(), updated: calculators.find((calc) => calc.slug === 'student-loan-refinance-calculator').updated },
     { ...loanPayoffPage(), updated: calculators.find((calc) => calc.slug === 'loan-payoff-calculator').updated },
+    // Home Energy, EV cluster only (owner, 2026-10-23): built here, not listed in site.js, so the home page,
+    // footer directory, llms.txt and the home page's date are unchanged (D7 undecided).
+    { ...underEvHub(evGasSavingsPage()), updated: releasedEnergy('ev-gas-savings-calculator').updated },
+    { ...underEvHub(evCostPerMilePage()), updated: releasedEnergy('ev-cost-per-mile-calculator').updated },
+    { ...underEvHub(evChargingCostPage()), updated: releasedEnergy('ev-charging-cost-calculator').updated },
+    { ...evHubPage(), updated: '2026-10-23' },
     { ...aboutPage(), updated: '2026-09-27' },
     { ...contactPage(), updated: LEGAL_UPDATED },
     { ...privacyPage(), updated: LEGAL_UPDATED },
@@ -193,7 +206,7 @@ const FINANCE_CATEGORIES = new Set(['loans', 'credit', 'savings', 'work', 'busin
  */
 export function withCalculatorMetadata(pages, origin) {
   return pages.map((page) => {
-    const calculator = liveCalculators().find((calc) => calc.path === page.path);
+    const calculator = [...liveCalculators(), ...ENERGY_RELEASED.map((entry) => ({ ...entry, category: 'energy' }))].find((calc) => calc.path === page.path);
     if (!calculator) return page;
     return {
       ...page,
